@@ -11,6 +11,7 @@ import {
   SERVICE_AREAS,
   TOP_STRIP_CONTENT,
   TRUST_SIGNALS,
+  UTILITY_LINKS,
   type SitePath,
 } from "@/lib/site-data";
 
@@ -262,6 +263,28 @@ export function SiteShell({
                 <li key={area}>{area}</li>
               ))}
             </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-[var(--color-line)]">
+          <div className="container-shell flex flex-col gap-3 py-5 text-sm text-[var(--color-text-soft)] md:flex-row md:items-center md:justify-between">
+            <p>A.G. Williams Painting Company | Pelham, New York</p>
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {UTILITY_LINKS.map((item) => {
+                const isActive = item.href === currentPath;
+
+                return (
+                  <Link
+                    key={item.href}
+                    className={`footer-link min-h-0 text-sm ${isActive ? "text-[var(--color-primary)]" : ""}`}
+                    href={item.href}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </footer>
