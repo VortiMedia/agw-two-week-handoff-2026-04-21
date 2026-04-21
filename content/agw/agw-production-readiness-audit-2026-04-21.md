@@ -35,6 +35,7 @@ I reviewed:
 - all non-generated source and config files in `projects/agw/website-review-build/`
 - AGW docs under `content/agw/`
 - AGW asset docs under `assets/agw/`
+- the web design-system package under `claude-design/`
 - the brand reference doc at [AGW_Website_Brand_Reference.docx](/Users/david/agw-website/AGW_Website_Brand_Reference.docx)
 - deployment metadata, migration notes, and preview-state files
 
@@ -60,6 +61,8 @@ I did **not** manually inspect `node_modules/` or `.next/` file-by-file because 
   - previous audit docs and revision log
 - `assets/agw/`
   - canonical brand files, photos, proposals, screenshots, and archive material
+- `claude-design/`
+  - a smaller `13M` design-system package with CSS tokens, preview HTML, recolored logo exports, and duplicated font/brand assets
 
 ### Size reality
 
@@ -78,6 +81,29 @@ The authored application surface is small:
 - current route surface: `/`, `/commercial`, `/residential`, `/heritage`, plus `robots.txt` and `sitemap.xml`
 
 That is a preview site, not a rebuilt production platform.
+
+### Design package reality
+
+`claude-design/` is useful, but it is not a standalone canonical source yet.
+
+What it adds:
+
+- `colors_and_type.css` with concrete brand tokens and type utilities
+- `preview/*.html` with visual examples for color, typography, and components
+- web-ready logo exports in blue, white, and green
+- a lighter design-system handoff that is easier to implement from than the raw brand asset archive
+
+What it duplicates:
+
+- Poppins and Minion font files already present under `assets/agw/brand/fonts/`
+- logo and icon assets already present under `assets/agw/brand/`
+- some public assets mirrored again under `claude-design/projects/agw/live-site-reference/public/`
+
+Conclusion:
+
+- this package is **useful as the implementation bridge**
+- it should **not** become a fourth parallel AGW source of truth
+- its best role is to be normalized into one canonical web design-system layer
 
 ## Critical Findings
 
@@ -176,17 +202,22 @@ Impact:
 
 ### 6. Brand direction is internally inconsistent across the repo
 
-There are three different brand systems in play:
+There are now four different brand-system surfaces in play:
 
 1. The brand reference doc says the website palette is `#0063B0`, `#6CBBE8`, `#F9F8F2`, `#595953`, with **Playfair Display** for headings and **Poppins** for body/UI.
 2. The generated design-system doc says `#0B1F33`, gold accent `#D6B36A`, **Plus Jakarta Sans**, and **Inter** in [design-system/MASTER.md](/Users/david/agw-website/projects/agw/website-review-build/design-system/MASTER.md:16) through [design-system/MASTER.md](/Users/david/agw-website/projects/agw/website-review-build/design-system/MASTER.md:42).
 3. The actual app uses the website blue palette, but the display font is an `Iowan Old Style` fallback stack and only one local Poppins weight is loaded in [layout.tsx](/Users/david/agw-website/projects/agw/website-review-build/src/app/layout.tsx:6) and [globals.css](/Users/david/agw-website/projects/agw/website-review-build/src/app/globals.css:17).
+4. The `claude-design/` package is closer to a usable web system than the generated doc because it ships tokens, previews, and logo exports, but it still contains its own tension:
+   - [README (1).md](/Users/david/agw-website/claude-design/README%20(1).md:34) frames **Minion** as the main serif voice
+   - [colors_and_type.css](/Users/david/agw-website/claude-design/colors_and_type.css:10) switches the website serif to **Playfair Display** and keeps Minion for internal/print/editorial use
+   - it also duplicates fonts and brand assets that already exist under `assets/agw/brand/`
 
 Impact:
 
 - no trusted design source of truth
 - typography implementation does not match the brand reference
 - future design passes can easily drift again
+- useful design work risks turning into more duplication unless consolidated deliberately
 
 ### 7. Repo hygiene is poor enough to slow down real production work
 
@@ -303,6 +334,10 @@ This is not all bad. There is a usable base to build from.
 - The review build looks materially more mature than the issues described in the prior audit.
 - The review build appears to have addressed the dead `Service Area` anchor by adding a real section id in [page.tsx](/Users/david/agw-website/projects/agw/website-review-build/src/app/page.tsx:454).
 - The review build also moved closer to real AGW assets by adding a lockup image and curated photo set in [brand-assets.ts](/Users/david/agw-website/projects/agw/website-review-build/src/lib/brand-assets.ts:34).
+- `claude-design/` is a genuinely useful implementation handoff because it provides:
+  - web-ready tokens in [colors_and_type.css](/Users/david/agw-website/claude-design/colors_and_type.css:1)
+  - visual review pages in [preview/colors.html](/Users/david/agw-website/claude-design/preview/colors.html:1), [preview/typography.html](/Users/david/agw-website/claude-design/preview/typography.html:1), and [preview/logo_and_components.html](/Users/david/agw-website/claude-design/preview/logo_and_components.html:1)
+  - cleaned logo exports in `claude-design/assets/`
 
 That means the repo is not a throwaway. It just is not the finished system yet.
 
@@ -336,7 +371,14 @@ What to do with `live-site-reference/`:
 ### Phase 2. Lock brand and content system decisions
 
 - treat [AGW_Website_Brand_Reference.docx](/Users/david/agw-website/AGW_Website_Brand_Reference.docx) as the real brand source, not `design-system/MASTER.md`
+- use `claude-design/` as the implementation bridge, not as a separate authority
 - reconcile fonts, palette, and component rules into one implementation spec
+- extract the useful parts of `claude-design/` into a canonical web layer:
+  - token file
+  - approved logo exports
+  - component examples
+  - final font decisions
+- delete or archive duplicated copies once the canonical layer exists
 - define the actual content model set for:
   - site settings
   - homepage
@@ -399,7 +441,7 @@ If I were driving this tomorrow, I would do these in order:
 1. Freeze `live-site-reference/` and declare `website-review-build/` canonical.
 2. Remove repo junk: checked-in `node_modules/`, checked-in `.next/`, duplicate assets that should live only in `assets/agw/`.
 3. Replace the default README with real setup instructions and Node version requirements.
-4. Write the real brand implementation spec based on the brand reference doc.
+4. Canonicalize the brand system: use the brand reference doc as authority and mine `claude-design/` for the token file, logo exports, and preview patterns worth keeping.
 5. Stand up the CMS schema and preview flow.
 6. Decide whether GHL remains the system of record for estimates/calendar.
 7. Build the quote flow around that decision.
