@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaqList } from "@/components/faq-list";
 import { SiteShell } from "@/components/site-shell";
+import { TrackedLink } from "@/components/tracked-link";
 import { AGW_CURATED_PHOTOS, AGW_LIVE_ASSETS } from "@/lib/brand-assets";
 import {
   CONTACT,
@@ -17,22 +18,11 @@ const proofLogos = [
   { src: AGW_LIVE_ASSETS.proofLogos.leadSafe, alt: "EPA lead-safe certification" },
 ] as const;
 
-const heroStats = [
-  {
-    value: "119+",
-    label: "Years in the region",
-    body: "A local office, a century-old name, and work that still has to hold up close to home.",
-  },
-  {
-    value: "2 lanes",
-    label: "Residential and commercial",
-    body: "Walkthrough-led home estimates and commercial scopes that get routed correctly up front.",
-  },
-  {
-    value: "4 counties",
-    label: "Service footprint",
-    body: "Westchester, Fairfield, Rockland, and Putnam handled through the Pelham office.",
-  },
+const heroSignals = [
+  "119+ years in the region",
+  "5-year residential warranty",
+  "Licensed and insured commercial work",
+  "Pelham office serving 4 counties",
 ] as const;
 
 const routeCards = [
@@ -51,6 +41,14 @@ const routeCards = [
       "Commercial painting, fireproofing, and floor coatings start with scope clarity instead of a vague intake form.",
     href: "/commercial",
     cta: "See Commercial",
+  },
+  {
+    label: "Heritage and local proof",
+    title: "The office, the crews, and the 1906 name still sit under the same regional operation.",
+    body:
+      "Use the heritage page when the trust question is really about accountability, longevity, and whether the company still works like a local name.",
+    href: "/heritage",
+    cta: "See Heritage",
   },
 ] as const;
 
@@ -96,9 +94,18 @@ export default function Home() {
                   </p>
 
                   <div className="mt-7 flex flex-wrap items-center gap-4">
-                    <Link className="button-primary" href={QUOTE_URL}>
+                    <TrackedLink
+                      className="button-primary"
+                      href={QUOTE_URL}
+                      tracking={{
+                        event: "quote_cta_click",
+                        location: "homepage_hero",
+                        label: "Get a Quote",
+                        context: "homepage",
+                      }}
+                    >
                       Get a Quote
-                    </Link>
+                    </TrackedLink>
                     <Link
                       className="button-secondary"
                       href={CONTACT.localPhoneHref}
@@ -107,21 +114,41 @@ export default function Home() {
                     </Link>
                   </div>
 
-                  <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                    {heroStats.map((item) => (
+                  <div className="mt-8">
+                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
+                      Choose the right next step
+                    </p>
+
+                    <div className="mt-4 grid gap-3 lg:grid-cols-3">
+                      {routeCards.map((item) => (
+                        <article
+                          key={item.label}
+                          className="rounded-[1.35rem] border border-[var(--color-border)] bg-white/90 p-4 shadow-[var(--shadow-soft)]"
+                        >
+                          <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
+                            {item.label}
+                          </p>
+                          <p className="mt-3 display-font text-[1.35rem] leading-[1.02] tracking-[-0.04em] text-[var(--color-primary)]">
+                            {item.title}
+                          </p>
+                          <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+                            {item.body}
+                          </p>
+                          <Link className="footer-link mt-4 text-[var(--color-primary)]" href={item.href}>
+                            {item.cta}
+                          </Link>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {heroSignals.map((item) => (
                       <article
-                        key={item.label}
-                        className="rounded-[1.35rem] border border-[var(--color-border)] bg-white/86 p-4"
+                        key={item}
+                        className="info-pill justify-start border-[rgba(0,99,176,0.14)] bg-white/92 text-[var(--color-primary)]"
                       >
-                        <p className="display-font text-[1.9rem] leading-none tracking-[-0.05em] text-[var(--color-primary)]">
-                          {item.value}
-                        </p>
-                        <p className="mt-3 ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                          {item.label}
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-                          {item.body}
-                        </p>
+                        {item}
                       </article>
                     ))}
                   </div>
@@ -222,42 +249,6 @@ export default function Home() {
                       homeowners who want a real standard behind the finish.
                     </p>
                   </aside>
-                </div>
-              </div>
-
-              <div className="grid gap-4 border-t border-[var(--color-line)] bg-[rgba(249,248,242,0.72)] px-5 py-5 lg:grid-cols-[0.96fr_1.04fr] lg:px-10">
-                <article className="rounded-[1.6rem] bg-[var(--color-ink)] p-6 text-white shadow-[var(--shadow-strong)]">
-                  <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-white/72">
-                    How AGW is structured
-                  </p>
-                  <p className="mt-3 display-font text-[clamp(1.7rem,2.8vw,2.5rem)] leading-[0.98] tracking-[-0.05em]">
-                    Two service lanes, one regional standard, and the same local office behind both.
-                  </p>
-                  <p className="mt-4 max-w-2xl text-[0.98rem] leading-8 text-white/82">
-                    Residential clients need a walkthrough and finish-level conversation. Commercial
-                    clients need scope clarity, insurance visibility, and schedule discipline.
-                    A.G. Williams is credible because it treats those lanes differently.
-                  </p>
-                </article>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {routeCards.map((item) => (
-                    <article
-                      key={item.label}
-                      className="rounded-[1.45rem] border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-soft)]"
-                    >
-                      <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                        {item.label}
-                      </p>
-                      <h2 className="card-title mt-4 text-[clamp(1.45rem,2vw,1.95rem)]">
-                        {item.title}
-                      </h2>
-                      <p className="body-copy mt-4">{item.body}</p>
-                      <Link className="footer-link mt-5 text-[var(--color-primary)]" href={item.href}>
-                        {item.cta}
-                      </Link>
-                    </article>
-                  ))}
                 </div>
               </div>
             </div>
@@ -540,9 +531,18 @@ export default function Home() {
                 call should get you to the right person quickly.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-4">
-                <Link className="button-primary button-primary--light" href={QUOTE_URL}>
+                <TrackedLink
+                  className="button-primary button-primary--light"
+                  href={QUOTE_URL}
+                  tracking={{
+                    event: "quote_cta_click",
+                    location: "homepage_faq_band",
+                    label: "Request a Quote",
+                    context: "homepage",
+                  }}
+                >
                   Request a Quote
-                </Link>
+                </TrackedLink>
                 <Link
                   className="text-sm font-semibold text-white transition-opacity hover:opacity-80"
                   href={CONTACT.mainPhoneHref}
