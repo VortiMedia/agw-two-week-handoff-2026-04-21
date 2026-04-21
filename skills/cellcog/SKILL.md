@@ -1,6 +1,6 @@
 ---
 name: cellcog
-description: CellCog any-to-any AI for research, PDFs, images, video, dashboards, audio, presentations, spreadsheets, and more. Use when you need deep research, multi-modal output, or deliverables that require real work. Fire-and-forget: create_chat() returns immediately, results delivered automatically via notify_session_key.
+description: "CellCog any-to-any AI for research, PDFs, images, video, dashboards, audio, presentations, spreadsheets, and more. Use when you need deep research, multi-modal output, or deliverables that require real work. Fire-and-forget: create_chat() returns immediately, results delivered automatically via notify_session_key."
 ---
 
 # CellCog — Any-to-Any for Agents
