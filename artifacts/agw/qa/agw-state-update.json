@@ -1,0 +1,9 @@
+{
+  "account": {
+    "name": "A.G. Williams Painting"
+  },
+  "interaction": {
+    "summary": "Homepage repair completed locally without ACP. Mobile hero first screen was tightened, duplicate mobile primary CTA story was removed, service area anchor still resolves, and no deploy was run.",
+    "next_step": "David review before any deploy"
+  }
+}
