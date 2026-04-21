@@ -1,10 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
-import { Playfair_Display } from "next/font/google";
+import { Playfair_Display, Poppins } from "next/font/google";
 import Script from "next/script";
 import {
   GTM_CONTAINER_ID,
-  HOMEPAGE_JSON_LD,
   LEADCONNECTOR_CHAT_LOADER_URL,
   LEADCONNECTOR_CHAT_RESOURCES_URL,
   LEADCONNECTOR_CHAT_WIDGET_ID,
@@ -13,23 +11,17 @@ import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["600", "700", "800", "900"],
   style: ["normal", "italic"],
   variable: "--font-playfair",
   display: "swap",
 });
 
-const poppinsUi = localFont({
-  src: [
-    {
-      path: "../../brand-kit/02-fonts/Poppins-ExtraBold.ttf",
-      weight: "800",
-      style: "normal",
-    },
-  ],
+const poppinsUi = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
-  fallback: ["Avenir Next", "Helvetica Neue", "Segoe UI", "sans-serif"],
-  adjustFontFallback: false,
   variable: "--font-ui",
 });
 
@@ -112,12 +104,6 @@ export default function RootLayout({
             title="Google Tag Manager"
           />
         </noscript>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(HOMEPAGE_JSON_LD),
-          }}
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `

@@ -3,6 +3,7 @@ import { ServiceCtaBand } from "@/components/service-cta-band";
 import { ServicePageHero } from "@/components/service-page-hero";
 import { SiteShell } from "@/components/site-shell";
 import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
+import { buildPageMetadata } from "@/lib/seo";
 import {
   COMMERCIAL_EXPECTATIONS,
   COMMERCIAL_SERVICES,
@@ -11,14 +12,23 @@ import {
   SERVICE_AREAS,
 } from "@/lib/site-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Commercial Painting, Fireproofing, and Floor Coatings | A.G. Williams",
   description:
     "Commercial painting, fireproofing, and floor coating work for owners, facility teams, and general contractors across Westchester, Fairfield, Rockland, and Putnam.",
-  alternates: {
-    canonical: "/commercial",
+  path: "/commercial",
+  keywords: [
+    "commercial painting contractor westchester county",
+    "commercial painting contractor fairfield county",
+    "fireproofing contractor",
+    "commercial floor coatings",
+    "occupied property painting contractor",
+  ],
+  image: {
+    url: AGW_CURATED_PHOTOS.commercialFloor,
+    alt: "Commercial floor coating project completed by A.G. Williams",
   },
-};
+});
 
 export default function CommercialPage() {
   return (

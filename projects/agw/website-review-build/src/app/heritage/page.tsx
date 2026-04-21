@@ -4,6 +4,7 @@ import { ServiceCtaBand } from "@/components/service-cta-band";
 import { ServicePageHero } from "@/components/service-page-hero";
 import { SiteShell } from "@/components/site-shell";
 import { AGW_CURATED_PHOTOS, AGW_LIVE_ASSETS } from "@/lib/brand-assets";
+import { buildPageMetadata } from "@/lib/seo";
 import {
   CONTACT,
   HERITAGE_POINTS,
@@ -12,14 +13,23 @@ import {
   SERVICE_AREAS,
 } from "@/lib/site-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Heritage, Craftsmanship, and Local Reputation | A.G. Williams",
   description:
     "The heritage layer behind A.G. Williams: long local roots, craftsmanship, and the standards supporting commercial and residential painting.",
-  alternates: {
-    canonical: "/heritage",
+  path: "/heritage",
+  keywords: [
+    "painting company since 1906",
+    "pelham ny painting company",
+    "local painting company westchester",
+    "heritage painting contractor",
+    "family owned painting company",
+  ],
+  image: {
+    url: AGW_CURATED_PHOTOS.heritageVan,
+    alt: "A.G. Williams service vehicle in the workshop with company branding",
   },
-};
+});
 
 export default function HeritagePage() {
   return (
