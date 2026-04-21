@@ -1,5 +1,5 @@
 # AGW Booking, Analytics & Notification Rollout Plan
-*Generated: 2026-04-21 | Branch: agw-ops-plan*
+*Generated: 2026-04-21 | Branch: agw-ops-plan | Reviewed against: origin/agw-frontend-pass*
 
 ---
 
@@ -12,20 +12,21 @@ The canonical app (`projects/agw/website-review-build/`) contains no booking UI,
 - Every CTA across the app (`SHELL_ACTIONS`, `FOOTER_LINKS`) resolves to this constant. No booking widget, iframe, or form component exists in `src/`.
 
 **Scripts in `layout.tsx`**
-- Lines 81–114 contain exactly two inline scripts: a JSON-LD `PaintingContractor` schema block and a hash-scroll behavior helper. Neither touches GTM, analytics, or any third-party widget.
-- No `<Script>` tags, no `dangerouslySetInnerHTML` wiring to any external service, no `useEffect` loading pattern for chat or tracking.
+- The `agw-ops-plan` version (lines 81–114) contains two inline scripts: a JSON-LD `PaintingContractor` schema block and a hash-scroll behavior helper. No GTM.
+- The `agw-frontend-pass` version adds a third tag at end of `<body>`: a `<Script strategy="lazyOnload">` block loading the LeadConnector chat widget (widget ID `699ca6733303b66fe5e9d99c`). **Chat is implemented.** GTM is still absent on both branches.
 
 **Components / shell**
-- `site-shell.tsx` renders nav, header CTAs, footer, and service area list. No iframe, no embed slot, no chat widget mount point.
+- `site-shell.tsx` renders nav, header CTAs, footer, and service area list. No iframe, no embed slot.
 - No booking page, booking route, or calendar component exists under `src/app/` or `src/components/`.
 
 **GHL / LeadConnector**
-- Zero references in `src/`. No loader script, no widget ID, no calendar iframe, no `form_embed.js`.
+- Chat widget: **implemented** in `agw-frontend-pass` via `layout.tsx` (~line 121), `strategy="lazyOnload"`, widget ID `699ca6733303b66fe5e9d99c`.
+- Calendar iframe, `form_embed.js`, and GHL form embed: still absent.
 
 **Analytics / tracking**
 - Zero references in `src/`. GTM container `GTM-W559QJ7C` is documented in `MIGRATION_PLAN.md` as a live-site fact but is not present in the new app's code.
 
-**Summary:** The current build is a static marketing preview. Every user who clicks a CTA leaves the new Next.js app and lands on the legacy WordPress quote page.
+**Summary:** The `agw-frontend-pass` branch is a static marketing preview with LeadConnector chat live. Every CTA still routes to the legacy WordPress quote page. GTM, booking, and analytics instrumentation remain unimplemented.
 
 ---
 
@@ -74,7 +75,7 @@ The audit explicitly flags analytics, chat, and booking as failing categories. A
 | Gap | Doc Intent | Code Reality |
 |---|---|---|
 | GTM container | `GTM-W559QJ7C` must be added to new app | Absent from all files in `src/` |
-| LeadConnector chat widget | Preserve widget ID `699ca6733303b66fe5e9d99c` | Absent from `layout.tsx` and all components |
+| LeadConnector chat widget | Preserve widget ID `699ca6733303b66fe5e9d99c` | **Implemented** — `layout.tsx` (~line 121) on `agw-frontend-pass`, `strategy="lazyOnload"` |
 | GHL calendar embed | Embed `INZqRCM9fdZwZ6avSiny` as booking step | No iframe, no script, no booking route |
 | Custom intake form | Capture fields before calendar step | No form component exists |
 | Intake-submitted event | Push a GTM/dataLayer event on intake submit | No tracking code, no event layer |
@@ -98,7 +99,7 @@ All paths are relative to `projects/agw/website-review-build/`.
 |---|---|
 | `src/lib/site-data.ts` | Replace `QUOTE_URL` (line 5) with an internal route (e.g., `/get-a-quote`) once the booking page exists; or temporarily point to the GHL calendar URL directly |
 | `src/app/layout.tsx` | Add GTM `<script>` tags (noscript fallback + main loader) in `<body>` immediately after opening tag, before existing inline scripts (lines 80–83 region) |
-| `src/app/layout.tsx` | Add LeadConnector chat widget `<script>` tag at end of `<body>` (after line 115, before `</body>`) |
+| `src/app/layout.tsx` | LeadConnector chat widget — **already present** on `agw-frontend-pass` (~line 121); no change needed |
 | `src/app/get-a-quote/page.tsx` | New file — intake form page; renders custom intake step followed by GHL calendar iframe |
 | `src/components/ghl-calendar-embed.tsx` | New file — isolated component that renders the GHL calendar `<iframe>` and the `form_embed.js` `<Script>` tag; keeps iframe logic out of page files |
 | `src/components/intake-form.tsx` | New file — controlled intake form (name, phone, email, project type, service area); fires `intake_submitted` dataLayer event on submit; does not wrap or interfere with the GHL calendar |
@@ -122,10 +123,9 @@ Steps must be completed sequentially. Do not skip ahead.
    — Add standard GTM `<script>` snippet (container `GTM-W559QJ7C`) at top of `<body>`; add `<noscript>` iframe fallback immediately after
    — Verify GTM container fires in Preview mode before proceeding
 
-4. **Add LeadConnector chat widget to `layout.tsx`**
-   — File: `src/app/layout.tsx`, end of `<body>` before closing tag (~line 116)
-   — Add `<Script strategy="afterInteractive">` block with the LeadConnector loader and widget ID `699ca6733303b66fe5e9d99c`
-   — Confirm chat widget appears and connects in staging
+4. **LeadConnector chat widget — already implemented** (`agw-frontend-pass`)
+   — File: `src/app/layout.tsx` (~line 121), `strategy="lazyOnload"`, widget ID `699ca6733303b66fe5e9d99c`
+   — Verify widget appears and connects after merging `agw-frontend-pass`; no code change required
 
 5. **Build `ghl-calendar-embed.tsx`**
    — File: `src/components/ghl-calendar-embed.tsx` (new)
