@@ -25,6 +25,7 @@ export default function CommercialPage() {
     <SiteShell currentPath="/commercial">
       <main>
         <ServicePageHero
+          trackingContext="commercial"
           eyebrow="Commercial services"
           title="Commercial painting, fireproofing, and floor coatings for occupied properties."
           description="A.G. Williams works with owners, facility teams, property managers, and general contractors who need the scope understood early, the schedule protected, and the site kept organized."
@@ -179,6 +180,7 @@ export default function CommercialPage() {
         </section>
 
         <ServiceCtaBand
+          trackingContext="commercial"
           eyebrow="Commercial reach"
           title={`Commercial work across ${SERVICE_AREAS.join(", ")}.`}
           body="Start with the office, confirm the property needs, and move into a consultation built around access, schedule, and actual site conditions."

@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { TrackedLink } from "@/components/tracked-link";
 
 type ServiceCtaBandProps = {
+  trackingContext: string;
   eyebrow: string;
   title: string;
   body: string;
@@ -16,6 +18,7 @@ type ServiceCtaBandProps = {
 };
 
 export function ServiceCtaBand({
+  trackingContext,
   eyebrow,
   title,
   body,
@@ -47,9 +50,18 @@ export function ServiceCtaBand({
           ) : null}
 
           <div className="flex flex-wrap gap-3">
-            <Link className="button-primary button-primary--light" href={primaryCta.href}>
+            <TrackedLink
+              className="button-primary button-primary--light"
+              href={primaryCta.href}
+              tracking={{
+                event: "quote_cta_click",
+                location: "service_cta_band_primary",
+                label: primaryCta.label,
+                context: trackingContext,
+              }}
+            >
               {primaryCta.label}
-            </Link>
+            </TrackedLink>
             <Link className="button-secondary button-secondary--dark" href={secondaryCta.href}>
               {secondaryCta.label}
             </Link>

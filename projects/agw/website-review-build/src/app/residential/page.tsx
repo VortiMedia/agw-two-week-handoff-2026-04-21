@@ -5,6 +5,7 @@ import { FaqList } from "@/components/faq-list";
 import { ServiceCtaBand } from "@/components/service-cta-band";
 import { ServicePageHero } from "@/components/service-page-hero";
 import { SiteShell } from "@/components/site-shell";
+import { TrackedLink } from "@/components/tracked-link";
 import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
 import {
   CONTACT,
@@ -49,6 +50,7 @@ export default function ResidentialPage() {
     <SiteShell currentPath="/residential">
       <main>
         <ServicePageHero
+          trackingContext="residential"
           eyebrow="Residential painting"
           title="Residential painting, cabinet work, and fine finishes built around a walkthrough."
           description="A.G. Williams handles interiors, exteriors, cabinetry, and detail-heavy finish work for homeowners who want the scope reviewed before the estimate and the house protected while the job is underway."
@@ -137,9 +139,18 @@ export default function ResidentialPage() {
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
-                <Link className="button-primary" href={QUOTE_URL}>
+                <TrackedLink
+                  className="button-primary"
+                  href={QUOTE_URL}
+                  tracking={{
+                    event: "quote_cta_click",
+                    location: "residential_walkthrough_section",
+                    label: "Request a Walkthrough",
+                    context: "residential",
+                  }}
+                >
                   Request a Walkthrough
-                </Link>
+                </TrackedLink>
                 <Link
                   className="text-sm font-semibold text-[var(--color-primary)] transition-opacity hover:opacity-80"
                   href={CONTACT.mainPhoneHref}
@@ -201,6 +212,7 @@ export default function ResidentialPage() {
         </section>
 
         <ServiceCtaBand
+          trackingContext="residential"
           eyebrow="Residential next step"
           title="Book the walkthrough with the office before the house gets priced like a generic repaint."
           body="The first call should route you into the residential lane, define the scope in person, and keep the estimate tied to the rooms, prep, and finish level you actually need."

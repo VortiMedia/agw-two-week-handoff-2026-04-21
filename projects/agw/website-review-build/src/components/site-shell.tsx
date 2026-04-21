@@ -1,10 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AgwLogo } from "@/components/agw-logo";
+import { TrackedLink } from "@/components/tracked-link";
 import {
   CONTACT,
   FOOTER_LINKS,
   PRIMARY_NAV,
+  QUOTE_URL,
   SHELL_ACTIONS,
   SERVICE_AREAS,
   TOP_STRIP_CONTENT,
@@ -21,6 +23,7 @@ export function SiteShell({
 }) {
   const topStrip = TOP_STRIP_CONTENT[currentPath];
   const shellActions = SHELL_ACTIONS[currentPath];
+  const trackingContext = currentPath === "/" ? "homepage" : currentPath.slice(1);
 
   return (
     <div className="min-h-[100dvh] bg-[var(--color-bg)] text-[var(--color-text)]">
@@ -35,9 +38,18 @@ export function SiteShell({
             <Link className="transition-colors hover:text-white" href={CONTACT.mainPhoneHref}>
               {CONTACT.mainPhoneLabel}
             </Link>
-            <Link className="transition-colors hover:text-white" href={shellActions.topLinkHref}>
+            <TrackedLink
+              className="transition-colors hover:text-white"
+              href={shellActions.topLinkHref}
+              tracking={{
+                event: "quote_cta_click",
+                location: "top_strip",
+                label: shellActions.topLinkLabel,
+                context: trackingContext,
+              }}
+            >
               {shellActions.topLinkLabel}
-            </Link>
+            </TrackedLink>
           </div>
         </div>
       </div>
@@ -97,9 +109,18 @@ export function SiteShell({
                   </nav>
 
                   <div className="mt-4 grid gap-2 border-t border-[var(--color-line)] pt-4">
-                    <Link className="button-primary justify-center" href={shellActions.headerPrimaryHref}>
+                    <TrackedLink
+                      className="button-primary justify-center"
+                      href={shellActions.headerPrimaryHref}
+                      tracking={{
+                        event: "quote_cta_click",
+                        location: "mobile_menu_primary",
+                        label: shellActions.headerPrimaryLabel,
+                        context: trackingContext,
+                      }}
+                    >
                       {shellActions.headerPrimaryLabel}
-                    </Link>
+                    </TrackedLink>
                     <Link className="button-secondary justify-center" href={CONTACT.mainPhoneHref}>
                       {CONTACT.mainPhoneLabel}
                     </Link>
@@ -112,9 +133,18 @@ export function SiteShell({
               <Link className="button-secondary" href={shellActions.headerSecondaryHref}>
                 {shellActions.headerSecondaryLabel}
               </Link>
-              <Link className="button-primary" href={shellActions.headerPrimaryHref}>
+              <TrackedLink
+                className="button-primary"
+                href={shellActions.headerPrimaryHref}
+                tracking={{
+                  event: "quote_cta_click",
+                  location: "header_primary",
+                  label: shellActions.headerPrimaryLabel,
+                  context: trackingContext,
+                }}
+              >
                 {shellActions.headerPrimaryLabel}
-              </Link>
+              </TrackedLink>
             </div>
           </div>
         </div>
@@ -135,9 +165,18 @@ export function SiteShell({
               <Link className="button-secondary" href={CONTACT.mainPhoneHref}>
                 {CONTACT.mainPhoneLabel}
               </Link>
-              <Link className="button-primary" href={shellActions.footerCtaHref}>
+              <TrackedLink
+                className="button-primary"
+                href={shellActions.footerCtaHref}
+                tracking={{
+                  event: "quote_cta_click",
+                  location: "footer_primary",
+                  label: shellActions.footerCtaLabel,
+                  context: trackingContext,
+                }}
+              >
                 {shellActions.footerCtaLabel}
-              </Link>
+              </TrackedLink>
             </div>
           </div>
         </div>
@@ -163,9 +202,25 @@ export function SiteShell({
               </p>
               <div className="mt-4 grid gap-1">
                 {FOOTER_LINKS.map((item) => (
-                  <Link key={item.href} className="footer-link" href={item.href}>
-                    {item.label}
-                  </Link>
+                  item.href === QUOTE_URL ? (
+                    <TrackedLink
+                      key={item.href}
+                      className="footer-link"
+                      href={item.href}
+                      tracking={{
+                        event: "quote_cta_click",
+                        location: "footer_link",
+                        label: item.label,
+                        context: trackingContext,
+                      }}
+                    >
+                      {item.label}
+                    </TrackedLink>
+                  ) : (
+                    <Link key={item.href} className="footer-link" href={item.href}>
+                      {item.label}
+                    </Link>
+                  )
                 ))}
               </div>
             </div>
@@ -182,9 +237,18 @@ export function SiteShell({
                   Pelham office: {CONTACT.localPhoneLabel}
                 </Link>
                 <p>{CONTACT.officeAddress}</p>
-                <Link className="footer-link" href={shellActions.footerCtaHref}>
+                <TrackedLink
+                  className="footer-link"
+                  href={shellActions.footerCtaHref}
+                  tracking={{
+                    event: "quote_cta_click",
+                    location: "footer_contact_link",
+                    label: shellActions.footerCtaLabel,
+                    context: trackingContext,
+                  }}
+                >
                   {shellActions.footerCtaLabel}
-                </Link>
+                </TrackedLink>
               </div>
             </div>
           </div>

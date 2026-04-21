@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaqList } from "@/components/faq-list";
 import { SiteShell } from "@/components/site-shell";
+import { TrackedLink } from "@/components/tracked-link";
 import { AGW_CURATED_PHOTOS, AGW_LIVE_ASSETS } from "@/lib/brand-assets";
 import {
   CONTACT,
@@ -93,9 +94,18 @@ export default function Home() {
                   </p>
 
                   <div className="mt-7 flex flex-wrap items-center gap-4">
-                    <Link className="button-primary" href={QUOTE_URL}>
+                    <TrackedLink
+                      className="button-primary"
+                      href={QUOTE_URL}
+                      tracking={{
+                        event: "quote_cta_click",
+                        location: "homepage_hero",
+                        label: "Get a Quote",
+                        context: "homepage",
+                      }}
+                    >
                       Get a Quote
-                    </Link>
+                    </TrackedLink>
                     <Link
                       className="button-secondary"
                       href={CONTACT.localPhoneHref}
@@ -521,9 +531,18 @@ export default function Home() {
                 call should get you to the right person quickly.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-4">
-                <Link className="button-primary button-primary--light" href={QUOTE_URL}>
+                <TrackedLink
+                  className="button-primary button-primary--light"
+                  href={QUOTE_URL}
+                  tracking={{
+                    event: "quote_cta_click",
+                    location: "homepage_faq_band",
+                    label: "Request a Quote",
+                    context: "homepage",
+                  }}
+                >
                   Request a Quote
-                </Link>
+                </TrackedLink>
                 <Link
                   className="text-sm font-semibold text-white transition-opacity hover:opacity-80"
                   href={CONTACT.mainPhoneHref}

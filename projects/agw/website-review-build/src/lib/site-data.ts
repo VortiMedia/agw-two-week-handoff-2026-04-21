@@ -1,8 +1,23 @@
-export type SitePath = "/" | "/commercial" | "/residential" | "/heritage";
+export type SitePath =
+  | "/"
+  | "/commercial"
+  | "/residential"
+  | "/heritage"
+  | "/get-a-quote";
 
 export const SITE_NAME = "A.G. Williams Painting Company";
 export const SITE_URL = "https://agwilliamspainting.com";
-export const QUOTE_URL = "https://agwilliamspainting.com/get-a-quote/";
+export const QUOTE_URL = "/get-a-quote";
+export const GTM_CONTAINER_ID = "GTM-W559QJ7C";
+export const GHL_BASE_URL = "https://link.agwilliamspainting.com";
+export const GHL_FORM_ID = "QJKUxOOQI1YWHYNSsN5F";
+export const GHL_BOOKING_ID = "INZqRCM9fdZwZ6avSiny";
+export const GHL_BOOKING_URL = `${GHL_BASE_URL}/widget/booking/${GHL_BOOKING_ID}`;
+export const LEADCONNECTOR_CHAT_WIDGET_ID = "699ca6733303b66fe5e9d99c";
+export const LEADCONNECTOR_CHAT_LOADER_URL =
+  "https://widgets.leadconnectorhq.com/loader.js";
+export const LEADCONNECTOR_CHAT_RESOURCES_URL =
+  "https://widgets.leadconnectorhq.com/chat-widget/loader.js";
 
 export const CONTACT = {
   mainPhoneLabel: "(800) 227-1906",
@@ -57,6 +72,11 @@ export const TOP_STRIP_CONTENT: Record<
     eyebrow: "Pelham office",
     message:
       "A.G. Williams has served homes and properties from Pelham for more than a century.",
+  },
+  "/get-a-quote": {
+    eyebrow: "Internal quote route",
+    message:
+      "Start inside the AGW site, then continue into the live booking flow without changing the current office or customer-care handoff.",
   },
 };
 
@@ -117,6 +137,17 @@ export const SHELL_ACTIONS: Record<
     headerSecondaryHref: CONTACT.localPhoneHref,
     footerCtaLabel: "Get a Quote",
     footerCtaHref: QUOTE_URL,
+  },
+  "/get-a-quote": {
+    topLinkLabel: "Continue to Booking",
+    topLinkHref: GHL_BOOKING_URL,
+    headerPrimaryLabel: "Continue to Booking",
+    headerPrimaryHref: GHL_BOOKING_URL,
+    mobilePrimaryLabel: "Continue",
+    headerSecondaryLabel: "Call Pelham Office",
+    headerSecondaryHref: CONTACT.localPhoneHref,
+    footerCtaLabel: "Continue to Booking",
+    footerCtaHref: GHL_BOOKING_URL,
   },
 };
 

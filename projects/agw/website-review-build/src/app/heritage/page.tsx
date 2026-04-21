@@ -26,6 +26,7 @@ export default function HeritagePage() {
     <SiteShell currentPath="/heritage">
       <main>
         <ServicePageHero
+          trackingContext="heritage"
           eyebrow="Since 1906"
           title="A.G. Williams still works like a local company with a name to protect."
           description="The company has served this region since 1906, and the current operation is still visible the same way a local contractor should be: Pelham office, branded vehicles, full-time crews, and work that has to hold up close to home."
@@ -146,6 +147,7 @@ export default function HeritagePage() {
         </section>
 
         <ServiceCtaBand
+          trackingContext="heritage"
           eyebrow="Start with the office"
           title="Use the local office as the starting point for residential walkthroughs, commercial consultations, and the right next step."
           body="The value of the heritage page is not nostalgia by itself. It is the proof that the same regional operation still answers the phone, routes the work, and stands behind what gets quoted."

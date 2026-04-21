@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ComponentProps } from "react";
+import { TrackedLink } from "@/components/tracked-link";
 
 type ServiceHeroHighlight = {
   label: string;
@@ -14,6 +15,7 @@ type ServiceHeroCallout = {
 };
 
 type ServicePageHeroProps = {
+  trackingContext: string;
   eyebrow: string;
   title: string;
   description: string;
@@ -37,6 +39,7 @@ type ServicePageHeroProps = {
 };
 
 export function ServicePageHero({
+  trackingContext,
   eyebrow,
   title,
   description,
@@ -59,9 +62,18 @@ export function ServicePageHero({
             <p className="lead-copy mt-5 max-w-xl">{description}</p>
 
             <div className="mt-7 flex flex-wrap items-center gap-4">
-              <Link className="button-primary" href={primaryCta.href}>
+              <TrackedLink
+                className="button-primary"
+                href={primaryCta.href}
+                tracking={{
+                  event: "quote_cta_click",
+                  location: "service_hero_primary",
+                  label: primaryCta.label,
+                  context: trackingContext,
+                }}
+              >
                 {primaryCta.label}
-              </Link>
+              </TrackedLink>
               <Link
                 className="text-sm font-semibold text-[var(--color-primary)] transition-opacity hover:opacity-80"
                 href={secondaryCta.href}

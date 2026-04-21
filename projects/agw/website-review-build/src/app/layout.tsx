@@ -2,7 +2,13 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Playfair_Display } from "next/font/google";
 import Script from "next/script";
-import { HOMEPAGE_JSON_LD } from "@/lib/site-data";
+import {
+  GTM_CONTAINER_ID,
+  HOMEPAGE_JSON_LD,
+  LEADCONNECTOR_CHAT_LOADER_URL,
+  LEADCONNECTOR_CHAT_RESOURCES_URL,
+  LEADCONNECTOR_CHAT_WIDGET_ID,
+} from "@/lib/site-data";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -88,6 +94,24 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppinsUi.variable} ${playfairDisplay.variable}`}>
       <body>
+        <Script id="gtm-bootstrap" strategy="beforeInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','${GTM_CONTAINER_ID}');
+          `}
+        </Script>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -122,11 +146,48 @@ export default function RootLayout({
             `,
           }}
         />
+        <Script id="agw-data-layer-hooks" strategy="afterInteractive">
+          {`
+            (() => {
+              window.dataLayer = window.dataLayer || [];
+              window.agwPushEvent = (eventName, detail = {}) => {
+                window.dataLayer.push({
+                  event: eventName,
+                  page_path: window.location.pathname,
+                  page_title: document.title,
+                  ...detail,
+                });
+              };
+
+              document.addEventListener(
+                "click",
+                (event) => {
+                  const target = event.target instanceof Element
+                    ? event.target.closest("[data-cta-event]")
+                    : null;
+
+                  if (!target) return;
+
+                  window.agwPushEvent(
+                    target.getAttribute("data-cta-event") || "cta_click",
+                    {
+                      cta_location: target.getAttribute("data-cta-location") || "",
+                      cta_label: target.getAttribute("data-cta-label") || "",
+                      cta_context: target.getAttribute("data-cta-context") || "",
+                      cta_destination: target.getAttribute("data-cta-destination") || "",
+                    },
+                  );
+                },
+                { capture: true },
+              );
+            })();
+          `}
+        </Script>
         {children}
         <Script
-          src="https://widgets.leadconnectorhq.com/loader.js"
-          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
-          data-widget-id="699ca6733303b66fe5e9d99c"
+          src={LEADCONNECTOR_CHAT_LOADER_URL}
+          data-resources-url={LEADCONNECTOR_CHAT_RESOURCES_URL}
+          data-widget-id={LEADCONNECTOR_CHAT_WIDGET_ID}
           strategy="lazyOnload"
         />
       </body>
