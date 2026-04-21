@@ -14,8 +14,8 @@
   --color-line: rgba(89, 89, 83, 0.12);
   --shadow-soft: 0 22px 60px rgba(63, 63, 59, 0.08);
   --shadow-strong: 0 28px 90px rgba(0, 99, 176, 0.18);
-  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
-    Baskerville, Georgia, serif;
+  --font-display: var(--font-playfair), "Iowan Old Style", "Palatino Linotype",
+    "Book Antiqua", Baskerville, Georgia, serif;
   --font-sans-stack: "Avenir Next", "Helvetica Neue", "Segoe UI", sans-serif;
 }
 

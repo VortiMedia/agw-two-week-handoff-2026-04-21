@@ -134,9 +134,9 @@ export function SiteShell({
 
           <div className="grid gap-10 sm:grid-cols-2">
             <div>
-              <h2 className="ui-heading text-[0.74rem] uppercase tracking-[0.2em] text-[var(--color-primary)]">
+              <p className="ui-heading text-[0.74rem] uppercase tracking-[0.2em] text-[var(--color-primary)]">
                 Explore
-              </h2>
+              </p>
               <div className="mt-4 grid gap-1">
                 {FOOTER_LINKS.map((item) => (
                   <Link key={item.href} className="footer-link" href={item.href}>
@@ -147,9 +147,9 @@ export function SiteShell({
             </div>
 
             <div>
-              <h2 className="ui-heading text-[0.74rem] uppercase tracking-[0.2em] text-[var(--color-primary)]">
+              <p className="ui-heading text-[0.74rem] uppercase tracking-[0.2em] text-[var(--color-primary)]">
                 Contact
-              </h2>
+              </p>
               <div className="mt-4 grid gap-1 text-sm leading-7 text-[var(--color-text-soft)]">
                 <Link className="footer-link" href={CONTACT.mainPhoneHref}>
                   Main office: {CONTACT.mainPhoneLabel}
@@ -166,9 +166,9 @@ export function SiteShell({
           </div>
 
           <div>
-            <h2 className="ui-heading text-[0.74rem] uppercase tracking-[0.2em] text-[var(--color-primary)]">
+            <p className="ui-heading text-[0.74rem] uppercase tracking-[0.2em] text-[var(--color-primary)]">
               Service Area
-            </h2>
+            </p>
             <ul className="mt-4 grid gap-2 text-sm leading-7 text-[var(--color-text-soft)]">
               {SERVICE_AREAS.map((area) => (
                 <li key={area}>{area}</li>

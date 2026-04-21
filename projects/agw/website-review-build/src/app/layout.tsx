@@ -1,7 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Playfair_Display } from "next/font/google";
+import Script from "next/script";
 import { HOMEPAGE_JSON_LD } from "@/lib/site-data";
 import "./globals.css";
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
+  display: "swap",
+});
 
 const poppinsUi = localFont({
   src: [
@@ -45,8 +55,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/agw-selected/hero-room.jpg",
-        width: 5616,
-        height: 3744,
+        width: 1200,
+        height: 630,
         alt: "Finished A.G. Williams interior with custom built-ins and trim",
       },
     ],
@@ -76,7 +86,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={poppinsUi.variable}>
+    <html lang="en" className={`${poppinsUi.variable} ${playfairDisplay.variable}`}>
       <body>
         <script
           type="application/ld+json"
@@ -113,6 +123,12 @@ export default function RootLayout({
           }}
         />
         {children}
+        <Script
+          src="https://widgets.leadconnectorhq.com/loader.js"
+          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="699ca6733303b66fe5e9d99c"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

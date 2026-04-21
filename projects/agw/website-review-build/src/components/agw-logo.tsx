@@ -22,8 +22,7 @@ export function AgwLogo({
           fill
           priority={priority}
           sizes="(max-width: 640px) 184px, 256px"
-          className="object-cover"
-          style={{ objectPosition: "center 47%" }}
+          className="object-contain object-left"
         />
       </div>
       <span className="hidden text-[0.65rem] font-medium uppercase tracking-[0.22em] text-[var(--color-text-soft)] lg:block">

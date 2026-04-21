@@ -470,7 +470,7 @@ export default function Home() {
                 {SERVICE_AREAS.map((area) => (
                   <p
                     key={area}
-                    className="border-l-2 border-[var(--color-primary)] bg-[rgba(249,248,242,0.8)] px-4 py-3 text-sm leading-6 text-[var(--color-text)]"
+                    className="rounded-lg border-l-2 border-[var(--color-primary)] bg-[rgba(249,248,242,0.8)] px-4 py-3 text-sm leading-6 text-[var(--color-text)]"
                   >
                     {area}
                   </p>
