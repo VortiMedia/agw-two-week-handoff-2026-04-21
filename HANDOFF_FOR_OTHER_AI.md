@@ -35,6 +35,7 @@ Use a branch for each implementation pass and merge back after verification.
 
 ## Important Files
 
+- `CLAUDE_CODE_CONTEXT_PRIME.md`
 - `content/agw/agw-production-readiness-audit-2026-04-21.md`
 - `content/agw/agw-master-handoff-notes-2026-04-21.md`
 - `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md`
