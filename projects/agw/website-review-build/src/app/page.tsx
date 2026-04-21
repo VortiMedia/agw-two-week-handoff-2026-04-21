@@ -7,6 +7,7 @@ import { AGW_CURATED_PHOTOS, AGW_LIVE_ASSETS } from "@/lib/brand-assets";
 import {
   CONTACT,
   HOME_REVIEWS,
+  HOMEPAGE_JSON_LD,
   LOCAL_FAQS,
   QUOTE_URL,
   SERVICE_AREAS,
@@ -77,6 +78,12 @@ export default function Home() {
   return (
     <SiteShell currentPath="/">
       <main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(HOMEPAGE_JSON_LD),
+          }}
+        />
         <section className="hero-section border-b border-[var(--color-line)]">
           <div className="container-shell py-6 lg:py-12">
             <div className="overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[rgba(255,255,255,0.82)] shadow-[var(--shadow-soft)]">

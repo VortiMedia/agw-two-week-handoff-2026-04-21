@@ -2,16 +2,20 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { SiteShell } from "@/components/site-shell";
 import { TrackedLink } from "@/components/tracked-link";
+import { buildPageMetadata } from "@/lib/seo";
 import { CONTACT, GHL_BOOKING_URL } from "@/lib/site-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Get a Quote | A.G. Williams",
   description:
     "Start your AGW quote inside the site, then continue into the live booking flow for a residential walkthrough or commercial consultation.",
-  alternates: {
-    canonical: "/get-a-quote",
-  },
-};
+  path: "/get-a-quote",
+  keywords: [
+    "painting estimate",
+    "commercial painting consultation",
+    "residential painting walkthrough",
+  ],
+});
 
 const nextSteps = [
   {

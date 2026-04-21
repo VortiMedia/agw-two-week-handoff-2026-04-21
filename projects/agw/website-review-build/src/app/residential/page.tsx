@@ -7,6 +7,7 @@ import { ServicePageHero } from "@/components/service-page-hero";
 import { SiteShell } from "@/components/site-shell";
 import { TrackedLink } from "@/components/tracked-link";
 import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
+import { buildPageMetadata } from "@/lib/seo";
 import {
   CONTACT,
   QUOTE_URL,
@@ -16,14 +17,23 @@ import {
   SERVICE_AREAS,
 } from "@/lib/site-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Residential Painting and Fine Finish Work | A.G. Williams",
   description:
     "Residential painting, fine finish work, and walkthrough-led planning for homeowners across Westchester, Fairfield, Rockland, and Putnam.",
-  alternates: {
-    canonical: "/residential",
+  path: "/residential",
+  keywords: [
+    "residential painting contractor westchester county",
+    "interior painting fairfield county",
+    "exterior painting westchester county",
+    "cabinet refinishing",
+    "fine finish painters",
+  ],
+  image: {
+    url: AGW_CURATED_PHOTOS.whiteKitchen,
+    alt: "White kitchen cabinetry and millwork finished by A.G. Williams",
   },
-};
+});
 
 const [interiorExteriorService, cabinetService, wallpaperService] = RESIDENTIAL_SERVICES;
 
