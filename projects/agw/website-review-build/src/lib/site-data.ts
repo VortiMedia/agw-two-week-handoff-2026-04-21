@@ -18,6 +18,7 @@ export const GHL_BASE_URL = "https://link.agwilliamspainting.com";
 export const GHL_FORM_ID = "QJKUxOOQI1YWHYNSsN5F";
 export const GHL_BOOKING_ID = "INZqRCM9fdZwZ6avSiny";
 export const GHL_BOOKING_URL = `${GHL_BASE_URL}/widget/booking/${GHL_BOOKING_ID}`;
+export const GHL_BOOKING_SCRIPT_URL = `${GHL_BASE_URL}/js/form_embed.js`;
 export const LEADCONNECTOR_CHAT_WIDGET_ID = "699ca6733303b66fe5e9d99c";
 export const LEADCONNECTOR_CHAT_LOADER_URL =
   "https://widgets.leadconnectorhq.com/loader.js";
@@ -91,7 +92,7 @@ export const TOP_STRIP_CONTENT: Record<
   "/get-a-quote": {
     eyebrow: "Internal quote route",
     message:
-      "Start inside the AGW site, then continue into the live booking flow without changing the current office or customer-care handoff.",
+      "Move through the custom AGW intake first, then finish inside the live GHL calendar without changing the office or customer-care handoff.",
   },
   "/contact": {
     eyebrow: "Pelham office",
@@ -179,15 +180,15 @@ export const SHELL_ACTIONS: Record<
     footerCtaHref: QUOTE_URL,
   },
   "/get-a-quote": {
-    topLinkLabel: "Continue to Booking",
-    topLinkHref: GHL_BOOKING_URL,
-    headerPrimaryLabel: "Continue to Booking",
-    headerPrimaryHref: GHL_BOOKING_URL,
+    topLinkLabel: "Continue Your Quote",
+    topLinkHref: "#quote-booking-flow",
+    headerPrimaryLabel: "Continue Your Quote",
+    headerPrimaryHref: "#quote-booking-flow",
     mobilePrimaryLabel: "Continue",
     headerSecondaryLabel: "Call Pelham Office",
     headerSecondaryHref: CONTACT.localPhoneHref,
-    footerCtaLabel: "Continue to Booking",
-    footerCtaHref: GHL_BOOKING_URL,
+    footerCtaLabel: "Continue Your Quote",
+    footerCtaHref: "#quote-booking-flow",
   },
   "/contact": {
     topLinkLabel: "Start a Quote",
