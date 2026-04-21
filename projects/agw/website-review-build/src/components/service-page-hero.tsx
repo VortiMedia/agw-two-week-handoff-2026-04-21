@@ -104,7 +104,6 @@ export function ServicePageHero({
                   alt={media.alt}
                   fill
                   priority
-                  quality={100}
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   className="object-cover"
                 />
