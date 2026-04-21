@@ -34,6 +34,9 @@ Scope: everything AGW-related that was active or imported into this repo for the
 
 - `content/agw/`
   - `agw-site-audit-2026-04-17.md`
+  - `agw-production-readiness-audit-2026-04-21.md`
+  - `agw-master-handoff-notes-2026-04-21.md`
+  - `ghl-booking-and-notification-strategy-2026-04-21.md`
   - `round-1-feedback-revision-log.md`
   - `INDEX.md`
 
@@ -51,6 +54,9 @@ These are current file counts after consolidation:
 
 - Review docs
   - `content/agw/agw-site-audit-2026-04-17.md`
+  - `content/agw/agw-production-readiness-audit-2026-04-21.md`
+  - `content/agw/agw-master-handoff-notes-2026-04-21.md`
+  - `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md`
   - `content/agw/round-1-feedback-revision-log.md`
 
 - Review screenshots moved from repo root
@@ -78,6 +84,9 @@ The live-site snapshot was copied from:
 
 I did not find additional AGW files touched in the last two weeks under `/Users/claw/.openclaw/workspace-mika/projects/agw-rebuild`, so nothing from that tree was imported.
 
-## Remaining Constraint
+## Current Handoff State
 
-This repo still does not have a Git remote configured. The files are now organized inside this git repo, but nothing can be pushed to GitHub until a remote is added.
+- GitHub repo is live and public
+- `projects/agw/website-review-build/` is the canonical app for future implementation passes
+- `projects/agw/live-site-reference/` should be treated as reference/archive unless explicitly needed
+- Root handoff instructions now live in `HANDOFF_FOR_OTHER_AI.md`

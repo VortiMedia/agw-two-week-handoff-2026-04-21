@@ -1,0 +1,403 @@
+{
+  "verticals": {
+    "real-estate-investor": {
+      "name": "Cash Home Buyer / Real Estate Investor",
+      "pattern": "conversion-optimized",
+      "style": "trust-authority",
+      "mood": "Professional, trustworthy, urgent without pressure",
+      "colors": {
+        "primary": "#1B365D",
+        "accent": "#F97316",
+        "bg": "#FFFFFF",
+        "surface": "#F9FAFB",
+        "text": "#111827"
+      },
+      "fonts": { "display": "Plus Jakarta Sans", "body": "DM Sans" },
+      "sections": ["Nav", "Hero+Form", "TrustBar", "HowItWorks", "WhyUs", "Reviews", "About", "FAQ", "FinalCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "dialog", "tabs", "separator"],
+      "hero_image": "Beautiful colonial suburban home, golden hour, Westchester County NY, professional real estate photography",
+      "anti_patterns": ["dark mode", "neon colors", "brutalism", "heavy animations", "crypto aesthetics"],
+      "seo_intent": ["sell house fast", "cash home buyer", "we buy houses", "sell as-is"],
+      "lead_capture": "multi-step-form",
+      "trust_signals": ["BBB A+ badge", "Google reviews", "years in business", "homes bought count"]
+    },
+    "dental": {
+      "name": "Dental Practice",
+      "pattern": "trust-authority",
+      "style": "soft-ui-evolution",
+      "mood": "Clean, clinical trust, approachable warmth",
+      "colors": {
+        "primary": "#0A2540",
+        "accent": "#00B4D8",
+        "bg": "#FFFFFF",
+        "surface": "#F0F9FF",
+        "text": "#1E293B"
+      },
+      "fonts": { "display": "Instrument Serif", "body": "DM Sans" },
+      "sections": ["Nav", "Hero+CTA", "Services", "WhyUs", "DoctorBio", "Reviews", "BeforeAfter", "FAQ", "BookingCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "calendar", "avatar", "tabs", "separator", "button"],
+      "hero_image": "Bright modern dental office interior, smiling patient in chair, friendly dentist, clean clinical warmth",
+      "anti_patterns": ["dark mode", "harsh colors", "neon", "heavy gradients", "aggressive CTAs"],
+      "seo_intent": ["dentist near me", "dental implants", "teeth whitening", "family dentist"],
+      "lead_capture": "booking-form",
+      "trust_signals": ["before/after photos", "Google reviews", "certifications", "years experience"]
+    },
+    "med-spa": {
+      "name": "Med Spa / Aesthetic Clinic",
+      "pattern": "hero-centric",
+      "style": "luxury-minimal",
+      "mood": "Premium, aspirational, transformation",
+      "colors": {
+        "primary": "#1A1A2E",
+        "accent": "#C9A96E",
+        "bg": "#FAFAF8",
+        "surface": "#F5F0EB",
+        "text": "#1A1A2E"
+      },
+      "fonts": { "display": "Cormorant Garamond", "body": "Montserrat" },
+      "sections": ["Nav", "Hero", "Services", "Results/Gallery", "Process", "Reviews", "Team", "FAQ", "BookingCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "dialog", "avatar", "tabs", "separator", "aspect-ratio"],
+      "hero_image": "Luxurious med spa treatment room, soft lighting, elegant minimal aesthetic, premium skincare products",
+      "anti_patterns": ["clinical/hospital feel", "cheap-looking", "stock photo obviousness", "busy layouts"],
+      "seo_intent": ["botox near me", "med spa", "lip filler", "laser treatment", "skin rejuvenation"],
+      "lead_capture": "booking-form",
+      "trust_signals": ["before/after gallery", "licensed providers", "product brands used", "reviews"]
+    },
+    "marketing-agency": {
+      "name": "Marketing / Advertising Agency",
+      "pattern": "social-proof-focused",
+      "style": "neubrutalism",
+      "mood": "Bold, confident, results-driven",
+      "colors": {
+        "primary": "#0D0D0D",
+        "accent": "#FF3B00",
+        "bg": "#F5F5F0",
+        "surface": "#FFFFFF",
+        "text": "#0D0D0D"
+      },
+      "fonts": { "display": "Syne", "body": "Inter" },
+      "sections": ["Nav", "Hero", "Clients/LogoBar", "Services", "CaseStudies", "Process", "Team", "Reviews", "Pricing", "CTA", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "accordion", "avatar", "separator", "table"],
+      "hero_image": "Modern agency office, creative team collaborating, screens with campaigns, dynamic workspace",
+      "anti_patterns": ["corporate stock photos", "clip art", "purple AI gradients", "safe/boring layouts"],
+      "seo_intent": ["marketing agency", "google ads agency", "digital marketing", "paid ads"],
+      "lead_capture": "contact-form",
+      "trust_signals": ["client logos", "case study results", "ROAS numbers", "team credentials"]
+    },
+    "saas": {
+      "name": "SaaS / Software Product",
+      "pattern": "feature-rich-showcase",
+      "style": "glassmorphism",
+      "mood": "Modern, efficient, trustworthy tech",
+      "colors": {
+        "primary": "#6366F1",
+        "accent": "#10B981",
+        "bg": "#0F172A",
+        "surface": "#1E293B",
+        "text": "#F8FAFC"
+      },
+      "fonts": { "display": "Cal Sans", "body": "Inter" },
+      "sections": ["Nav", "Hero+Demo", "LogoBar", "Features", "HowItWorks", "Pricing", "Testimonials", "FAQ", "CTA", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "accordion", "table", "chart", "command", "sheet", "dialog", "toggle"],
+      "hero_image": "Clean SaaS dashboard UI on MacBook, dark mode, modern interface, gradient glow effects",
+      "anti_patterns": ["purple AI gradient cliche", "same card grid repeated 6x", "Inter everywhere", "fade-in everything"],
+      "seo_intent": ["project management tool", "automation software", "saas platform"],
+      "lead_capture": "signup-form",
+      "trust_signals": ["user count", "G2/Product Hunt badges", "customer logos", "uptime stats"]
+    },
+    "law-firm": {
+      "name": "Law Firm / Attorney",
+      "pattern": "trust-authority",
+      "style": "swiss-modernism",
+      "mood": "Authoritative, trustworthy, accessible",
+      "colors": {
+        "primary": "#1C1C1E",
+        "accent": "#B8964E",
+        "bg": "#FFFFFF",
+        "surface": "#F7F7F5",
+        "text": "#1C1C1E"
+      },
+      "fonts": { "display": "Playfair Display", "body": "Source Sans Pro" },
+      "sections": ["Nav", "Hero", "PracticeAreas", "AttorneyBios", "Results/Wins", "Process", "Reviews", "FAQ", "ContactCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "avatar", "separator", "tabs"],
+      "hero_image": "Professional law office, mahogany desk, scales of justice, confident attorney, prestigious atmosphere",
+      "anti_patterns": ["aggressive red CTAs", "ambulance chaser feel", "stock gavel photos", "comic sans energy"],
+      "seo_intent": ["personal injury lawyer", "criminal defense attorney", "law firm near me"],
+      "lead_capture": "contact-form",
+      "trust_signals": ["case results/settlements", "bar certifications", "years experience", "reviews"]
+    },
+    "restaurant": {
+      "name": "Restaurant / Food & Beverage",
+      "pattern": "hero-centric",
+      "style": "editorial-magazine",
+      "mood": "Appetizing, atmospheric, inviting",
+      "colors": {
+        "primary": "#1A0A00",
+        "accent": "#D4622A",
+        "bg": "#FEFDF8",
+        "surface": "#F5EED8",
+        "text": "#1A0A00"
+      },
+      "fonts": { "display": "Canela", "body": "Apertura" },
+      "sections": ["Nav", "Hero/Atmosphere", "Menu/Featured", "Story", "Gallery", "Reviews", "Reservations", "Hours+Location", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "separator", "dialog", "calendar"],
+      "hero_image": "Beautiful restaurant interior, warm ambient lighting, elegantly plated dish in foreground, atmospheric and inviting",
+      "anti_patterns": ["clip art food icons", "plastic-looking food photos", "busy menus on landing", "red/yellow fast food palette"],
+      "seo_intent": ["restaurant near me", "best [cuisine] restaurant", "fine dining", "reservations"],
+      "lead_capture": "reservation-form",
+      "trust_signals": ["press mentions", "chef credentials", "awards", "Google reviews"]
+    },
+    "fitness": {
+      "name": "Gym / Fitness Studio",
+      "pattern": "conversion-optimized",
+      "style": "vibrant-block",
+      "mood": "Energetic, motivating, community",
+      "colors": {
+        "primary": "#0D0D0D",
+        "accent": "#FACC15",
+        "bg": "#FFFFFF",
+        "surface": "#F5F5F5",
+        "text": "#0D0D0D"
+      },
+      "fonts": { "display": "Barlow Condensed", "body": "DM Sans" },
+      "sections": ["Nav", "Hero", "Programs", "Trainers", "Transformation", "Membership/Pricing", "Schedule", "Reviews", "TrialCTA", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "accordion", "avatar", "calendar", "separator"],
+      "hero_image": "High energy gym interior, dramatic lighting, athletes training, modern equipment, motivational atmosphere",
+      "anti_patterns": ["stock photo gym bros", "cheesy motivational quotes over images", "neon green on black", "overcrowded layouts"],
+      "seo_intent": ["gym near me", "personal trainer", "fitness classes", "crossfit"],
+      "lead_capture": "trial-signup-form",
+      "trust_signals": ["transformation photos", "trainer certifications", "member count", "reviews"]
+    },
+    "plastic-surgery": {
+      "name": "Plastic Surgery / Cosmetic Surgery",
+      "pattern": "trust-authority",
+      "style": "luxury-minimal",
+      "mood": "Premium, clinical excellence, transformation",
+      "colors": {
+        "primary": "#1A1A2E",
+        "accent": "#9B8EA0",
+        "bg": "#FAFAFA",
+        "surface": "#F5F0F0",
+        "text": "#1A1A2E"
+      },
+      "fonts": { "display": "Cormorant Garamond", "body": "Raleway" },
+      "sections": ["Nav", "Hero", "Procedures", "SurgeonBio+Credentials", "Results/Gallery", "Process", "Testimonials", "FAQ", "ConsultCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "avatar", "tabs", "dialog", "aspect-ratio"],
+      "hero_image": "Elegant medical aesthetic clinic, clean luxury interior, soft natural light, premium feel without clinical harshness",
+      "anti_patterns": ["before/after above fold", "graphic surgery photos on landing", "salesy CTAs", "cheap stock doctors"],
+      "seo_intent": ["rhinoplasty surgeon", "breast augmentation", "cosmetic surgeon near me", "facelift"],
+      "lead_capture": "consultation-form",
+      "trust_signals": ["board certifications", "before/after gallery (gated)", "press features", "hospital affiliations"]
+    },
+    "chiropractic": {
+      "name": "Chiropractic / Physical Therapy",
+      "pattern": "trust-authority",
+      "style": "soft-ui-evolution",
+      "mood": "Healing, relief, health-focused warmth",
+      "colors": {
+        "primary": "#1B4332",
+        "accent": "#40916C",
+        "bg": "#FFFFFF",
+        "surface": "#F0FDF4",
+        "text": "#1A2E1A"
+      },
+      "fonts": { "display": "Lora", "body": "DM Sans" },
+      "sections": ["Nav", "Hero", "Conditions/Services", "Process", "DoctorBio", "Reviews", "FAQ", "BookingCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "calendar", "avatar", "separator"],
+      "hero_image": "Bright clean chiropractic office, smiling chiropractor with patient, professional and welcoming, health-focused",
+      "anti_patterns": ["scary spine diagrams above fold", "dark clinical feel", "aggressive pain imagery"],
+      "seo_intent": ["chiropractor near me", "back pain relief", "spinal adjustment", "sports injury"],
+      "lead_capture": "booking-form",
+      "trust_signals": ["certifications", "years practice", "conditions treated count", "Google reviews"]
+    },
+    "urgent-care": {
+      "name": "Urgent Care / Walk-In Clinic",
+      "pattern": "conversion-optimized",
+      "style": "accessible-ethical",
+      "mood": "Fast, clear, reassuring",
+      "colors": {
+        "primary": "#003087",
+        "accent": "#E8273C",
+        "bg": "#FFFFFF",
+        "surface": "#F8FAFC",
+        "text": "#1E293B"
+      },
+      "fonts": { "display": "Plus Jakarta Sans", "body": "Inter" },
+      "sections": ["Nav", "Hero+WaitTime", "Services", "Insurance", "Location+Hours", "Reviews", "FAQ", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "separator", "alert"],
+      "hero_image": "Clean modern urgent care waiting room, friendly staff at desk, welcoming and professional, not scary hospital",
+      "anti_patterns": ["graphic medical imagery", "scary colors", "cluttered info dumps", "confusing navigation"],
+      "seo_intent": ["urgent care near me", "walk-in clinic", "same day appointment"],
+      "lead_capture": "check-in-form",
+      "trust_signals": ["insurance accepted list", "wait time display", "certifications", "Google reviews"]
+    },
+    "ecommerce": {
+      "name": "E-Commerce / DTC Brand",
+      "pattern": "hero-centric",
+      "style": "minimalism",
+      "mood": "Clean, product-focused, desire-creating",
+      "colors": {
+        "primary": "#000000",
+        "accent": "#FF6B35",
+        "bg": "#FFFFFF",
+        "surface": "#F9F9F9",
+        "text": "#000000"
+      },
+      "fonts": { "display": "Neue Haas Grotesk", "body": "DM Sans" },
+      "sections": ["Nav", "Hero/Product", "Features", "Social Proof", "ProductGrid", "Reviews", "FAQ", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "dialog", "separator", "aspect-ratio", "toggle-group"],
+      "hero_image": "Lifestyle product photography, clean minimal background, aspirational use case, beautiful natural light",
+      "anti_patterns": ["busy product grids", "rainbow sale banners", "pixel art borders", "Comic Sans energy"],
+      "seo_intent": ["buy [product]", "best [product]", "[product] reviews"],
+      "lead_capture": "email-signup",
+      "trust_signals": ["reviews/star ratings", "press logos", "UGC photos", "trust badges"]
+    },
+    "financial-advisor": {
+      "name": "Financial Advisor / Wealth Management",
+      "pattern": "trust-authority",
+      "style": "swiss-modernism",
+      "mood": "Trustworthy, sophisticated, calm confidence",
+      "colors": {
+        "primary": "#0A2240",
+        "accent": "#1D6FA4",
+        "bg": "#FFFFFF",
+        "surface": "#F7F9FC",
+        "text": "#0A2240"
+      },
+      "fonts": { "display": "Playfair Display", "body": "Source Sans Pro" },
+      "sections": ["Nav", "Hero", "Services", "Process", "Team", "Results/Stats", "Reviews", "FAQ", "ContactCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "avatar", "separator", "chart"],
+      "hero_image": "Professional financial advisor meeting with client, modern office, charts visible, confident and trustworthy atmosphere",
+      "anti_patterns": ["money-gun imagery", "get rich quick energy", "overcomplicated charts on landing", "dark mode"],
+      "seo_intent": ["financial advisor near me", "wealth management", "retirement planning", "investment advisor"],
+      "lead_capture": "consultation-form",
+      "trust_signals": ["AUM stats", "certifications (CFP, CFA)", "years experience", "client reviews"]
+    },
+    "home-services": {
+      "name": "Home Services (HVAC, Plumbing, Roofing, etc.)",
+      "pattern": "conversion-optimized",
+      "style": "flat-design",
+      "mood": "Reliable, fast, local, trustworthy",
+      "colors": {
+        "primary": "#1A3C5E",
+        "accent": "#F59E0B",
+        "bg": "#FFFFFF",
+        "surface": "#F8FAFC",
+        "text": "#1E293B"
+      },
+      "fonts": { "display": "Plus Jakarta Sans", "body": "Inter" },
+      "sections": ["Nav", "Hero+Phone", "Services", "WhyUs", "Process", "Reviews", "ServiceArea", "FAQ", "EmergencyCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "separator", "alert"],
+      "hero_image": "Professional home service technician, clean uniform, smiling in front of suburban home, trustworthy and local",
+      "anti_patterns": ["cheesy cartoon tools", "stock clip art", "overwhelming text walls", "generic blue/white corporate"],
+      "seo_intent": ["plumber near me", "hvac repair", "roofing contractor", "emergency [service]"],
+      "lead_capture": "contact-form",
+      "trust_signals": ["license numbers", "insurance badges", "Google reviews", "years in business", "service area map"]
+    },
+    "photography": {
+      "name": "Photography / Videography",
+      "pattern": "hero-centric",
+      "style": "exaggerated-minimalism",
+      "mood": "Visual storytelling, artistry, emotion",
+      "colors": {
+        "primary": "#0D0D0D",
+        "accent": "#E8E8E8",
+        "bg": "#FFFFFF",
+        "surface": "#F5F5F5",
+        "text": "#0D0D0D"
+      },
+      "fonts": { "display": "Canela", "body": "Apertura" },
+      "sections": ["Nav", "Hero/Showreel", "Portfolio/Gallery", "Services", "Process", "Testimonials", "Pricing", "BookingCTA", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "dialog", "aspect-ratio", "separator"],
+      "hero_image": "Professional camera equipment on clean desk, dramatic window lighting, photographer's workspace, artistic",
+      "anti_patterns": ["busy cluttered galleries", "too much text", "Comic Sans", "cheesy watermarks", "rainbow portfolio"],
+      "seo_intent": ["wedding photographer near me", "portrait photographer", "commercial photographer"],
+      "lead_capture": "inquiry-form",
+      "trust_signals": ["portfolio gallery", "published work/press", "client testimonials", "equipment quality"]
+    },
+    "consulting": {
+      "name": "Consulting / B2B Service",
+      "pattern": "trust-authority",
+      "style": "bento-grid",
+      "mood": "Strategic, results-focused, premium",
+      "colors": {
+        "primary": "#0D0D0D",
+        "accent": "#2563EB",
+        "bg": "#FFFFFF",
+        "surface": "#F8FAFC",
+        "text": "#0D0D0D"
+      },
+      "fonts": { "display": "Syne", "body": "Inter" },
+      "sections": ["Nav", "Hero", "ClientLogos", "Services/Outcomes", "Process", "CaseStudies", "Team", "Testimonials", "FAQ", "CTA", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "accordion", "avatar", "separator", "table"],
+      "hero_image": "Executive strategy meeting, modern boardroom, diverse leadership team, data on screens, professional and premium",
+      "anti_patterns": ["buzzword soup", "stock handshake photos", "corporate purple/blue gradient", "endless bullet points"],
+      "seo_intent": ["business consultant", "strategy consulting", "growth consulting"],
+      "lead_capture": "consultation-form",
+      "trust_signals": ["client logos", "case study results", "team credentials", "press features"]
+    },
+    "wedding": {
+      "name": "Wedding Planner / Venue",
+      "pattern": "storytelling-driven",
+      "style": "organic-biophilic",
+      "mood": "Romantic, elegant, emotional, timeless",
+      "colors": {
+        "primary": "#2C1810",
+        "accent": "#C9A96E",
+        "bg": "#FDFAF7",
+        "surface": "#F5ECD8",
+        "text": "#2C1810"
+      },
+      "fonts": { "display": "Cormorant Garamond", "body": "Raleway" },
+      "sections": ["Nav", "Hero/Gallery", "Services", "Gallery/Portfolio", "Process", "Testimonials", "Venues", "FAQ", "InquiryCTA", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "dialog", "aspect-ratio", "separator", "avatar"],
+      "hero_image": "Stunning wedding reception setup, floral arrangements, warm golden lighting, romantic atmosphere, timeless elegance",
+      "anti_patterns": ["cheesy clip art hearts", "over-the-top pink", "Comic Sans", "stock wedding photos", "busy layered design"],
+      "seo_intent": ["wedding planner near me", "wedding venue", "wedding photographer"],
+      "lead_capture": "inquiry-form",
+      "trust_signals": ["portfolio/gallery", "featured publications", "vendor partnerships", "testimonials"]
+    },
+    "nonprofit": {
+      "name": "Nonprofit / Charity",
+      "pattern": "storytelling-driven",
+      "style": "inclusive-design",
+      "mood": "Emotional, mission-driven, hopeful",
+      "colors": {
+        "primary": "#1A3A4A",
+        "accent": "#F59E0B",
+        "bg": "#FFFFFF",
+        "surface": "#F0F9FF",
+        "text": "#1A3A4A"
+      },
+      "fonts": { "display": "Merriweather", "body": "Source Sans Pro" },
+      "sections": ["Nav", "Hero/Mission", "Impact/Stats", "Programs", "Stories", "Team", "Partners", "DonationCTA", "Footer"],
+      "shadcn": ["card", "badge", "accordion", "avatar", "separator", "progress"],
+      "hero_image": "Impactful community moment, genuine human connection, hopeful and emotional, real people not stock photos",
+      "anti_patterns": ["poverty porn imagery", "guilt-trip heavy CTAs", "clipart", "outdated design", "small illegible text"],
+      "seo_intent": ["donate to [cause]", "[cause] nonprofit", "volunteer opportunities"],
+      "lead_capture": "donation-form",
+      "trust_signals": ["impact stats", "Charity Navigator rating", "partner logos", "testimonials from helped"]
+    },
+    "portfolio": {
+      "name": "Personal Portfolio / Developer",
+      "pattern": "minimal-direct",
+      "style": "neubrutalism",
+      "mood": "Distinctive, confident, skill-showcasing",
+      "colors": {
+        "primary": "#0D0D0D",
+        "accent": "#FF3B00",
+        "bg": "#F5F5F0",
+        "surface": "#FFFFFF",
+        "text": "#0D0D0D"
+      },
+      "fonts": { "display": "Syne", "body": "JetBrains Mono" },
+      "sections": ["Nav", "Hero/Intro", "Work/Projects", "Skills", "About", "Writing/Blog", "Contact", "Footer"],
+      "shadcn": ["card", "badge", "tabs", "separator", "toggle"],
+      "hero_image": "Developer workspace, mechanical keyboard, multiple monitors with code, clean desk setup, technical and personal",
+      "anti_patterns": ["generic hero stock photos", "purple AI gradients", "Inter everywhere", "cookie-cutter layouts", "identical card grids"],
+      "seo_intent": ["hire [developer name]", "web developer portfolio", "UX designer portfolio"],
+      "lead_capture": "contact-form",
+      "trust_signals": ["GitHub activity", "live project links", "client testimonials", "tech stack badges"]
+    }
+  }
+}

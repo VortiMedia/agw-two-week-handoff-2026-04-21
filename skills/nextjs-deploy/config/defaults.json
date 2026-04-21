@@ -1,0 +1,24 @@
+{
+  "env_file": ".env.local",
+  "asset_min_kb": 200,
+  "hero_patterns": ["hero", "step", "about", "feature", "banner", "cover"],
+  "smoke_urls": [
+    { "path": "/", "expect": 200 },
+    { "path": "/sitemap.xml", "expect": 200 },
+    { "path": "/robots.txt", "expect": 200 }
+  ],
+  "nextjs_breaking_changes": {
+    "16": [
+      "middleware.ts is deprecated — rename to proxy.ts and export function named `proxy`",
+      "Turbopack is default build tool — some webpack plugins may break"
+    ],
+    "15": [
+      "Page params are now async — `params` must be awaited in generateMetadata and page components",
+      "fetch() caching behavior changed — check revalidate settings"
+    ],
+    "14": [
+      "Metadata API changed — use export const metadata, not next/head",
+      "Server Actions stable — forms can use actions directly"
+    ]
+  }
+}

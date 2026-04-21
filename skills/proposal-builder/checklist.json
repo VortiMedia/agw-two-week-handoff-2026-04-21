@@ -1,0 +1,11 @@
+{
+  "skill": "proposal-builder",
+  "test_input": "Build a Google Ads proposal for Dr. James Wilson at Atlanta Oral Surgery.",
+  "questions": [
+    "Does the output include a vorti-ads keyword-planner command to pull real search data?",
+    "Are specific CPA benchmarks or numbers referenced (not vague ranges)?",
+    "Is a case study or client result referenced in the proposal content?",
+    "Is a guarantee or ROI commitment mentioned?",
+    "Does the proposal include a clear Next Steps section?"
+  ]
+}

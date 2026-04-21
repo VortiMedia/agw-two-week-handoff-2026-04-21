@@ -36,4 +36,5 @@ Public export of A.G. Williams work consolidated from the `2026-04-07` through `
 ## Start Here
 
 - `content/agw/INDEX.md`
-- `projects/agw/README.md` is not included here; use this top-level README plus the AGW inventory under `content/agw/`.
+- `HANDOFF_FOR_OTHER_AI.md`
+- `skills/README.md`

@@ -1,0 +1,11 @@
+{
+  "skill": "kit-gsd",
+  "test_input": "Build a landing page for dental practices in Newport Beach offering Google Ads management.",
+  "questions": [
+    "Does the output include a vertical playbook lookup step before writing any code?",
+    "Is an Impeccable pass (distill/colorize/animate/delight) explicitly mentioned as mandatory?",
+    "Is GSD execution flow (discuss->plan->execute->verify) mentioned for builds over 200 lines?",
+    "Does the output include a case-studies/ check for relevant proof points?",
+    "Is the deployment checklist referenced before marking the build complete?"
+  ]
+}

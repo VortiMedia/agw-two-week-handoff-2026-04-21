@@ -1,0 +1,11 @@
+{
+  "skill": "human-copy",
+  "test_input": "Write a cold email to Dr. Sarah Chen at Newport Beach Dental asking about their Google Ads situation.",
+  "questions": [
+    "Is the email under 120 words total?",
+    "Does the opening line call out a specific pain point (not a generic opener like 'In today's world')?",
+    "Is the email free of AI buzzwords (revolutionary, cutting-edge, synergy, leverage, transform, game-changing)?",
+    "Does the email contain zero links?",
+    "Does the email end with a specific yes/no question or a single clear CTA?"
+  ]
+}
