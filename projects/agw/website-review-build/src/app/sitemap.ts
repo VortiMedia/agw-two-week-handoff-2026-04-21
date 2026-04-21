@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = "2026-04-16T00:00:00.000Z";
+  const lastModified = "2026-04-21T00:00:00.000Z";
 
   return [
     {
@@ -27,6 +27,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "monthly",
       priority: 0.8,
+    },
+    {
+      url: "https://agwilliamspainting.com/about",
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: "https://agwilliamspainting.com/contact",
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: "https://agwilliamspainting.com/privacy-policy",
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: "https://agwilliamspainting.com/terms",
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: "https://agwilliamspainting.com/accessibility",
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.4,
     },
   ];
 }
