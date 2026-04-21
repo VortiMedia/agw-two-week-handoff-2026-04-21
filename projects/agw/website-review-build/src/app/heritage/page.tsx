@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { ServiceCtaBand } from "@/components/service-cta-band";
+import { ServicePageHero } from "@/components/service-page-hero";
 import { SiteShell } from "@/components/site-shell";
 import { AGW_CURATED_PHOTOS, AGW_LIVE_ASSETS } from "@/lib/brand-assets";
 import {
@@ -24,115 +25,50 @@ export default function HeritagePage() {
   return (
     <SiteShell currentPath="/heritage">
       <main>
-        <section className="hero-section border-b border-[var(--color-line)]">
-          <div className="container-shell py-8 lg:py-14">
-            <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-              <div className="lg:max-w-xl">
-                <span className="kicker">Since 1906</span>
-                <h1 className="page-title mt-4 max-w-[12ch]">
-                  A.G. Williams still works like a local company with a name to protect.
-                </h1>
-                <p className="lead-copy mt-5 max-w-xl">
-                  The company has served this region since 1906, and the current operation is still
-                  visible the same way a local contractor should be: Pelham office, branded
-                  vehicles, full-time crews, and work that has to hold up close to home.
-                </p>
-
-                <div className="mt-7 flex flex-wrap items-center gap-4">
-                  <Link className="button-primary" href={QUOTE_URL}>
-                    Get a Quote
-                  </Link>
-                  <Link
-                    className="text-sm font-semibold text-[var(--color-primary)] transition-opacity hover:opacity-80"
-                    href={CONTACT.localPhoneHref}
-                  >
-                    Call Pelham office: {CONTACT.localPhoneLabel}
-                  </Link>
-                </div>
-
-                <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                  <div className="border-t border-[var(--color-line)] pt-3">
-                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                      Pelham office
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-                      Local office still routing residential and commercial work.
-                    </p>
-                  </div>
-                  <div className="border-t border-[var(--color-line)] pt-3">
-                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                      Regional work
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-                      {SERVICE_AREAS.join(", ")}
-                    </p>
-                  </div>
-                  <div className="border-t border-[var(--color-line)] pt-3">
-                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                      Accountability
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-                      A local name still has to hold up on the next referral.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
-                <article className="overflow-hidden rounded-[1.4rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)] lg:row-span-2">
-                  <div className="relative aspect-[16/10]">
-                    <Image
-                      src={AGW_CURATED_PHOTOS.heritageVan}
-                      alt="A.G. Williams service vehicle in the workshop with company branding"
-                      fill
-                      priority
-                      sizes="(max-width: 1024px) 100vw, 42vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="grid gap-4 border-t border-[var(--color-line)] p-5 sm:grid-cols-[1fr_1fr] sm:p-6">
-                    <div>
-                      <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                        Local proof
-                      </p>
-                      <p className="mt-3 display-font text-[1.45rem] leading-[1.02] tracking-[-0.04em] text-[var(--color-primary)]">
-                        The company name is still on the vehicles and the work is still close to home.
-                      </p>
-                    </div>
-                    <p className="text-sm leading-6 text-[var(--color-text-soft)]">
-                      The same regional reputation still matters because present-day work, vehicles,
-                      and office operations are all visible in the counties the company serves.
-                    </p>
-                  </div>
-                </article>
-
-                <article className="overflow-hidden rounded-[1.4rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]">
-                  <div className="relative aspect-[4/3]">
-                    <Image
-                      src={AGW_CURATED_PHOTOS.exteriorProcess}
-                      alt="A.G. Williams painter working on an exterior detail"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 24vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </article>
-
-                <article className="rounded-[1.4rem] border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-soft)]">
-                  <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                    Main office
-                  </p>
-                  <p className="mt-3 text-[0.98rem] leading-7 text-[var(--color-text)]">
-                    {CONTACT.officeAddress}
-                  </p>
-                  <p className="mt-4 text-sm leading-7 text-[var(--color-text-soft)]">
-                    Pelham office: {CONTACT.localPhoneLabel}
-                  </p>
-                </article>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ServicePageHero
+          eyebrow="Since 1906"
+          title="A.G. Williams still works like a local company with a name to protect."
+          description="The company has served this region since 1906, and the current operation is still visible the same way a local contractor should be: Pelham office, branded vehicles, full-time crews, and work that has to hold up close to home."
+          primaryCta={{ label: "Get a Quote", href: QUOTE_URL }}
+          secondaryCta={{
+            label: `Call Pelham office: ${CONTACT.localPhoneLabel}`,
+            href: CONTACT.localPhoneHref,
+          }}
+          highlights={[
+            {
+              label: "Pelham office",
+              body: "Local office still routing residential and commercial work.",
+            },
+            {
+              label: "Regional work",
+              body: SERVICE_AREAS.join(", "),
+            },
+            {
+              label: "Accountability",
+              body: "A local name still has to hold up on the next referral.",
+            },
+          ]}
+          media={{
+            src: AGW_CURATED_PHOTOS.heritageVan,
+            alt: "A.G. Williams service vehicle in the workshop with company branding",
+          }}
+          mediaCallout={{
+            eyebrow: "Local proof",
+            title: "The company name is still on the vehicles and the work is still close to home.",
+            body: "The same regional reputation still matters because present-day work, vehicles, and office operations are all visible in the counties the company serves.",
+          }}
+          supportCallout={{
+            eyebrow: "Pelham office",
+            title: "The office, the vehicles, and the crews all still sit under one local name.",
+            body: "That is what makes the history useful. The trust story is still backed by a real local operation instead of a borrowed heritage line.",
+          }}
+          proofListTitle="Why the history still matters now"
+          proofList={[
+            "Since 1906 is still tied to the present-day crews and office, not just archived stationery.",
+            "Residential and commercial work still route through Pelham before moving into the field.",
+            "The regional name still has to hold up town by town, referral by referral.",
+          ]}
+        />
 
         <section className="section-space border-b border-[var(--color-line)] bg-white">
           <div className="container-shell">
@@ -208,6 +144,18 @@ export default function HeritagePage() {
             </div>
           </div>
         </section>
+
+        <ServiceCtaBand
+          eyebrow="Start with the office"
+          title="Use the local office as the starting point for residential walkthroughs, commercial consultations, and the right next step."
+          body="The value of the heritage page is not nostalgia by itself. It is the proof that the same regional operation still answers the phone, routes the work, and stands behind what gets quoted."
+          primaryCta={{ label: "Get a Quote", href: QUOTE_URL }}
+          secondaryCta={{
+            label: `Call Pelham office: ${CONTACT.localPhoneLabel}`,
+            href: CONTACT.localPhoneHref,
+          }}
+          detailItems={["Since 1906", "Pelham office", "Residential and commercial routing"]}
+        />
       </main>
     </SiteShell>
   );

@@ -8,6 +8,7 @@ import {
   SHELL_ACTIONS,
   SERVICE_AREAS,
   TOP_STRIP_CONTENT,
+  TRUST_SIGNALS,
   type SitePath,
 } from "@/lib/site-data";
 
@@ -122,6 +123,25 @@ export function SiteShell({
       <div>{children}</div>
 
       <footer className="border-t border-[var(--color-line)] bg-[rgba(255,255,255,0.92)]">
+        <div className="border-b border-[var(--color-line)] bg-[rgba(249,248,242,0.88)]">
+          <div className="container-shell flex flex-wrap items-center gap-3 py-5">
+            {TRUST_SIGNALS.map((signal) => (
+              <span key={signal} className="info-pill">
+                {signal}
+              </span>
+            ))}
+
+            <div className="ml-auto flex flex-wrap gap-3">
+              <Link className="button-secondary" href={CONTACT.mainPhoneHref}>
+                {CONTACT.mainPhoneLabel}
+              </Link>
+              <Link className="button-primary" href={shellActions.footerCtaHref}>
+                {shellActions.footerCtaLabel}
+              </Link>
+            </div>
+          </div>
+        </div>
+
         <div className="container-shell grid gap-12 py-14 lg:grid-cols-[1.05fr_0.95fr_0.72fr]">
           <div>
             <AgwLogo />
@@ -129,6 +149,10 @@ export function SiteShell({
               Commercial and residential painting company serving homes,
               buildings, and facilities across Westchester, Fairfield,
               Rockland, and Putnam.
+            </p>
+            <p className="mt-5 max-w-xl text-sm leading-7 text-[var(--color-text-soft)]">
+              Start with the office, get routed to the right lane, and keep the estimate process
+              tied to the same local team that manages the work.
             </p>
           </div>
 
