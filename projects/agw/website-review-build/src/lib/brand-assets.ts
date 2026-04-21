@@ -1,22 +1,14 @@
-import patternOne from "../../brand-kit/03-patterns/pattern-1.png";
-import patternThree from "../../brand-kit/03-patterns/pattern-3.png";
-import patternFour from "../../brand-kit/03-patterns/pattern-4.png";
-import summarySlide from "../../brand-kit/05-brand-reference/summary-slide.jpg";
-import summarySlideOne from "../../brand-kit/05-brand-reference/summary-slide-1.jpg";
-import presentationFour from "../../brand-kit/06-possible-site-assets/presentation-4.jpg";
-import presentationThree from "../../brand-kit/06-possible-site-assets/presentation-3.jpg";
-
 export const BRAND_PATTERNS = {
-  hero: patternOne,
-  accent: patternThree,
-  grid: patternFour,
+  hero: "/agw-brand/pattern-1.png",
+  accent: "/agw-brand/pattern-3.png",
+  grid: "/agw-brand/pattern-4.png",
 } as const;
 
 export const BRAND_IMAGES = {
-  home: summarySlide,
-  heritage: summarySlideOne,
-  commercial: presentationFour,
-  residential: presentationThree,
+  home: "/agw-brand/summary-slide.jpg",
+  heritage: "/agw-brand/summary-slide-1.jpg",
+  commercial: "/agw-brand/presentation-4.jpg",
+  residential: "/agw-brand/presentation-3.jpg",
 } as const;
 
 export const AGW_LIVE_ASSETS = {
