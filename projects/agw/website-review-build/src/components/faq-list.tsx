@@ -5,13 +5,9 @@ type FaqItem = {
 
 export function FaqList({ items }: { items: ReadonlyArray<FaqItem> }) {
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-3">
       {items.map((item, index) => (
-        <details
-          key={item.question}
-          className="faq-item site-card rounded-[1.75rem]"
-          open={index === 0}
-        >
+        <details key={item.question} className="faq-item" open={index === 0}>
           <summary className="faq-summary">
             <span>{item.question}</span>
             <span className="faq-plus">+</span>
