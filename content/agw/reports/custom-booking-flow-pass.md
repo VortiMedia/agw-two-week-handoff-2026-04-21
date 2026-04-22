@@ -1,85 +1,93 @@
 # Custom Booking Flow Pass
 
-## Starting SHA
+Date: 2026-04-21
 
-- `531027f972483db7c0993b91508385dd15dc516c`
+## Starting Point
 
-## Files Changed
+- Worktree: `/Users/david/agw-booking-flow`
+- Branch: `agw-booking-flow`
+- Starting SHA for this implementation pass: `141cbeb8cf21101b7358c873d0f379acf3f19028`
 
+## Files Changed In This Pass
+
+- `content/agw/reports/custom-booking-flow-reference.md`
+- `content/agw/reports/custom-booking-flow-pass.md`
 - `projects/agw/website-review-build/src/app/get-a-quote/page.tsx`
-- `projects/agw/website-review-build/src/app/api/quote-intake/route.ts`
 - `projects/agw/website-review-build/src/components/quote-intake-flow.tsx`
 - `projects/agw/website-review-build/src/lib/quote-flow.ts`
-- `projects/agw/website-review-build/src/lib/site-data.ts`
-- `content/agw/reports/custom-booking-flow-pass.md`
+- `projects/agw/website-review-build/src/app/api/quote-intake/route.ts`
 
 ## Flow Structure
 
-- Rebuilt `/get-a-quote` from a thin bridge page into a branded AGW intake experience with strong copy, reassurance panels, and a hosted multi-step form.
-- Flow steps:
-  - `contact`: name, email, phone
-  - `project`: town, project type, property type
-  - `details`: timeline, notes
-  - `booking`: final embedded GHL calendar step
-- Added visible progress state with numbered step cards and active/completed status so users can tell where they are in the quote path.
-- Kept Pelham office fallback visible inside the page and inside the form shell so the quote lane can still route safely when a project needs clarification before booking.
-- Updated `/get-a-quote` shell CTAs to continue into the custom quote flow on-page instead of bypassing straight into the live booking URL.
+- `/get-a-quote` is now a branded AGW intake and booking flow instead of a thin bridge page.
+- Step order is:
+  - `project_details`
+  - `contact_details`
+  - `project_notes`
+  - `book_consultation`
+- The final booking step keeps the GHL calendar inline inside the flow.
+- Pelham office fallback stays visible on-page and inside the intake shell.
 
-## Validation Logic
+## Validation Added
 
-- Added shared quote-flow utilities in `src/lib/quote-flow.ts` so client and server use the same option sets, normalization rules, and validation rules.
-- Client validation runs before every step transition.
-- Server validation runs again in `POST /api/quote-intake` before the calendar handoff step opens.
-- Normalization implemented:
-  - email: trim + lowercase
-  - phone: strip non-digits and normalize valid US numbers to `(###) ###-####`
-  - text inputs: trim + collapse repeated whitespace
-- Validation implemented:
-  - required name with length bounds
-  - required valid email
-  - required 10-digit phone
-  - required town with length bounds
-  - required allowed-value selection for project type, property type, and timeline
-  - optional notes capped at 1,200 characters
-- Validation errors are rendered inline and also surfaced through a top-level error banner when the server blocks the handoff.
+- Host-controlled validation runs before every step transition.
+- Full-form validation runs again before the mirror save and calendar handoff.
+- Implemented required fields:
+  - `full_name`
+  - `email`
+  - `phone`
+  - `town`
+  - `project_type`
+- Implemented normalization:
+  - trim all text fields
+  - lowercase and trim `email`
+  - normalize `phone` to a sane US display format after digit cleanup
+- Implemented controlled-value validation for:
+  - `project_type`
+  - `property_type`
+  - `timeline`
+- `property_type`, `timeline`, and `notes` stay optional in V1, but junk values are rejected.
+- Calendar handoff stays blocked until the full intake validates and the mirror save succeeds.
 
-## GTM / DataLayer Events Added
+## Event Contract Added
 
-- Events are pushed through the existing host-controlled tracker contract in `layout.tsx` using `window.agwPushEvent` with a dataLayer fallback.
-- Added or preserved these quote-flow events:
-  - `quote_route_view`
+- Added explicit quote-flow events through the existing `agw-integration` `window.agwPushEvent` baseline:
   - `quote_step_view`
   - `quote_step_complete`
   - `quote_validation_error`
+  - `quote_intake_saved`
   - `quote_handoff_to_calendar`
   - `quote_calendar_loaded`
-- Event payloads intentionally avoid raw PII.
-- Quote analytics payloads only include non-sensitive routing context such as:
-  - project type
-  - property type
-  - timeline
-  - whether notes are present
-  - whether a town value is present
+  - `quote_phone_click`
+- `quote_intake_saved` now represents only the successful Supabase mirror-save milestone.
+- No fake booked-appointment event was introduced in V1.
 
-## GHL Handoff Design
+## Attribution Fields Captured
 
-- The final step still uses the current production GHL booking URL:
+- Captured once on first client render and carried through save + tracking:
+  - `utm_source`
+  - `utm_medium`
+  - `utm_campaign`
+  - `utm_content`
+  - `utm_term`
+  - `page_url`
+  - `submission_time`
+  - `lead_source`
+
+## Mirror Save And GHL Handoff
+
+- Added `POST /api/quote-intake` to mirror the normalized intake to Supabase before booking.
+- Supabase remains a mirror/logging layer only and does not replace GHL as the appointment system of record.
+- Added `calendar_handoff_status` to the mirror record lifecycle:
+  - initial save: `pending`
+  - first iframe load: `loaded`
+- Added `PATCH /api/quote-intake` so the inline calendar load updates the existing mirror record.
+- Kept the same production GHL booking URL:
   - `https://link.agwilliamspainting.com/widget/booking/INZqRCM9fdZwZ6avSiny`
-- The current GHL embed script is still used on the final step:
+- Kept the same GHL embed script:
   - `https://link.agwilliamspainting.com/js/form_embed.js`
-- The custom intake does not attempt to style the internals of the iframe as the primary UX strategy.
-- The custom intake does not replace GHL as the booking system of record.
-- The final step also includes a direct new-tab fallback to the same live booking URL in case the embed fails on a specific browser/session.
-- This design preserves the existing appointment-booked automation because the actual appointment continues to be created through the same GHL calendar backend.
-
-## What Was Intentionally Deferred
-
-- Writing custom intake answers into GHL contact custom fields or appointment metadata
-- Intake-submitted-but-not-booked notifications
-- Abandonment follow-up automation
-- Any cloned-calendar operational rollout/testing in GHL itself
-- Removing any remaining calendar-side workflow form dependencies inside GHL
-- Styling or reverse engineering iframe internals
+- The flow does not prefill or attempt to control the GHL iframe internals.
+- The flow does not redirect or open a new window by default.
 
 ## Verification Results
 
@@ -89,15 +97,9 @@
 - `npm run lint`
   - passed
 - `npx -y node@20.11.1 ./node_modules/next/dist/bin/next build`
-  - first run failed because Tailwind optional native binding was missing
-- `npm install --no-save @tailwindcss/oxide-darwin-arm64@4.2.2`
-  - passed
-- `npx -y node@20.11.1 ./node_modules/next/dist/bin/next build`
   - passed
 
 ## Outcome
 
-- `/get-a-quote` is now a branded custom intake flow rather than a bridge CTA page.
-- Validation is controlled in host-owned client and server code.
-- Meaningful quote-flow analytics events now exist.
-- The final step safely hands off into the current live GHL calendar path without changing booking system ownership or appointment-booked automation.
+- `/get-a-quote` now owns intake validation, attribution capture, mirror-save, and milestone tracking in host-controlled code.
+- The live appointment still books through the current GHL calendar backend, which keeps the current appointment automation path intact.

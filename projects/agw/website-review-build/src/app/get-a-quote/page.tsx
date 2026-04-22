@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { QuoteIntakeFlow } from "@/components/quote-intake-flow";
 import { SiteShell } from "@/components/site-shell";
 import { TrackedLink } from "@/components/tracked-link";
@@ -9,7 +8,7 @@ import { CONTACT } from "@/lib/site-data";
 export const metadata: Metadata = buildPageMetadata({
   title: "Get a Quote | A.G. Williams",
   description:
-    "Move through a branded AGW quote intake, then finish inside the live booking calendar without breaking the current office workflow.",
+    "Move through a branded AGW intake with host-controlled validation, then finish inside the live booking calendar without breaking the current office workflow.",
   path: "/get-a-quote",
   keywords: [
     "painting estimate",
@@ -20,42 +19,31 @@ export const metadata: Metadata = buildPageMetadata({
 
 const nextSteps = [
   {
-    title: "Route the scope before the calendar opens",
+    title: "Route the project before the calendar opens",
     body:
-      "Residential walkthroughs, commercial consultations, and specialty coating scopes should not enter the same booking lane blind.",
+      "Project type, town, and contact details are validated inside the AGW site so weak or junk values do not reach the booking step.",
   },
   {
-    title: "Keep the live GHL booking chain intact",
+    title: "Save the intake before the handoff",
     body:
-      "The custom intake is the front-end layer only. The appointment is still booked inside the current GHL calendar and automation path.",
+      "The site mirrors the normalized intake to Supabase for attribution, debugging, and abandonment visibility before the live calendar appears.",
   },
   {
-    title: "Keep a real office fallback in reach",
+    title: "Keep booking in the current GHL system",
     body:
-      "If the job needs clarification before a slot is booked, the Pelham office stays visible as the direct fallback.",
+      "The final step still uses the production GHL calendar backend so the office workflow and appointment automation stay intact.",
   },
 ] as const;
 
 const quoteLanes = [
   "Residential walkthroughs for interiors, exteriors, cabinetry, and finish-sensitive rooms.",
   "Commercial consultations for occupied properties, coatings, fireproofing, and documentation-heavy scopes.",
-  "Pelham office support when the estimator should clarify the project before booking.",
+  "Pelham office support when the estimator should clarify the project before a slot is booked.",
 ] as const;
 
 export default function GetAQuotePage() {
   return (
     <SiteShell currentPath="/get-a-quote">
-      <Script id="quote-route-view" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event: "quote_route_view",
-            page_path: window.location.pathname,
-            quote_route_version: "custom_quote_flow_v1",
-          });
-        `}
-      </Script>
-
       <main>
         <section className="hero-section border-b border-[var(--color-line)]">
           <div className="container-shell py-8 lg:py-14">
@@ -67,32 +55,23 @@ export default function GetAQuotePage() {
                 </h1>
                 <p className="lead-copy mt-5 max-w-xl">
                   This route replaces the thin bridge page with a branded intake flow the site
-                  controls. Validation, pacing, and tracking happen here first. The actual
-                  appointment still gets booked inside the current GHL calendar so the office and
-                  customer-care handoff stay intact.
+                  controls. Validation, attribution capture, and mirror-save logic happen here
+                  first. The appointment itself is still booked in the current GHL calendar so the
+                  office and downstream automation stay intact.
                 </p>
 
                 <div className="mt-7 flex flex-wrap items-center gap-3">
-                  <TrackedLink
-                    className="button-primary"
-                    href="#quote-booking-flow"
-                    tracking={{
-                      event: "quote_cta_click",
-                      location: "quote_route_primary",
-                      label: "Start Your Quote",
-                      context: "quote-flow",
-                    }}
-                  >
+                  <TrackedLink className="button-primary" href="#quote-booking-flow">
                     Start Your Quote
                   </TrackedLink>
                   <TrackedLink
                     className="button-secondary"
                     href={CONTACT.localPhoneHref}
                     tracking={{
-                      event: "quote_support_click",
-                      location: "quote_route_secondary",
-                      label: `Call Pelham office: ${CONTACT.localPhoneLabel}`,
-                      context: "quote-flow",
+                      event: "quote_phone_click",
+                      location: "quote_route_hero",
+                      label: CONTACT.localPhoneLabel,
+                      context: "agw_quote_flow_v1",
                     }}
                   >
                     Call Pelham office
@@ -100,7 +79,11 @@ export default function GetAQuotePage() {
                 </div>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  {["Since 1906", "Live GHL calendar", "Pelham office fallback"].map((signal) => (
+                  {[
+                    "Since 1906",
+                    "Host-controlled validation",
+                    "Live GHL calendar",
+                  ].map((signal) => (
                     <span key={signal} className="info-pill">
                       {signal}
                     </span>
@@ -158,11 +141,11 @@ export default function GetAQuotePage() {
                 Step structure
               </p>
               <h2 className="card-title mt-4 text-[clamp(1.24rem,1.7vw,1.6rem)]">
-                Contact, project, timing, then booking.
+                Project, contact, notes, then booking.
               </h2>
               <p className="body-copy mt-3">
-                The flow is deliberately short, but each step owns a specific validation job before
-                the live calendar appears.
+                The flow stays short, but each step owns a specific validation job before the live
+                calendar appears.
               </p>
             </article>
 
@@ -171,11 +154,11 @@ export default function GetAQuotePage() {
                 Tracking
               </p>
               <h2 className="card-title mt-4 text-[clamp(1.24rem,1.7vw,1.6rem)]">
-                Meaningful host-side events at each step.
+                Intentional quote events at every real milestone.
               </h2>
               <p className="body-copy mt-3">
-                GTM signals fire for step views, step completions, validation failures, the GHL
-                handoff, and the calendar load itself.
+                GTM signals fire for step views, step completions, validation failures, intake save,
+                the GHL handoff, calendar load, and phone fallback clicks.
               </p>
             </article>
 
@@ -187,8 +170,8 @@ export default function GetAQuotePage() {
                 Booking still lands in the current GHL system of record.
               </h2>
               <p className="body-copy mt-3">
-                This pass stops short of replacing booking ownership or appointment-booked
-                automation, which keeps the safest operational path intact.
+                This pass improves the front-end path without replacing booking ownership or
+                appointment-booked automation.
               </p>
             </article>
           </div>
