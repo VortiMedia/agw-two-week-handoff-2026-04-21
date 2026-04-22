@@ -18,6 +18,7 @@ export const GHL_BASE_URL = "https://link.agwilliamspainting.com";
 export const GHL_FORM_ID = "QJKUxOOQI1YWHYNSsN5F";
 export const GHL_BOOKING_ID = "INZqRCM9fdZwZ6avSiny";
 export const GHL_BOOKING_URL = `${GHL_BASE_URL}/widget/booking/${GHL_BOOKING_ID}`;
+export const GHL_BOOKING_SCRIPT_URL = `${GHL_BASE_URL}/js/form_embed.js`;
 export const LEADCONNECTOR_CHAT_WIDGET_ID = "699ca6733303b66fe5e9d99c";
 export const LEADCONNECTOR_CHAT_LOADER_URL =
   "https://widgets.leadconnectorhq.com/loader.js";
