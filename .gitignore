@@ -3,3 +3,10 @@ Thumbs.db
 
 __pycache__/
 *.pyc
+
+# Claude Code session metadata and worktrees
+.claude/
+
+# Node / Next.js (even though nested app has its own, ignore at root too)
+node_modules/
+.next/
