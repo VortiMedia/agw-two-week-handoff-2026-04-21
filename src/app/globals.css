@@ -1,27 +1,72 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
+/* ============================================================
+   Legacy aliases — existing components reference these names.
+   They now point at the design-system tokens so one change in
+   tokens.css cascades everywhere. When Phase 3B re-skins each
+   component, the new code should use --agw-* directly (or the
+   Tailwind utilities exposed by @theme below).
+   ============================================================ */
 :root {
-  --background: #f9f8f2;
-  --foreground: #595953;
-  --color-bg: #f9f8f2;
-  --color-primary: #0063b0;
-  --color-ink: #10243a;
-  --color-secondary: #6cbbe8;
-  --color-surface: #ffffff;
-  --color-text: #3f3f3b;
-  --color-text-soft: rgba(63, 63, 59, 0.82);
-  --color-border: rgba(89, 89, 83, 0.18);
-  --color-line: rgba(89, 89, 83, 0.12);
-  --shadow-soft: 0 22px 60px rgba(63, 63, 59, 0.08);
-  --shadow-strong: 0 28px 90px rgba(0, 99, 176, 0.18);
-  --font-display: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
-  --font-body: var(--font-ui), "Poppins", "Avenir Next", "Helvetica Neue", "Segoe UI",
-    sans-serif;
+  --background:       var(--agw-ivory);
+  --foreground:       var(--agw-ink);
+  --color-bg:         var(--agw-ivory);
+  --color-primary:    var(--agw-blue);
+  --color-ink:        var(--agw-blue-ink);
+  --color-secondary:  var(--agw-celeste);
+  --color-surface:    var(--agw-paper);
+  --color-text:       var(--agw-ink);
+  --color-text-soft:  var(--agw-ink-soft);
+  --color-border:     var(--agw-bone);
+  --color-line:       rgba(89, 89, 83, 0.12);
+  --shadow-soft:      var(--shadow-md);
+  --shadow-strong:    var(--shadow-lg);
+  --font-body:        var(--font-sans);
 }
 
+/* ============================================================
+   Tailwind v4 @theme — exposes design-system tokens as utility
+   classes. Examples:
+     bg-agw-blue, text-agw-ink, bg-agw-ivory, border-agw-bone
+     font-display, font-sans
+     rounded-sm (= 4px), rounded-md (= 8px), rounded-pill
+     shadow-sm, shadow-md, shadow-lg
+   ============================================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background:       var(--agw-ivory);
+  --color-foreground:       var(--agw-ink);
+
+  --color-agw-blue:         var(--agw-blue);
+  --color-agw-blue-deep:    var(--agw-blue-deep);
+  --color-agw-blue-ink:     var(--agw-blue-ink);
+  --color-agw-celeste:      var(--agw-celeste);
+  --color-agw-celeste-soft: var(--agw-celeste-soft);
+  --color-agw-ivory:        var(--agw-ivory);
+  --color-agw-cream:        var(--agw-cream);
+  --color-agw-cream-warm:   var(--agw-cream-warm);
+  --color-agw-bone:         var(--agw-bone);
+  --color-agw-paper:        var(--agw-paper);
+  --color-agw-dark:         var(--agw-dark);
+  --color-agw-ink:          var(--agw-ink);
+  --color-agw-ink-soft:     var(--agw-ink-soft);
+  --color-agw-ink-mute:     var(--agw-ink-mute);
+  --color-agw-success:      var(--agw-success);
+  --color-agw-warning:      var(--agw-warning);
+  --color-agw-danger:       var(--agw-danger);
+
+  --font-display:           var(--font-display);
+  --font-sans:              var(--font-sans);
+
+  --radius-xs:              var(--radius-xs);
+  --radius-sm:              var(--radius-sm);
+  --radius-md:              var(--radius-md);
+  --radius-lg:              var(--radius-lg);
+  --radius-pill:            var(--radius-pill);
+
+  --shadow-sm:              var(--shadow-sm);
+  --shadow-md:              var(--shadow-md);
+  --shadow-lg:              var(--shadow-lg);
 }
 
 * {
