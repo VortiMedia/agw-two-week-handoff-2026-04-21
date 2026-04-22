@@ -1,76 +1,100 @@
 # AGW Handoff For Other AI
 
-This repository is the GitHub handoff point for the A.G. Williams workstream. Use GitHub as the source of truth and do not keep parallel local app copies drifting apart.
+This repository is the GitHub handoff point for the A.G. Williams Painting Company website. GitHub is the source of truth; do not keep parallel local app copies drifting apart.
 
 ## Repo
 
 - Repository: `https://github.com/VortiMedia/agw-two-week-handoff-2026-04-21`
 - Base branch: `main`
-- Previous confirmed checkpoint before this handoff note: `2ef73085e1c9d8159fdd64a337d81fc3fc50e746`
+- Last major checkpoint: `1e9234f` — flatten + consolidation (2026-04-22)
+
+## Layout (flat, single Next.js app at the repo root)
+
+```
+/
+├── src/                  Next.js 16 / React 19 app
+├── public/               static assets served by the app
+├── design-system/        north-star design reference (tokens, HTML prototype, fonts, icons, logos) — NOT app source
+├── content/agw/          reports, audits, strategy docs
+├── assets/agw/           canonical brand assets (fonts, logos, icons, patterns, photos)
+├── artifacts/            audit captures + QA renders (reference only)
+├── brand-kit/            brand-kit snapshot used during brand-pass work
+├── phase-0/              preview deploy state + locks
+├── skills/               reference copy of custom skill bundles
+└── package.json, next.config.ts, tsconfig.json, etc.
+```
+
+`artifacts/`, `design-system/`, `content/`, `assets/`, `brand-kit/`, `phase-0/`, and `skills/` are explicitly excluded from TypeScript and ESLint by `tsconfig.json` and `eslint.config.mjs`. They are reference material, not app source.
 
 ## First Rules
 
-1. Clone or pull the GitHub repo fresh.
-2. Treat `./` as the canonical app.
-3. Treat `projects/agw/live-site-reference/` as archive/reference unless explicitly needed.
-4. Do not edit both app copies in parallel.
-5. Push often so handoff between systems stays clean.
+1. Clone or pull fresh before starting a pass.
+2. The entire app lives at the repo root — there is no nested `projects/` or `website-review-build/` path anymore.
+3. `design-system/project/ui-kit/marketing-site.html` is the north-star design. The Next.js app has NOT yet been re-skinned to match it (Phase 3 of the consolidation plan).
+4. Branch for each implementation pass; merge back after verification; delete the branch after merge.
+5. Push often.
 
-## Pull Fresh
+## Runtime
+
+- Node: `>=20.9.0` (Next.js 16 requirement). Use `nvm use` with the `.nvmrc`.
+- Install: `npm install`
+- Dev: `npm run dev`
+- Build: `npm run build` (verify clean before committing)
+- Lint: `npm run lint`
+
+## Pull fresh
 
 ```bash
 git clone https://github.com/VortiMedia/agw-two-week-handoff-2026-04-21.git
 cd agw-two-week-handoff-2026-04-21
-git checkout main
-git pull origin main
+nvm use
+npm install
+npm run build
 ```
 
-## Working Branch Rule
+## Working-branch pattern
 
 ```bash
 git checkout -b agw-next-pass
+# do work
+git add .
+git commit -m "Describe the change"
+git push -u origin agw-next-pass
+# open PR or merge back to main after verification
 ```
 
-Use a branch for each implementation pass and merge back after verification.
+## Branches on origin
 
-## Important Files
+- `main` — canonical, production-readiness lineage + design-system reference
+- `agw-preserved-work-archive` — 9 historical report commits (execution board, launch-blockers master, QA checklists, audits, release-gate doc, booking analytics, final read-only audit)
+- `agw-preserved-integration-design-refresh` — the ink-palette design refresh (historical; not adopted)
+- `agw-preserved-booking-flow` — full custom quote intake flow implementation (687-line React form, API route, validation library) recovered from deleted `agw-booking-flow`; not currently on `main`
 
-- `CLAUDE_CODE_CONTEXT_PRIME.md`
-- `content/agw/agw-production-readiness-audit-2026-04-21.md`
-- `content/agw/agw-master-handoff-notes-2026-04-21.md`
-- `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md`
-- `AGW_Website_Brand_Reference.docx`
-- `claude-design/`
-- `./`
-- `skills/`
+## Important files
 
-## Canonical App
+- `content/agw/agw-production-readiness-audit-2026-04-21.md` — the audit that framed this workstream
+- `content/agw/agw-master-handoff-notes-2026-04-21.md` — master handoff notes
+- `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md` — GHL booking constraints
+- `content/agw/reports/cleanup-preservation-audit-2026-04-22.md` — what was preserved during the 2026-04-22 consolidation
+- `content/agw/reports/cleanup-revised-execution-plan-2026-04-22.md` — the executed plan
+- `CLAUDE_CODE_CONTEXT_PRIME.md` — Claude Code onboarding
+- `AGW_Website_Brand_Reference.docx` — brand authority
+- `design-system/project/ui-kit/marketing-site.html` — north-star design prototype
+- `design-system/project/colors_and_type.css` — design tokens
 
-- Canonical app: `./`
-- Purpose: active implementation base for the next production-readiness pass
-- `live-site-reference/` is useful for comparison, content recovery, and production reference only
+## GHL strategy
 
-## What Has Already Been Decided
-
-- GitHub should be the handoff point between machines and models.
-- `website-review-build` is the app to build on.
-- `live-site-reference` should not be evolved in parallel.
-- AGW brand authority comes from `AGW_Website_Brand_Reference.docx` plus the `claude-design/` bundle and brand assets already placed in the repo.
-- The current GHL booking/calendar automation should not be broken just to improve front-end UX.
-
-## GHL Strategy
-
-Read `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md` before changing booking.
+Read `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md` before changing anything about booking.
 
 Short version:
 
-- Safest V1 is `custom intake step -> GHL calendar embed as final step`
-- Do not literally wrap the calendar iframe inside a native HTML form
-- Keep GHL as source of truth for the appointment in V1
-- Protect the existing customer-care notification automation
-- Clone the calendar before changing production booking behavior
+- Safest V1 is `custom intake step -> GHL calendar embed as final step`.
+- Do not literally wrap the calendar iframe inside a native HTML form.
+- Keep GHL as source of truth for the appointment in V1.
+- Protect the existing customer-care notification automation.
+- Clone the calendar before changing production booking behavior.
 
-## Customer Care Constraint
+## Customer-care constraint
 
 Do not disrupt booking notifications.
 
@@ -80,23 +104,10 @@ If booking flow changes:
 - add a separate intake-submitted notification path if a custom form is added before the calendar
 - confirm what customer care needs to see in the appointment view versus contact custom fields
 
-## Skills Bundle
-
-The `skills/` folder in this repo is the uploaded copy of the local custom skills bundle from the OpenClaw environment. Use it as reference material for how the build system has been structured across projects.
-
-## Recommended Next Pass
+## Recommended next pass
 
 1. Read the production-readiness audit.
 2. Read the master handoff notes.
 3. Read the GHL booking strategy doc.
-4. Normalize brand usage inside `website-review-build`.
-5. Consolidate repo duplication only where safe.
-6. Execute the next production-readiness pass on the canonical app.
-
-## Commit / Push Pattern
-
-```bash
-git add .
-git commit -m "Describe the change"
-git push -u origin agw-next-pass
-```
+4. Read the cleanup revised execution plan and cleanup audit.
+5. Proceed with Phase 3 of the consolidation plan: port the north-star design into the Next.js app (tokens → components → responsive + a11y → verify).

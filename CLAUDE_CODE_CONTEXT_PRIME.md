@@ -12,15 +12,9 @@ Use this when Claude Code on the MacBook should take over AGW frontend work from
 
 Claude Code should own the next frontend implementation pass for A.G. Williams using the latest GitHub state, the uploaded local skills bundle, and the AGW handoff docs.
 
-The work should happen in:
+The work happens in the flat Next.js app at the repo root.
 
-- `./`
-
-Do not build in parallel from:
-
-- `projects/agw/live-site-reference/`
-
-That folder is reference/archive only unless explicitly needed.
+`projects/agw/live-site-reference/` no longer exists — it was deleted in the 2026-04-22 consolidation (see `content/agw/reports/cleanup-revised-execution-plan-2026-04-22.md`). Nothing parallel to build against anymore.
 
 ## Pull Fresh
 
@@ -140,9 +134,10 @@ Read:
 Use:
 
 - `AGW_Website_Brand_Reference.docx`
-- `claude-design/`
-- `./brand-kit/`
-- `./public/agw-brand/`
+- `design-system/` (north-star reference: tokens, HTML prototype, fonts, icons, logos)
+- `brand-kit/`
+- `public/agw-brand/`
+- `assets/agw/brand/`
 
 Do not invent a disconnected design language if the repo already has the brand system.
 
@@ -204,9 +199,8 @@ Load these skills from the repo:
 - skills/site-builder/SKILL.md
 - skills/web/SKILL.md
 
-Treat . as the canonical app.
-Treat projects/agw/live-site-reference as reference only.
-Run git ls-files and index the canonical app before coding.
+The repo root is the Next.js app — no nested project directories.
+Run git ls-files and index the app before coding.
 Then execute the next frontend production-readiness pass without breaking the current GHL booking/backend assumptions.
 Keep GitHub as handoff source of truth and push all work to a branch.
 ```

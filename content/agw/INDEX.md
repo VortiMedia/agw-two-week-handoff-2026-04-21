@@ -1,5 +1,7 @@
 # AGW Inventory
 
+> **HISTORICAL SNAPSHOT (2026-04-07 to 2026-04-21).** Superseded by the 2026-04-22 consolidation — folder paths referenced below (`projects/agw/live-site-reference/`, `website-review-build/`) no longer exist. For the current layout, see `README.md` and `HANDOFF_FOR_OTHER_AI.md`. For what changed, see `content/agw/reports/cleanup-revised-execution-plan-2026-04-22.md`.
+
 Scope: everything AGW-related that was active or imported into this repo for the `2026-04-07` through `2026-04-21` window.
 
 ## What Was Consolidated
