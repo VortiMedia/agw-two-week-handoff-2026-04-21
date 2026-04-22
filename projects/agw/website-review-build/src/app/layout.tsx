@@ -1,19 +1,27 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
-import { HOMEPAGE_JSON_LD } from "@/lib/site-data";
+import { Playfair_Display, Poppins } from "next/font/google";
+import Script from "next/script";
+import {
+  GTM_CONTAINER_ID,
+  LEADCONNECTOR_CHAT_LOADER_URL,
+  LEADCONNECTOR_CHAT_RESOURCES_URL,
+  LEADCONNECTOR_CHAT_WIDGET_ID,
+} from "@/lib/site-data";
 import "./globals.css";
 
-const poppinsUi = localFont({
-  src: [
-    {
-      path: "../../brand-kit/02-fonts/Poppins-ExtraBold.ttf",
-      weight: "800",
-      style: "normal",
-    },
-  ],
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
   display: "swap",
-  fallback: ["Avenir Next", "Helvetica Neue", "Segoe UI", "sans-serif"],
-  adjustFontFallback: false,
+});
+
+const poppinsUi = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
   variable: "--font-ui",
 });
 
@@ -45,8 +53,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/agw-selected/hero-room.jpg",
-        width: 5616,
-        height: 3744,
+        width: 1200,
+        height: 630,
         alt: "Finished A.G. Williams interior with custom built-ins and trim",
       },
     ],
@@ -76,14 +84,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={poppinsUi.variable}>
+    <html lang="en" className={`${poppinsUi.variable} ${playfairDisplay.variable}`}>
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(HOMEPAGE_JSON_LD),
-          }}
-        />
+        <Script id="gtm-bootstrap" strategy="beforeInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','${GTM_CONTAINER_ID}');
+          `}
+        </Script>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_CONTAINER_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -112,7 +132,50 @@ export default function RootLayout({
             `,
           }}
         />
+        <Script id="agw-data-layer-hooks" strategy="afterInteractive">
+          {`
+            (() => {
+              window.dataLayer = window.dataLayer || [];
+              window.agwPushEvent = (eventName, detail = {}) => {
+                window.dataLayer.push({
+                  event: eventName,
+                  page_path: window.location.pathname,
+                  page_title: document.title,
+                  ...detail,
+                });
+              };
+
+              document.addEventListener(
+                "click",
+                (event) => {
+                  const target = event.target instanceof Element
+                    ? event.target.closest("[data-cta-event]")
+                    : null;
+
+                  if (!target) return;
+
+                  window.agwPushEvent(
+                    target.getAttribute("data-cta-event") || "cta_click",
+                    {
+                      cta_location: target.getAttribute("data-cta-location") || "",
+                      cta_label: target.getAttribute("data-cta-label") || "",
+                      cta_context: target.getAttribute("data-cta-context") || "",
+                      cta_destination: target.getAttribute("data-cta-destination") || "",
+                    },
+                  );
+                },
+                { capture: true },
+              );
+            })();
+          `}
+        </Script>
         {children}
+        <Script
+          src={LEADCONNECTOR_CHAT_LOADER_URL}
+          data-resources-url={LEADCONNECTOR_CHAT_RESOURCES_URL}
+          data-widget-id={LEADCONNECTOR_CHAT_WIDGET_ID}
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

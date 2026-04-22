@@ -1,8 +1,28 @@
-export type SitePath = "/" | "/commercial" | "/residential" | "/heritage";
+export type SitePath =
+  | "/"
+  | "/commercial"
+  | "/residential"
+  | "/heritage"
+  | "/get-a-quote"
+  | "/contact"
+  | "/about"
+  | "/privacy-policy"
+  | "/terms"
+  | "/accessibility";
 
 export const SITE_NAME = "A.G. Williams Painting Company";
 export const SITE_URL = "https://agwilliamspainting.com";
-export const QUOTE_URL = "https://agwilliamspainting.com/get-a-quote/";
+export const QUOTE_URL = "/get-a-quote";
+export const GTM_CONTAINER_ID = "GTM-W559QJ7C";
+export const GHL_BASE_URL = "https://link.agwilliamspainting.com";
+export const GHL_FORM_ID = "QJKUxOOQI1YWHYNSsN5F";
+export const GHL_BOOKING_ID = "INZqRCM9fdZwZ6avSiny";
+export const GHL_BOOKING_URL = `${GHL_BASE_URL}/widget/booking/${GHL_BOOKING_ID}`;
+export const LEADCONNECTOR_CHAT_WIDGET_ID = "699ca6733303b66fe5e9d99c";
+export const LEADCONNECTOR_CHAT_LOADER_URL =
+  "https://widgets.leadconnectorhq.com/loader.js";
+export const LEADCONNECTOR_CHAT_RESOURCES_URL =
+  "https://widgets.leadconnectorhq.com/chat-widget/loader.js";
 
 export const CONTACT = {
   mainPhoneLabel: "(800) 227-1906",
@@ -31,7 +51,17 @@ export const FOOTER_LINKS = [
   { label: "Commercial", href: "/commercial" },
   { label: "Residential", href: "/residential" },
   { label: "Heritage", href: "/heritage" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
   { label: "Get a Quote", href: QUOTE_URL },
+] as const;
+
+export const UTILITY_LINKS = [
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms", href: "/terms" },
+  { label: "Accessibility", href: "/accessibility" },
 ] as const;
 
 export const TOP_STRIP_CONTENT: Record<
@@ -57,6 +87,36 @@ export const TOP_STRIP_CONTENT: Record<
     eyebrow: "Pelham office",
     message:
       "A.G. Williams has served homes and properties from Pelham for more than a century.",
+  },
+  "/get-a-quote": {
+    eyebrow: "Internal quote route",
+    message:
+      "Start inside the AGW site, then continue into the live booking flow without changing the current office or customer-care handoff.",
+  },
+  "/contact": {
+    eyebrow: "Pelham office",
+    message:
+      "Use the office, the internal quote route, or the live chat fallback while final contact-flow copy and intake details are still being finalized.",
+  },
+  "/about": {
+    eyebrow: "Since 1906",
+    message:
+      "This launch placeholder covers the basics of the company story until the full about and history content is approved for production.",
+  },
+  "/privacy-policy": {
+    eyebrow: "Launch placeholder",
+    message:
+      "This draft privacy page explains the current intent for data handling while AGW's final legal and vendor-specific language is still being assembled.",
+  },
+  "/terms": {
+    eyebrow: "Draft terms",
+    message:
+      "These placeholder website terms set expectations for launch while final legal review and business-specific language are still pending.",
+  },
+  "/accessibility": {
+    eyebrow: "Accessibility support",
+    message:
+      "This page provides a launch-ready accessibility contact path now, with a fuller audit-backed statement to follow in a later hardening pass.",
   },
 };
 
@@ -117,6 +177,72 @@ export const SHELL_ACTIONS: Record<
     headerSecondaryHref: CONTACT.localPhoneHref,
     footerCtaLabel: "Get a Quote",
     footerCtaHref: QUOTE_URL,
+  },
+  "/get-a-quote": {
+    topLinkLabel: "Continue to Booking",
+    topLinkHref: GHL_BOOKING_URL,
+    headerPrimaryLabel: "Continue to Booking",
+    headerPrimaryHref: GHL_BOOKING_URL,
+    mobilePrimaryLabel: "Continue",
+    headerSecondaryLabel: "Call Pelham Office",
+    headerSecondaryHref: CONTACT.localPhoneHref,
+    footerCtaLabel: "Continue to Booking",
+    footerCtaHref: GHL_BOOKING_URL,
+  },
+  "/contact": {
+    topLinkLabel: "Start a Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Start a Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Start a Quote",
+    headerSecondaryLabel: "Call Pelham Office",
+    headerSecondaryHref: CONTACT.localPhoneHref,
+    footerCtaLabel: "Start a Quote",
+    footerCtaHref: QUOTE_URL,
+  },
+  "/about": {
+    topLinkLabel: "Get a Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Get a Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Get a Quote",
+    headerSecondaryLabel: "Call Pelham Office",
+    headerSecondaryHref: CONTACT.localPhoneHref,
+    footerCtaLabel: "Get a Quote",
+    footerCtaHref: QUOTE_URL,
+  },
+  "/privacy-policy": {
+    topLinkLabel: "Get a Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Get a Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Get a Quote",
+    headerSecondaryLabel: "Call Main Office",
+    headerSecondaryHref: CONTACT.mainPhoneHref,
+    footerCtaLabel: "Get a Quote",
+    footerCtaHref: QUOTE_URL,
+  },
+  "/terms": {
+    topLinkLabel: "Get a Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Get a Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Get a Quote",
+    headerSecondaryLabel: "Call Main Office",
+    headerSecondaryHref: CONTACT.mainPhoneHref,
+    footerCtaLabel: "Get a Quote",
+    footerCtaHref: QUOTE_URL,
+  },
+  "/accessibility": {
+    topLinkLabel: "Contact the Office",
+    topLinkHref: CONTACT.localPhoneHref,
+    headerPrimaryLabel: "Start a Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Start a Quote",
+    headerSecondaryLabel: "Call Pelham Office",
+    headerSecondaryHref: CONTACT.localPhoneHref,
+    footerCtaLabel: "Contact the Office",
+    footerCtaHref: CONTACT.localPhoneHref,
   },
 };
 

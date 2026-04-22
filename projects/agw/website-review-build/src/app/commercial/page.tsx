@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import { ServiceCtaBand } from "@/components/service-cta-band";
+import { ServicePageHero } from "@/components/service-page-hero";
 import { SiteShell } from "@/components/site-shell";
-import { AGW_CURATED_PHOTOS, AGW_LIVE_ASSETS } from "@/lib/brand-assets";
+import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
+import { buildPageMetadata } from "@/lib/seo";
 import {
   COMMERCIAL_EXPECTATIONS,
   COMMERCIAL_SERVICES,
@@ -11,126 +12,70 @@ import {
   SERVICE_AREAS,
 } from "@/lib/site-data";
 
-const proofLogos = [
-  { src: AGW_LIVE_ASSETS.proofLogos.ascc, alt: "Association for Materials Protection and Performance" },
-  { src: AGW_LIVE_ASSETS.proofLogos.ampp, alt: "AMPP" },
-  { src: AGW_LIVE_ASSETS.proofLogos.isnetworld, alt: "ISNetworld" },
-] as const;
-
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Commercial Painting, Fireproofing, and Floor Coatings | A.G. Williams",
   description:
     "Commercial painting, fireproofing, and floor coating work for owners, facility teams, and general contractors across Westchester, Fairfield, Rockland, and Putnam.",
-  alternates: {
-    canonical: "/commercial",
+  path: "/commercial",
+  keywords: [
+    "commercial painting contractor westchester county",
+    "commercial painting contractor fairfield county",
+    "fireproofing contractor",
+    "commercial floor coatings",
+    "occupied property painting contractor",
+  ],
+  image: {
+    url: AGW_CURATED_PHOTOS.commercialFloor,
+    alt: "Commercial floor coating project completed by A.G. Williams",
   },
-};
+});
 
 export default function CommercialPage() {
   return (
     <SiteShell currentPath="/commercial">
       <main>
-        <section className="hero-section border-b border-[var(--color-line)]">
-          <div className="container-shell py-8 lg:py-14">
-            <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-              <div className="lg:max-w-xl">
-                <span className="kicker">Commercial services</span>
-                <h1 className="page-title mt-4 max-w-[12ch]">
-                  Commercial painting, fireproofing, and floor coatings for occupied properties.
-                </h1>
-                <p className="lead-copy mt-5 max-w-xl">
-                  A.G. Williams works with owners, facility teams, property managers, and general
-                  contractors who need the scope understood early, the schedule protected, and the
-                  site kept organized.
-                </p>
-
-                <div className="mt-7 flex flex-wrap items-center gap-4">
-                  <Link className="button-primary" href={QUOTE_URL}>
-                    Request a Commercial Consultation
-                  </Link>
-                  <Link
-                    className="text-sm font-semibold text-[var(--color-primary)] transition-opacity hover:opacity-80"
-                    href={CONTACT.mainPhoneHref}
-                  >
-                    Call {CONTACT.mainPhoneLabel}
-                  </Link>
-                </div>
-
-                <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                  <div className="border-t border-[var(--color-line)] pt-3">
-                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                      Scope clarity
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-                      Painting, fireproofing, and floor coatings routed through one office.
-                    </p>
-                  </div>
-                  <div className="border-t border-[var(--color-line)] pt-3">
-                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                      Compliance
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-                      Licensed and insured commercial work with documentation ready early.
-                    </p>
-                  </div>
-                  <div className="border-t border-[var(--color-line)] pt-3">
-                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                      Coordination
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
-                      Planned around access, occupants, and schedule pressure.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <article className="overflow-hidden rounded-[1.4rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]">
-                <div className="relative aspect-[16/9]">
-                  <Image
-                    src={AGW_CURATED_PHOTOS.commercialFloor}
-                    alt="Commercial floor coating project completed by A.G. Williams"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 56vw"
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="grid gap-5 border-t border-[var(--color-line)] bg-white p-6 sm:grid-cols-[1.04fr_0.96fr] sm:p-8">
-                  <div>
-                    <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                      Commercial trust
-                    </p>
-                    <p className="mt-3 display-font text-[1.55rem] leading-[1.02] tracking-[-0.04em] text-[var(--color-primary)]">
-                      Licensed, insured, and built for buyers who need the basics handled cleanly.
-                    </p>
-                    <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                      Occupied-property scheduling, documentation visibility, and coordination that
-                      holds up during the job.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-3 sm:border-l sm:border-[var(--color-line)] sm:pl-5">
-                    {proofLogos.map((logo) => (
-                      <div
-                        key={logo.alt}
-                        className="flex min-h-14 items-center justify-center rounded-[0.95rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.9)] px-4"
-                      >
-                        <Image
-                          src={logo.src}
-                          alt={logo.alt}
-                          width={120}
-                          height={56}
-                          className="h-auto max-h-8 w-auto"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
+        <ServicePageHero
+          trackingContext="commercial"
+          eyebrow="Commercial services"
+          title="Commercial painting, fireproofing, and floor coatings for occupied properties."
+          description="A.G. Williams works with owners, facility teams, property managers, and general contractors who need the scope understood early, the schedule protected, and the site kept organized."
+          primaryCta={{ label: "Request a Commercial Consultation", href: QUOTE_URL }}
+          secondaryCta={{ label: `Call ${CONTACT.mainPhoneLabel}`, href: CONTACT.mainPhoneHref }}
+          highlights={[
+            {
+              label: "Scope clarity",
+              body: "Painting, fireproofing, and floor coatings routed through one office.",
+            },
+            {
+              label: "Compliance",
+              body: "Licensed and insured commercial work with documentation ready early.",
+            },
+            {
+              label: "Coordination",
+              body: "Planned around access, occupants, and schedule pressure.",
+            },
+          ]}
+          media={{
+            src: AGW_CURATED_PHOTOS.commercialFloor,
+            alt: "Commercial floor coating project completed by A.G. Williams",
+          }}
+          mediaCallout={{
+            eyebrow: "Commercial trust",
+            title: "Licensed, insured, and built for buyers who need the basics handled cleanly.",
+            body: "Occupied-property scheduling, documentation visibility, and coordination that holds up during the job.",
+          }}
+          supportCallout={{
+            eyebrow: "Commercial routing",
+            title: "One office sorts painting, fireproofing, and floor-coating scopes before crews mobilize.",
+            body: "That keeps buyers out of a vague intake loop and gets access, scheduling, and documentation questions answered while decisions are still cheap.",
+          }}
+          proofListTitle="What gets handled early"
+          proofList={[
+            "Occupied-property sequencing so access and disruption are planned before the first day on site.",
+            "Insurance, certification, and documentation visibility for buyers who need the basics ready early.",
+            "Commercial painting, fireproofing, and floor-coating routing through the same Pelham office.",
+          ]}
+        />
 
         <section className="section-space border-b border-[var(--color-line)] bg-white">
           <div className="container-shell">
@@ -244,31 +189,15 @@ export default function CommercialPage() {
           </div>
         </section>
 
-        <section className="bg-[var(--color-primary)]">
-          <div className="container-shell grid gap-8 py-16 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p className="section-label !border-white/15 !bg-white/10 !text-white">
-                Commercial reach
-              </p>
-              <h2 className="page-title mt-4 max-w-3xl !text-white">
-                Commercial work across {SERVICE_AREAS.join(", ")}.
-              </h2>
-              <p className="mt-4 max-w-2xl text-[0.98rem] leading-8 text-white/82">
-                Start with the office, confirm the property needs, and move into a consultation
-                built around access, schedule, and actual site conditions.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Link className="button-primary button-primary--light" href={QUOTE_URL}>
-                Request a Commercial Consultation
-              </Link>
-              <Link className="button-secondary button-secondary--dark" href={CONTACT.mainPhoneHref}>
-                Call {CONTACT.mainPhoneLabel}
-              </Link>
-            </div>
-          </div>
-        </section>
+        <ServiceCtaBand
+          trackingContext="commercial"
+          eyebrow="Commercial reach"
+          title={`Commercial work across ${SERVICE_AREAS.join(", ")}.`}
+          body="Start with the office, confirm the property needs, and move into a consultation built around access, schedule, and actual site conditions."
+          primaryCta={{ label: "Request a Commercial Consultation", href: QUOTE_URL }}
+          secondaryCta={{ label: `Call ${CONTACT.mainPhoneLabel}`, href: CONTACT.mainPhoneHref }}
+          detailItems={["Commercial painting", "Fireproofing", "Floor coatings"]}
+        />
       </main>
     </SiteShell>
   );
