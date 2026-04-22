@@ -14,7 +14,7 @@ Claude Code should own the next frontend implementation pass for A.G. Williams u
 
 The work should happen in:
 
-- `projects/agw/website-review-build/`
+- `./`
 
 Do not build in parallel from:
 
@@ -55,10 +55,10 @@ Read these before touching code:
 3. `content/agw/agw-master-handoff-notes-2026-04-21.md`
 4. `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md`
 5. `AGW_Website_Brand_Reference.docx`
-6. `projects/agw/website-review-build/AGENTS.md`
-7. `projects/agw/website-review-build/AGENT_TASK.md`
-8. `projects/agw/website-review-build/phase-0/PHASE0_LOCK.md`
-9. `projects/agw/website-review-build/design-system/MASTER.md`
+6. `./AGENTS.md`
+7. `./AGENT_TASK.md`
+8. `./phase-0/PHASE0_LOCK.md`
+9. `./design-system/MASTER.md`
 
 ## Skills To Load First
 
@@ -82,8 +82,8 @@ Run this once after pulling fresh:
 ```bash
 git ls-files > /tmp/agw-git-ls-files.txt
 rg -n "GTM|gtm|LeadConnector|HighLevel|booking|calendar|chat|quote|hero|brand|site-data|brand-assets" .
-find projects/agw/website-review-build/src -maxdepth 3 -type f | sort
-find projects/agw/website-review-build/public -maxdepth 3 -type f | sort
+find ./src -maxdepth 3 -type f | sort
+find ./public -maxdepth 3 -type f | sort
 ```
 
 ## Canonical App Index
@@ -91,22 +91,22 @@ find projects/agw/website-review-build/public -maxdepth 3 -type f | sort
 Run these in the repo root:
 
 ```bash
-find projects/agw/website-review-build/src/app -maxdepth 2 -type f | sort
-find projects/agw/website-review-build/src/components -maxdepth 2 -type f | sort
-find projects/agw/website-review-build/src/lib -maxdepth 2 -type f | sort
+find ./src/app -maxdepth 2 -type f | sort
+find ./src/components -maxdepth 2 -type f | sort
+find ./src/lib -maxdepth 2 -type f | sort
 ```
 
 Current high-signal files in the canonical app:
 
-- `projects/agw/website-review-build/src/app/layout.tsx`
-- `projects/agw/website-review-build/src/app/page.tsx`
-- `projects/agw/website-review-build/src/app/commercial/page.tsx`
-- `projects/agw/website-review-build/src/app/residential/page.tsx`
-- `projects/agw/website-review-build/src/app/heritage/page.tsx`
-- `projects/agw/website-review-build/src/app/globals.css`
-- `projects/agw/website-review-build/src/components/site-shell.tsx`
-- `projects/agw/website-review-build/src/lib/site-data.ts`
-- `projects/agw/website-review-build/src/lib/brand-assets.ts`
+- `./src/app/layout.tsx`
+- `./src/app/page.tsx`
+- `./src/app/commercial/page.tsx`
+- `./src/app/residential/page.tsx`
+- `./src/app/heritage/page.tsx`
+- `./src/app/globals.css`
+- `./src/components/site-shell.tsx`
+- `./src/lib/site-data.ts`
+- `./src/lib/brand-assets.ts`
 
 ## Frontend Priorities
 
@@ -141,8 +141,8 @@ Use:
 
 - `AGW_Website_Brand_Reference.docx`
 - `claude-design/`
-- `projects/agw/website-review-build/brand-kit/`
-- `projects/agw/website-review-build/public/agw-brand/`
+- `./brand-kit/`
+- `./public/agw-brand/`
 
 Do not invent a disconnected design language if the repo already has the brand system.
 
@@ -161,7 +161,7 @@ Do not invent a disconnected design language if the repo already has the brand s
 From repo root:
 
 ```bash
-cd projects/agw/website-review-build
+cd .
 npm install
 npm run lint
 npm run build
@@ -192,10 +192,10 @@ Then read:
 - content/agw/agw-master-handoff-notes-2026-04-21.md
 - content/agw/ghl-booking-and-notification-strategy-2026-04-21.md
 - AGW_Website_Brand_Reference.docx
-- projects/agw/website-review-build/AGENTS.md
-- projects/agw/website-review-build/AGENT_TASK.md
-- projects/agw/website-review-build/phase-0/PHASE0_LOCK.md
-- projects/agw/website-review-build/design-system/MASTER.md
+- ./AGENTS.md
+- ./AGENT_TASK.md
+- ./phase-0/PHASE0_LOCK.md
+- ./design-system/MASTER.md
 
 Load these skills from the repo:
 - skills/frontend-design-3/SKILL.md
@@ -204,7 +204,7 @@ Load these skills from the repo:
 - skills/site-builder/SKILL.md
 - skills/web/SKILL.md
 
-Treat projects/agw/website-review-build as the canonical app.
+Treat . as the canonical app.
 Treat projects/agw/live-site-reference as reference only.
 Run git ls-files and index the canonical app before coding.
 Then execute the next frontend production-readiness pass without breaking the current GHL booking/backend assumptions.

@@ -1,0 +1,117 @@
+{
+  "artifact": "agw-phase0-direction-check",
+  "deliveryContract": "direction-check-preview",
+  "projectPath": "/Users/claw/.openclaw/workspace-vorti-main/projects/agw-website",
+  "status": "preview_ready",
+  "blockerType": null,
+  "clientSendReady": true,
+  "reviewArtifactReady": true,
+  "previewUrl": "https://agw-website-kx8v96hod-david-matys-projects.vercel.app",
+  "lastCheckedAt": "2026-04-17T05:43:24Z",
+  "lastSuccessAt": "2026-04-17T05:43:24Z",
+  "lastSuccessfulPreviewUrl": "https://agw-website-kx8v96hod-david-matys-projects.vercel.app",
+  "notes": "Direction-check preview only. Do not treat this as production launch proof.",
+  "reviewBlockerReason": null,
+  "vercel": {
+    "linked": true,
+    "user": "vortimedia",
+    "projectName": "agw-website",
+    "projectId": "prj_wgIlfYoSBo5JhzHxMsbq2tkMuRSE",
+    "orgId": "team_ymP7hXN4fp3LhhJcD5bdYJtv"
+  },
+  "build": {
+    "passed": true
+  },
+  "smoke": {
+    "passed": true
+  },
+  "directionCheckPath": "phase-0/DIRECTION_CHECK.md",
+  "reviewPackagePath": "phase-0/REVIEW_PACKAGE.md",
+  "feedbackPrompts": [
+    "Does this direction feel like the right overall look and trust level for AGW?",
+    "Does the homepage feel like it is emphasizing the right things?",
+    "Does the estimate/contact direction feel correct?"
+  ],
+  "clientMessage": "We have started the rebuild and wanted to share the first direction pass before we go too far down the road.\nThis is mainly to confirm the overall look and feel, trust level, and estimate flow direction, not final copy or final imagery yet.\nWould love your feedback on the three questions below after a quick pass through the preview.",
+  "deployResult": {
+    "timestamp": "2026-04-17T05:42:45Z",
+    "project_dir": "/Users/claw/.openclaw/workspace-vorti-main/projects/agw-website",
+    "project_name": "agw-website",
+    "target": "preview",
+    "status": "preview_ready",
+    "blocker_type": null,
+    "message": "Deploy completed",
+    "deploy_url": "https://agw-website-kx8v96hod-david-matys-projects.vercel.app",
+    "vercel_user": "vortimedia",
+    "project_linked": true,
+    "project_link": {
+      "projectId": "prj_wgIlfYoSBo5JhzHxMsbq2tkMuRSE",
+      "orgId": "team_ymP7hXN4fp3LhhJcD5bdYJtv",
+      "projectName": "agw-website"
+    },
+    "build_passed": true,
+    "smoke_passed": true,
+    "steps": {
+      "preflight": {
+        "project_linked": true,
+        "project_link": {
+          "projectId": "prj_wgIlfYoSBo5JhzHxMsbq2tkMuRSE",
+          "orgId": "team_ymP7hXN4fp3LhhJcD5bdYJtv",
+          "projectName": "agw-website"
+        },
+        "vercel_user": "vortimedia",
+        "nextjs_version": "16.2.3",
+        "blocker_type": null,
+        "errors": []
+      },
+      "asset_audit": {
+        "flagged_images": [],
+        "missing_references": [],
+        "blocker_type": null,
+        "errors": []
+      },
+      "env_sync": {
+        "skipped": true
+      },
+      "build": {
+        "elapsed_seconds": 3.43,
+        "blocker_type": null,
+        "errors": []
+      },
+      "deploy": {
+        "target": "preview",
+        "elapsed_seconds": 33.93,
+        "blocker_type": null,
+        "errors": [],
+        "deploy_command": "vercel deploy --yes --target preview"
+      },
+      "smoke": {
+        "results": [
+          {
+            "path": "/",
+            "expected": 200,
+            "actual": 200,
+            "ok": true,
+            "elapsed_ms": 236.2
+          },
+          {
+            "path": "/sitemap.xml",
+            "expected": 200,
+            "actual": 200,
+            "ok": true,
+            "elapsed_ms": 113.5
+          },
+          {
+            "path": "/robots.txt",
+            "expected": 200,
+            "actual": 200,
+            "ok": true,
+            "elapsed_ms": 152.1
+          }
+        ],
+        "blocker_type": null,
+        "errors": []
+      }
+    }
+  }
+}

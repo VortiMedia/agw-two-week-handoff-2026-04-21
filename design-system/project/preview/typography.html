@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Typography — AGW</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; }
+  body {
+    background: var(--agw-cream);
+    color: var(--agw-ink);
+    font-family: var(--font-sans);
+    padding: 56px 64px;
+    min-height: 100vh;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Guardrails for the display face — Playfair's fi/fl ligatures render
+     the f and i touching at display sizes, so we turn ligatures OFF entirely
+     on Playfair and let kerning handle the spacing. */
+  .display, .display *,
+  .header-title, .header-title *,
+  .role-card.display .specimen, .role-card.display .specimen *,
+  .sp-display-xl, .sp-display-xl *,
+  .sp-display-lg, .sp-display-lg *,
+  .pairing h2, .pairing h2 *,
+  .rule .num {
+    font-feature-settings: "kern" 1, "liga" 0, "clig" 0, "dlig" 0;
+    font-variant-ligatures: no-common-ligatures no-discretionary-ligatures no-contextual;
+  }
+
+  /* ========== Header ========== */
+  .header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--agw-bone);
+    padding-bottom: 24px; margin-bottom: 56px;
+  }
+  .header-title {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 44px; line-height: 1.18; letter-spacing: -0.015em;
+    margin: 0; color: var(--agw-blue-ink);
+  }
+  .header-title em { color: var(--agw-blue); font-style: italic; font-weight: 700; }
+  .kicker {
+    font-family: var(--font-sans); font-weight: 600; font-size: 13px;
+    letter-spacing: 0.01em; color: var(--agw-blue); margin-bottom: 10px;
+  }
+  .kicker.muted { color: var(--agw-ink-mute); }
+
+  /* ========== Section labels ========== */
+  .section-label {
+    font-family: var(--font-sans); font-weight: 600; font-size: 13px;
+    letter-spacing: 0.01em; color: var(--agw-ink-soft);
+    margin: 0 0 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before {
+    content: ""; width: 20px; height: 1px; background: var(--agw-ink-soft);
+  }
+
+  /* ========== Roles ========== */
+  .roles {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;
+    margin-bottom: 72px;
+  }
+  .role-card {
+    background: var(--agw-paper); border: 1px solid var(--agw-bone);
+    border-radius: var(--radius-md); padding: 40px 40px 36px;
+    position: relative; display: flex; flex-direction: column;
+  }
+  .role-card .pct {
+    position: absolute; top: 24px; right: 32px;
+    font-family: var(--font-sans); font-weight: 600; font-size: 12px;
+    color: var(--agw-ink-mute); letter-spacing: 0.01em;
+  }
+  .role-card .pct strong { color: var(--agw-blue-ink); font-weight: 700; }
+  .role-card .face-name {
+    font-family: var(--font-sans); font-weight: 600; font-size: 13px;
+    color: var(--agw-blue); letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+  .role-card .role {
+    font-family: var(--font-sans); font-weight: 500; font-size: 14px;
+    color: var(--agw-ink-soft); margin: 0 0 24px;
+  }
+
+  .role-card.display .specimen {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 96px; line-height: 1.05; letter-spacing: -0.01em;
+    color: var(--agw-blue-ink); margin: 4px 0 16px;
+    font-feature-settings: "kern" 1, "liga" 0, "clig" 0, "dlig" 0;
+  }
+  .role-card.display .specimen em {
+    color: var(--agw-blue); font-style: italic; font-weight: 700;
+    padding-left: 0.08em; /* prevents italic descenders from crashing into roman letters */
+    font-feature-settings: "kern" 1, "liga" 0, "clig" 0, "dlig" 0;
+    font-variant-ligatures: none;
+  }
+  .role-card.display .blurb {
+    font-family: var(--font-sans); font-size: 14px; line-height: 1.6;
+    color: var(--agw-ink-soft); margin: 20px 0 24px; max-width: 44ch;
+  }
+  .role-card.display .rules-line {
+    display: flex; gap: 24px; padding-top: 20px;
+    border-top: 1px solid var(--agw-bone);
+    font-family: var(--font-sans); font-size: 12px; color: var(--agw-ink-soft);
+  }
+  .role-card.display .rules-line span { display: inline-flex; align-items: center; gap: 6px; }
+  .role-card.display .rules-line b { color: var(--agw-blue-ink); font-weight: 600; }
+
+  .role-card.body .specimen {
+    font-family: var(--font-sans); font-weight: 500;
+    font-size: 64px; line-height: 1.05; letter-spacing: -0.015em;
+    color: var(--agw-blue-ink); margin: 4px 0 24px;
+  }
+  .role-card.body .sample {
+    font-family: var(--font-sans); font-size: 15px; line-height: 1.65;
+    color: var(--agw-ink); margin: 0 0 20px; max-width: 38ch;
+  }
+  .role-card.body .weights {
+    display: flex; flex-wrap: wrap; gap: 18px; padding-top: 20px;
+    border-top: 1px solid var(--agw-bone);
+    font-family: var(--font-sans); font-size: 14px; color: var(--agw-ink-soft);
+  }
+  .role-card.body .weights span.strong { color: var(--agw-blue-ink); font-weight: 600; }
+
+  /* ========== Scale ========== */
+  .scale {
+    background: var(--agw-paper); border: 1px solid var(--agw-bone);
+    border-radius: var(--radius-md); padding: 8px 40px; margin-bottom: 72px;
+  }
+  .scale-row {
+    display: grid; grid-template-columns: 160px 1fr; align-items: baseline;
+    padding: 24px 0; border-bottom: 1px dashed var(--agw-bone); gap: 32px;
+  }
+  .scale-row:last-child { border-bottom: none; }
+  .scale-meta strong {
+    display: block; font-family: var(--font-sans); font-weight: 600;
+    font-size: 14px; color: var(--agw-blue-ink); letter-spacing: 0;
+    margin-bottom: 4px;
+  }
+  .scale-meta .family {
+    font-family: var(--font-sans); font-size: 12px; color: var(--agw-ink-soft);
+    display: block; margin-bottom: 4px;
+  }
+  .scale-meta .spec {
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 11px; color: var(--agw-ink-mute);
+  }
+
+  .sp-display-xl { font-family: var(--font-display); font-weight: 700; font-size: 72px; line-height: 1.12; letter-spacing: -0.02em; color: var(--agw-blue-ink); max-width: 14ch; }
+  .sp-display-xl em { color: var(--agw-blue); font-style: italic; padding-left: 0.06em; }
+  .sp-display-lg { font-family: var(--font-display); font-weight: 700; font-size: 48px; line-height: 1.18; letter-spacing: -0.018em; color: var(--agw-blue-ink); }
+  .sp-display-md { font-family: var(--font-sans); font-weight: 600; font-size: 28px; line-height: 1.25; letter-spacing: -0.01em; color: var(--agw-blue-ink); }
+  .sp-display-sm { font-family: var(--font-sans); font-weight: 600; font-size: 20px; line-height: 1.35; color: var(--agw-blue-ink); }
+  .sp-body-lg { font-family: var(--font-sans); font-weight: 400; font-size: 19px; line-height: 1.6; color: var(--agw-ink); max-width: 56ch; }
+  .sp-body { font-family: var(--font-sans); font-weight: 400; font-size: 16px; line-height: 1.6; color: var(--agw-ink); max-width: 56ch; }
+  .sp-body-sm { font-family: var(--font-sans); font-weight: 400; font-size: 14px; line-height: 1.55; color: var(--agw-ink-soft); max-width: 56ch; }
+  .sp-label { font-family: var(--font-sans); font-weight: 500; font-size: 14px; letter-spacing: 0.01em; color: var(--agw-ink); }
+  .sp-caption { font-family: var(--font-sans); font-weight: 400; font-size: 12px; line-height: 1.55; color: var(--agw-ink-mute); }
+
+  /* ========== Pairing ========== */
+  .pairing {
+    background: var(--agw-cream-warm); border-radius: var(--radius-md);
+    padding: 64px 56px; margin-bottom: 72px;
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: center;
+  }
+  .pairing h2 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 56px; line-height: 1.18; letter-spacing: -0.02em;
+    margin: 12px 0 20px; color: var(--agw-blue-ink); max-width: 14ch;
+  }
+  .pairing h2 em { color: var(--agw-blue); font-style: italic; padding-left: 0.06em; }
+  .pairing p {
+    font-family: var(--font-sans); font-size: 17px; line-height: 1.6;
+    color: var(--agw-ink); margin: 0 0 20px; max-width: 48ch;
+  }
+  .pairing .cta {
+    font-family: var(--font-sans); font-weight: 600; font-size: 14px;
+    color: var(--agw-blue); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .pairing .right-stack {
+    display: flex; flex-direction: column; gap: 18px;
+    padding: 28px; background: var(--agw-paper);
+    border-radius: var(--radius-sm); border: 1px solid var(--agw-bone);
+  }
+  .pairing .right-stack .kicker { margin-bottom: 0; }
+  .pairing .right-stack .fieldline {
+    font-family: var(--font-sans); font-weight: 600; font-size: 13px;
+    color: var(--agw-ink-soft); letter-spacing: 0.01em;
+  }
+  .pairing .right-stack .fieldline + input {
+    border: 1px solid var(--agw-bone); border-radius: var(--radius-sm);
+    padding: 10px 14px; font-family: var(--font-sans); font-size: 14px;
+    background: var(--agw-ivory); color: var(--agw-ink);
+    margin-top: -10px;
+  }
+  .pairing .right-stack .btn {
+    margin-top: 8px; background: var(--agw-blue); color: var(--agw-ivory);
+    border: none; border-radius: var(--radius-sm); padding: 14px 20px;
+    font-family: var(--font-sans); font-weight: 600; font-size: 14px;
+    cursor: pointer; text-align: center;
+  }
+
+  /* ========== Rules ========== */
+  .rules {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    margin-bottom: 40px;
+  }
+  .rule {
+    padding: 28px; background: var(--agw-paper);
+    border: 1px solid var(--agw-bone); border-radius: var(--radius-sm);
+  }
+  .rule .num {
+    font-family: var(--font-display); font-weight: 700; font-size: 32px;
+    color: var(--agw-blue); margin-bottom: 16px; line-height: 1;
+    font-style: italic;
+  }
+  .rule h3 {
+    font-family: var(--font-sans); font-weight: 600; font-size: 16px;
+    margin: 0 0 10px; color: var(--agw-blue-ink); letter-spacing: -0.005em;
+  }
+  .rule p {
+    font-family: var(--font-sans); font-size: 13px; line-height: 1.6;
+    color: var(--agw-ink-soft); margin: 0;
+  }
+
+  /* ========== Print/heritage note ========== */
+  .heritage-note {
+    background: var(--agw-blue-ink); color: var(--agw-ivory);
+    padding: 32px 40px; border-radius: var(--radius-md);
+    display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
+  }
+  .heritage-note .seal {
+    font-family: "Minion", "Minion Pro", Georgia, serif;
+    font-style: italic; font-weight: 400; font-size: 56px;
+    line-height: 1; color: var(--agw-celeste);
+  }
+  .heritage-note h4 {
+    font-family: var(--font-sans); font-weight: 600; font-size: 15px;
+    margin: 0 0 6px; letter-spacing: 0.01em;
+  }
+  .heritage-note p {
+    font-family: var(--font-sans); font-size: 13px; line-height: 1.6;
+    color: rgba(249,248,242,0.75); margin: 0; max-width: 68ch;
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <div class="kicker">Design system &middot; Typography</div>
+      <h1 class="header-title">Two roles. <em>One hierarchy.</em></h1>
+    </div>
+    <div class="kicker muted">Established 1906</div>
+  </header>
+
+  <!-- Roles -->
+  <div class="section-label">How the two faces split the work</div>
+  <div class="roles">
+    <div class="role-card display">
+      <div class="pct">Used for <strong>~15%</strong> of type on page</div>
+      <div class="face-name">Playfair Display</div>
+      <p class="role">The headline voice &mdash; sparingly.</p>
+      <div class="specimen">A home, <em>f&zwnj;inished.</em></div>
+      <p class="blurb">Playfair is reserved for the top of each section and one standout phrase per page. It sets tone, but it doesn't do the reading. Keep it at 28px and up, always at heavier weights (700+), and always paired with generous line-height so the italic descenders don't crash into the line above.</p>
+      <div class="rules-line">
+        <span><b>Min size</b> 28px</span>
+        <span><b>Min leading</b> 1.15</span>
+        <span><b>Weights</b> 700, 900</span>
+      </div>
+    </div>
+
+    <div class="role-card body">
+      <div class="pct"><strong>~85%</strong> of type on page</div>
+      <div class="face-name">Poppins</div>
+      <p class="role">Everything else &mdash; and proud of it.</p>
+      <div class="specimen">Ag</div>
+      <p class="sample">Poppins handles body copy, buttons, forms, nav, labels, captions, sub-headlines, and any UI surface. It's the paint on the walls &mdash; unremarkable on purpose, so the content underneath can breathe.</p>
+      <div class="weights">
+        <span>Regular</span>
+        <span>Italic</span>
+        <span class="strong">Medium</span>
+        <span class="strong">Semibold</span>
+        <span class="strong">Bold</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scale -->
+  <div class="section-label">Type scale</div>
+  <div class="scale">
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Display XL</strong><span class="family">Playfair Display</span><span class="spec">72 / 1.12 / -2%</span></div>
+      <div class="sp-display-xl">Paint that <em>outlasts the weather.</em></div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Display LG</strong><span class="family">Playfair Display</span><span class="spec">48 / 1.18 / -1.8%</span></div>
+      <div class="sp-display-lg">Four generations of painters.</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Heading MD</strong><span class="family">Poppins Semibold</span><span class="spec">28 / 1.25 / -1%</span></div>
+      <div class="sp-display-md">A palette built for the block you live on.</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Heading SM</strong><span class="family">Poppins Semibold</span><span class="spec">20 / 1.35 / 0</span></div>
+      <div class="sp-display-sm">Every house starts with the same walk-through.</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Body LG</strong><span class="family">Poppins Regular</span><span class="spec">19 / 1.6 / 0</span></div>
+      <div class="sp-body-lg">A lead-in paragraph &mdash; two or three lines, never more. The goal is to set the rest of the page up, not to answer every question at once.</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Body</strong><span class="family">Poppins Regular</span><span class="spec">16 / 1.6 / 0</span></div>
+      <div class="sp-body">The default for running copy. Every AGW paragraph should be readable at arm's length on a phone and at a desk on a laptop, without zooming. Sixteen-pixel floor.</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Body SM</strong><span class="family">Poppins Regular</span><span class="spec">14 / 1.55 / 0</span></div>
+      <div class="sp-body-sm">Secondary text &mdash; the sentence under a label, the fine print under a photo, the helper under a form field.</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Label</strong><span class="family">Poppins Medium</span><span class="spec">14 / 1.4 / +1%</span></div>
+      <div class="sp-label">Estimate &middot; 2025-1471</div>
+    </div>
+    <div class="scale-row">
+      <div class="scale-meta"><strong>Caption</strong><span class="family">Poppins Regular</span><span class="spec">12 / 1.55 / 0</span></div>
+      <div class="sp-caption">1906 &mdash; A.G. Williams opens a one-man shop on Main Street.</div>
+    </div>
+  </div>
+
+  <!-- Pairing -->
+  <div class="section-label">In practice</div>
+  <div class="pairing">
+    <div>
+      <div class="kicker">Interior &middot; whole-house</div>
+      <h2>Your walls remember everything.</h2>
+      <p>A proper interior job takes a week, sometimes two. We move the furniture, patch what the last painter skipped, hand-sand the baseboards, and cut the lines ourselves. Two coats of Benjamin Moore Regal Select, a satin sheen unless you tell us otherwise.</p>
+      <a class="cta" href="#">Get an estimate &rarr;</a>
+    </div>
+    <div class="right-stack">
+      <div class="kicker">Request an estimate</div>
+      <div class="fieldline">Full name</div>
+      <input type="text" value="Margaret Holloway" readonly>
+      <div class="fieldline">Email</div>
+      <input type="text" value="margaret@example.com" readonly>
+      <button class="btn">Request my free estimate &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div class="section-label">Four rules that keep type honest</div>
+  <div class="rules">
+    <div class="rule">
+      <div class="num">1</div>
+      <h3>Playfair is a guest, not the host.</h3>
+      <p>Limit Playfair to the page's big statement and one or two section heads. Poppins carries everything else &mdash; never run Playfair as body copy.</p>
+    </div>
+    <div class="rule">
+      <div class="num">2</div>
+      <h3>One italic per headline.</h3>
+      <p>Italic Playfair is an emphasis, not a style. One phrase per headline, always in brand blue, and never a full sentence.</p>
+    </div>
+    <div class="rule">
+      <div class="num">3</div>
+      <h3>Watch the descenders.</h3>
+      <p>At display size, italic <em>f</em>, <em>j</em>, and <em>p</em> reach below the baseline. Use line-height 1.15 minimum, and add 0.06em of padding-left on italic spans to keep them off the preceding character.</p>
+    </div>
+    <div class="rule">
+      <div class="num">4</div>
+      <h3>Sentence case, not all-caps.</h3>
+      <p>Eyebrows, labels, and nav items stay in natural case. If a label needs to shout, make it larger or bolder &mdash; don't capitalize it.</p>
+    </div>
+  </div>
+
+  <!-- Heritage note -->
+  <div class="heritage-note">
+    <div class="seal">Ag</div>
+    <div>
+      <h4>Minion stays with the print shop.</h4>
+      <p>Minion Pro remains the heritage mark &mdash; it lives on the certificate of warranty, packaging, business cards, and the wordmark lock-up. Keep it out of screens: it's designed for ink on paper, and its tight spacing produces the <em>fi</em> and <em>fl</em> collisions you see on display monitors. Playfair Display is the screen voice.</p>
+    </div>
+  </div>
+
+</body>
+</html>

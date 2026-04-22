@@ -11,7 +11,7 @@ This repository is the GitHub handoff point for the A.G. Williams workstream. Us
 ## First Rules
 
 1. Clone or pull the GitHub repo fresh.
-2. Treat `projects/agw/website-review-build/` as the canonical app.
+2. Treat `./` as the canonical app.
 3. Treat `projects/agw/live-site-reference/` as archive/reference unless explicitly needed.
 4. Do not edit both app copies in parallel.
 5. Push often so handoff between systems stays clean.
@@ -41,12 +41,12 @@ Use a branch for each implementation pass and merge back after verification.
 - `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md`
 - `AGW_Website_Brand_Reference.docx`
 - `claude-design/`
-- `projects/agw/website-review-build/`
+- `./`
 - `skills/`
 
 ## Canonical App
 
-- Canonical app: `projects/agw/website-review-build/`
+- Canonical app: `./`
 - Purpose: active implementation base for the next production-readiness pass
 - `live-site-reference/` is useful for comparison, content recovery, and production reference only
 

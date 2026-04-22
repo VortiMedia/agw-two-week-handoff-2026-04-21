@@ -5,7 +5,7 @@ Scope: everything AGW-related that was active or imported into this repo for the
 ## What Was Consolidated
 
 - Imported the live AGW site source into `projects/agw/live-site-reference/`
-- Moved the AGW review build out of `tmp/` into `projects/agw/website-review-build/`
+- Moved the AGW review build out of `tmp/` into `./`
 - Moved loose root AGW screenshots into `assets/agw/screenshots/2026-04-17-to-2026-04-20/`
 - Moved AGW QA renders and state JSON into `artifacts/agw/qa/`
 - Moved AGW audit source folders out of `tmp/` into `artifacts/agw/`
@@ -46,7 +46,7 @@ Scope: everything AGW-related that was active or imported into this repo for the
 These are current file counts after consolidation:
 
 - `projects/agw/live-site-reference/` — 144 files
-- `projects/agw/website-review-build/` — 157 files
+- `./` — 157 files
 - `assets/agw/` — 719 files
 - `artifacts/agw/` — 79 files
 - `content/agw/` — 3 files
@@ -76,7 +76,7 @@ These are current file counts after consolidation:
 
 - Imported source trees
   - `projects/agw/live-site-reference/src/`
-  - `projects/agw/website-review-build/src/`
+  - `./src/`
 
 ## External Source Note
 
@@ -89,6 +89,6 @@ I did not find additional AGW files touched in the last two weeks under `/Users/
 ## Current Handoff State
 
 - GitHub repo is live and public
-- `projects/agw/website-review-build/` is the canonical app for future implementation passes
+- `./` is the canonical app for future implementation passes
 - `projects/agw/live-site-reference/` should be treated as reference/archive unless explicitly needed
 - Root handoff instructions now live in `HANDOFF_FOR_OTHER_AI.md`

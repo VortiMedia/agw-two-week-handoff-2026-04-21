@@ -1,40 +1,36 @@
-# AGW Two-Week Handoff
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Public export of A.G. Williams work consolidated from the `2026-04-07` through `2026-04-21` window.
+## Getting Started
 
-## Included
+First, run the development server:
 
-- `assets/agw/`
-  - Canonical brand assets
-  - Proposal PDFs and related docs
-  - Raw, curated, and selected photo sets
-  - Review screenshots
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-- `artifacts/agw/`
-  - Audit captures
-  - QA renders
-  - Patch exports
-  - Asset-review images
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- `content/agw/`
-  - Site audit
-  - Revision log
-  - Inventory index
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- `projects/agw/live-site-reference/`
-  - Production-oriented AGW site snapshot
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-- `projects/agw/website-review-build/`
-  - Review-build snapshot used during the iteration pass
+## Learn More
 
-## Notes
+To learn more about Next.js, take a look at the following resources:
 
-- This export was cut from a larger internal workspace so unrelated workspace files were intentionally excluded.
-- Duplicate `brand-assets/` and `brand-kit/` folders inside the project snapshots were not copied because the canonical copies already live under `assets/agw/brand/`.
-- Local build caches and local deployment junk were not included.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Start Here
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-- `content/agw/INDEX.md`
-- `HANDOFF_FOR_OTHER_AI.md`
-- `skills/README.md`
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
