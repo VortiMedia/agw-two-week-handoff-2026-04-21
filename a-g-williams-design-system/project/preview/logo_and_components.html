@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Logo & Brand — AGW</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; }
+  body {
+    background: var(--agw-cream);
+    color: var(--agw-ink);
+    font-family: var(--font-sans);
+    padding: 56px 64px;
+    min-height: 100vh;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: var(--border-hair);
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+  }
+  .header-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 40px;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .header-title em { color: var(--agw-blue); font-style: italic; font-weight: 400; }
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--agw-blue);
+    margin-bottom: 12px;
+  }
+  .section-label {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--agw-ink-mute);
+    margin-bottom: 20px;
+  }
+
+  /* Logo showcase */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .logo-cell {
+    background: var(--agw-paper);
+    border: var(--border-hair);
+    border-radius: var(--radius-sm);
+    padding: 40px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 280px;
+    position: relative;
+  }
+  .logo-cell img { max-width: 100%; max-height: 180px; }
+  .logo-cell.dark { background: var(--agw-blue); }
+  .logo-cell .caption {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--agw-bone);
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--agw-ink-mute);
+  }
+  .logo-cell.dark .caption { color: rgba(255,255,255,0.7); border-top-color: rgba(255,255,255,0.15); }
+  .logo-cell .filename {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--agw-ink-mute);
+    margin-top: 4px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .logo-cell.dark .filename { color: rgba(255,255,255,0.5); }
+
+  /* Icons */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    background: var(--agw-paper);
+    border: var(--border-hair);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    margin-bottom: 56px;
+  }
+  .icon-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    border-radius: var(--radius-xs);
+    transition: background 0.18s ease;
+  }
+  .icon-cell:hover { background: var(--agw-cream); }
+  .icon-cell img {
+    width: 100%; height: 100%; object-fit: contain;
+    /* Recolor the green PNGs to AGW blue (#0063B0) — flatten to black first, then tint. */
+    filter: brightness(0) saturate(100%) invert(25%) sepia(93%) saturate(1769%) hue-rotate(189deg) brightness(93%) contrast(101%);
+  }
+
+  /* Components */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .comp-card {
+    background: var(--agw-paper);
+    border: var(--border-hair);
+    border-radius: var(--radius-sm);
+    padding: 32px;
+  }
+  .comp-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--agw-ink-mute);
+    margin: 0 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--agw-bone);
+  }
+
+  /* Buttons */
+  .btn {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    padding: 16px 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.18s ease, color 0.18s ease;
+    min-height: 52px;
+  }
+  .btn-primary {
+    background: var(--agw-blue);
+    color: var(--agw-cream);
+    font-size: 16px;
+    padding: 18px 34px;
+    font-weight: 700;
+    border-radius: 8px;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 10px 24px -10px rgba(0, 99, 176, 0.55), inset 0 -2px 0 rgba(0,0,0,0.12);
+  }
+  .btn-primary:hover {
+    background: var(--agw-blue-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px -10px rgba(0, 99, 176, 0.65), inset 0 -2px 0 rgba(0,0,0,0.18);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    background: var(--agw-cream);
+    color: var(--agw-blue-ink);
+    border-color: var(--agw-bone);
+    border-radius: 8px;
+    justify-content: center;
+    text-align: center;
+  }
+  .btn-secondary:hover { border-color: var(--agw-blue); color: var(--agw-blue); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--agw-blue);
+    padding: 16px 4px;
+    min-height: 0;
+    font-weight: 600;
+  }
+  .btn-ghost::after { content: "→"; margin-left: 4px; transition: transform 0.18s ease; }
+  .btn-ghost:hover { color: var(--agw-blue-deep); }
+  .btn-ghost:hover::after { transform: translateX(3px); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .btn-note {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--agw-ink-mute);
+    letter-spacing: 0.01em;
+  }
+
+  /* Input */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field label {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--agw-ink-soft);
+  }
+  .field input, .field select {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    padding: 13px 14px;
+    border: 1px solid var(--agw-ink-mute);
+    border-radius: var(--radius-sm);
+    background: var(--agw-paper);
+    color: var(--agw-ink);
+    transition: border 0.15s, box-shadow 0.15s;
+  }
+  .field input:hover, .field select:hover {
+    border-color: var(--agw-ink-soft);
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--agw-blue);
+    background: var(--agw-paper);
+    box-shadow: 0 0 0 3px rgba(0, 99, 176, 0.15);
+  }
+  .field select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23004B85' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+  }
+  .field-stack { display: grid; gap: 16px; }
+
+  /* Chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.005em;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--agw-paper);
+    color: var(--agw-ink);
+    border: 1px solid var(--agw-bone);
+  }
+  .chip-blue { background: rgba(0, 99, 176, 0.08); color: var(--agw-blue); border-color: rgba(0, 99, 176, 0.2); }
+  .chip-green { background: rgba(13, 142, 73, 0.08); color: var(--agw-green); border-color: rgba(13, 142, 73, 0.2); }
+
+
+  /* Feature tile */
+  .feature-tile {
+    border: var(--border-hair);
+    border-radius: var(--radius-sm);
+    padding: 28px;
+    background: var(--agw-paper);
+  }
+  .feature-tile img { width: 56px; height: 56px; margin-bottom: 16px; }
+  .feature-tile h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 22px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .feature-tile p {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--agw-ink-soft);
+    margin: 0;
+  }
+
+  /* Quote */
+  .quote-block {
+    background: var(--agw-cream-warm);
+    border-radius: var(--radius-md);
+    padding: 40px 48px;
+    position: relative;
+  }
+  .quote-block::before {
+    content: "\201C";
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 120px;
+    color: var(--agw-blue);
+    position: absolute;
+    top: 8px;
+    left: 20px;
+    line-height: 1;
+    opacity: 0.18;
+  }
+  .quote-block blockquote {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--agw-ink);
+    margin: 0 0 20px;
+    padding-left: 16px;
+  }
+  .quote-block cite {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--agw-ink-soft);
+    font-style: normal;
+    padding-left: 16px;
+  }
+
+  /* Pattern swatches */
+  .pattern-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .pattern-cell {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: var(--border-hair);
+    position: relative;
+    aspect-ratio: 3 / 1.2;
+  }
+  .pattern-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pattern-label {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    background: var(--agw-cream);
+    border-radius: var(--radius-xs);
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <div class="eyebrow">Design System · Brand Elements</div>
+      <h1 class="header-title">Logos, icons, and the <em>rest of the house</em>.</h1>
+    </div>
+    <div class="eyebrow" style="color: var(--agw-ink-mute)">Est. 1906</div>
+  </header>
+
+  <div class="section-label">Logo lockups</div>
+  <div class="logo-grid">
+    <div class="logo-cell">
+      <img src="../assets/logo-horizontal-blue.svg?v=2" alt="Horizontal blue">
+      <div class="caption">Horizontal · Default<div class="filename">logo-horizontal-blue.svg</div></div>
+    </div>
+    <div class="logo-cell">
+      <img src="../assets/logo-vertical-blue.svg?v=2" alt="Vertical blue">
+      <div class="caption">Vertical<div class="filename">logo-vertical-blue.svg</div></div>
+    </div>
+    <div class="logo-cell">
+      <img src="../assets/logo-badge-blue.svg?v=2" alt="Badge blue">
+      <div class="caption">Badge · Est. 1906<div class="filename">logo-badge-blue.svg</div></div>
+    </div>
+    <div class="logo-cell">
+      <img src="../assets/logo-icon-blue.svg?v=2" alt="Icon blue">
+      <div class="caption">Monogram<div class="filename">logo-icon-blue.svg</div></div>
+    </div>
+    <div class="logo-cell dark" style="grid-column: span 2">
+      <img src="../assets/logo-horizontal-white.svg?v=2" alt="Horizontal white">
+      <div class="caption">Reverse · On Blue<div class="filename">logo-horizontal-white.svg</div></div>
+    </div>
+    <div class="logo-cell">
+      <img src="../assets/logo-icon-green.svg?v=2" alt="Icon green">
+      <div class="caption">Monogram · Green<div class="filename">logo-icon-green.svg</div></div>
+    </div>
+    <div class="logo-cell dark">
+      <img src="../assets/logo-icon-white.svg?v=2" alt="Icon white">
+      <div class="caption">Monogram · Reverse<div class="filename">logo-icon-white.svg</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Iconography · 24 hand-drawn outlines, always in AGW blue</div>
+  <div class="icon-grid">
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (1).png" alt="brush"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (2).png" alt="feather"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (3).png" alt="roller"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (4).png" alt="swatches"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (5).png" alt="trestle"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (6).png" alt="lightbulb"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (7).png" alt="paint can"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (8).png" alt="idea"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (9).png" alt="docs"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (10).png" alt="spray"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (11).png" alt="dropper"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (12).png" alt="camera"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (13).png" alt="pencil"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (14).png" alt="ruler"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (15).png" alt="estimate"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (16).png" alt="hand brush"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (17).png" alt="droppers"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (18).png" alt="scissors"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (19).png" alt="swatch fan"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (20).png" alt="order"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (21).png" alt="palette"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (22).png" alt="ink bottles"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (23).png" alt="frame"></div>
+    <div class="icon-cell"><img src="../assets/agw/brand/icons/PNG Files/Icons (24).png" alt="ladder"></div>
+  </div>
+
+  <div class="section-label">Components</div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <p class="comp-title">Buttons</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#">Get your free estimate</a>
+        <a class="btn btn-secondary" href="#">See our work</a>
+        <a class="btn btn-ghost" href="#">Call the shop</a>
+      </div>
+      <span class="btn-note">Primary CTA · 5-year warranty · 0% financing · no obligation</span>
+    </div>
+    <div class="comp-card">
+      <p class="comp-title">Chips</p>
+      <div class="btn-row">
+        <span class="chip">Exterior</span>
+        <span class="chip chip-blue">Booked</span>
+        <span class="chip chip-green">Estimate confirmed</span>
+        <span class="chip">Historic restoration</span>
+        <span class="chip">Cabinetry</span>
+      </div>
+    </div>
+    <div class="comp-card">
+      <p class="comp-title">Form field</p>
+      <div class="field-stack">
+        <div class="field">
+          <label>Your address</label>
+          <input type="text" value="114 Beech Ave, Bronxville, NY" readonly>
+        </div>
+        <div class="field">
+          <label>Project type</label>
+          <select><option>Interior · whole-house</option><option>Exterior · full</option><option>Historic restoration</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <p class="comp-title">Feature tile</p>
+      <div class="feature-tile">
+        <img src="../assets/agw/brand/icons/PNG Files/Icons (3).png" alt="roller">
+        <h4>Two coats, always.</h4>
+        <p>Primer where it's needed, two finish coats everywhere. We do not bid one-coat jobs, and we will not be the cheapest quote on your desk.</p>
+      </div>
+    </div>
+    <div class="comp-card" style="grid-column: span 2">
+      <p class="comp-title">Pull quote</p>
+      <div class="quote-block">
+        <blockquote>The only contractor on our block whose work from ten years ago still looks like the day they packed up.</blockquote>
+        <cite>Margaret H. — Scarsdale, NY · 2024</cite>
+      </div>
+    </div>
+    <div class="comp-card" style="grid-column: span 2">
+      <p class="comp-title">Patterns</p>
+      <div class="pattern-row">
+        <div class="pattern-cell">
+          <img src="../assets/agw/brand/patterns/Primary Color Pattern/PNG Files/Patterns (1).png">
+          <span class="pattern-label">Monogram · on cream</span>
+        </div>
+        <div class="pattern-cell">
+          <img src="../assets/agw/brand/patterns/Primary Color Pattern/PNG Files/Patterns (3).png">
+          <span class="pattern-label" style="background: rgba(249,248,242,0.92)">Wordmark · on blue</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
