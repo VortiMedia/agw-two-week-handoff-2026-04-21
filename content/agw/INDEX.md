@@ -36,6 +36,7 @@ Scope: everything AGW-related that was active or imported into this repo for the
   - `agw-site-audit-2026-04-17.md`
   - `agw-production-readiness-audit-2026-04-21.md`
   - `agw-master-handoff-notes-2026-04-21.md`
+  - `agw-session-context-2026-04-21.md`
   - `ghl-booking-and-notification-strategy-2026-04-21.md`
   - `round-1-feedback-revision-log.md`
   - `INDEX.md`
@@ -56,6 +57,7 @@ These are current file counts after consolidation:
   - `content/agw/agw-site-audit-2026-04-17.md`
   - `content/agw/agw-production-readiness-audit-2026-04-21.md`
   - `content/agw/agw-master-handoff-notes-2026-04-21.md`
+  - `content/agw/agw-session-context-2026-04-21.md`
   - `content/agw/ghl-booking-and-notification-strategy-2026-04-21.md`
   - `content/agw/round-1-feedback-revision-log.md`
 
