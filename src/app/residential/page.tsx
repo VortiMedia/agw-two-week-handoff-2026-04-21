@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import { FaqList } from "@/components/faq-list";
-import { ServiceCtaBand } from "@/components/service-cta-band";
-import { ServicePageHero } from "@/components/service-page-hero";
-import { SiteShell } from "@/components/site-shell";
-import { TrackedLink } from "@/components/tracked-link";
+import { Button } from "@/components/agw/button";
+import { SiteShell } from "@/components/agw/site-shell";
 import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
 import { buildPageMetadata } from "@/lib/seo";
-import {
-  CONTACT,
-  QUOTE_URL,
-  RESIDENTIAL_FAQS,
-  RESIDENTIAL_SERVICES,
-  RESIDENTIAL_WALKTHROUGH_POINTS,
-  SERVICE_AREAS,
-} from "@/lib/site-data";
+import { QUOTE_URL, RESIDENTIAL_SERVICES } from "@/lib/site-data";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Residential Painting and Fine Finish Work | A.G. Williams",
@@ -35,201 +24,106 @@ export const metadata: Metadata = buildPageMetadata({
   },
 });
 
-const [interiorExteriorService, cabinetService, wallpaperService] = RESIDENTIAL_SERVICES;
-
-const serviceGallery = [
-  {
-    service: interiorExteriorService,
-    image: AGW_CURATED_PHOTOS.homeExteriorFairfield,
-    imageAlt: "Exterior home painting completed by A.G. Williams",
-  },
-  {
-    service: cabinetService,
-    image: AGW_CURATED_PHOTOS.cabinetKitchen,
-    imageAlt: "Kitchen cabinet finish work completed by A.G. Williams",
-  },
-  {
-    service: wallpaperService,
-    image: AGW_CURATED_PHOTOS.residentialHeroRoom,
-    imageAlt: "Detailed residential interior finish work completed by A.G. Williams",
-  },
-] as const;
+const services = RESIDENTIAL_SERVICES.slice(0, 3);
 
 export default function ResidentialPage() {
   return (
     <SiteShell currentPath="/residential">
       <main>
-        <ServicePageHero
-          trackingContext="residential"
-          eyebrow="Residential painting"
-          title="Residential painting, cabinet work, and fine finishes built around a walkthrough."
-          description="A.G. Williams handles interiors, exteriors, cabinetry, and detail-heavy finish work for homeowners who want the scope reviewed before the estimate and the house protected while the job is underway."
-          primaryCta={{ label: "Schedule a Residential Walkthrough", href: QUOTE_URL }}
-          secondaryCta={{ label: `Call ${CONTACT.mainPhoneLabel}`, href: CONTACT.mainPhoneHref }}
-          highlights={[
-            {
-              label: "Walkthrough first",
-              body: "Rooms, surfaces, prep, and timing are reviewed before pricing.",
-            },
-            {
-              label: "5-year warranty",
-              body: "Residential painting is backed by a real five-year warranty.",
-            },
-            {
-              label: "Full-time crews",
-              body: "Crews used to lived-in homes, protection, and detail-heavy rooms.",
-            },
-          ]}
-          media={{
-            src: AGW_CURATED_PHOTOS.whiteKitchen,
-            alt: "White kitchen cabinetry and millwork finished by A.G. Williams",
-          }}
-          mediaCallout={{
-            eyebrow: "Residential trust",
-            title: "Homes get reviewed first so the proposal reflects the actual rooms.",
-            body: "The office and estimator define what is being painted, how the property is protected, and how the job will sequence before the price is finalized.",
-          }}
-          supportCallout={{
-            eyebrow: "Home protection",
-            title: "Prep, access, and finish expectations are aligned before the house turns into a moving target.",
-            body: "That is how homeowners get a calmer project, a cleaner crew experience, and an estimate tied to the actual property instead of guesswork.",
-          }}
-          proofListTitle="What homeowners want answered first"
-          proofList={[
-            "How the rooms, furnishings, and circulation paths will be protected.",
-            "What cabinet, trim, and detail-heavy prep will happen before paint goes up.",
-            "How the 5-year warranty supports the finish after the work is complete.",
-          ]}
-        />
+        <section className="mx-auto grid w-full max-w-[1440px] gap-12 px-6 py-16 md:px-12 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
+              <span aria-hidden className="h-px w-8 bg-agw-blue" />
+              Residential painting
+            </span>
+            <h1 className="max-w-[13ch] font-display text-[clamp(38px,4.8vw,70px)] font-bold leading-[1.12] tracking-[-0.02em] text-agw-blue-ink">
+              Homes built to hold color for <em className="italic text-agw-blue">years, not seasons.</em>
+            </h1>
+            <p className="mt-6 max-w-[48ch] font-sans text-[18px] leading-[1.65] text-agw-ink">
+              Interior, exterior, cabinetry, and finish-sensitive rooms start with a walkthrough
+              so the estimate reflects the actual house.
+            </p>
+          </div>
 
-        <section className="section-space border-b border-[var(--color-line)] bg-white">
-          <div className="container-shell">
-            <div className="max-w-3xl">
-              <span className="section-label">Residential work</span>
-              <h2 className="section-title mt-4">
-                Interiors, cabinetry, and exterior repainting under one residential process.
+          <div className="relative h-[280px] overflow-hidden rounded-md shadow-lg sm:h-[360px] lg:h-[560px]">
+            <Image
+              src={AGW_CURATED_PHOTOS.whiteKitchen}
+              alt="White kitchen cabinetry and millwork finished by A.G. Williams"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 48vw"
+              className="object-cover"
+            />
+          </div>
+        </section>
+
+        <section className="border-y border-agw-bone bg-white">
+          <div className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-12 md:py-28">
+            <div className="mb-12 grid gap-8 md:grid-cols-2 md:items-end">
+              <h2 className="font-display text-[clamp(38px,4vw,56px)] font-bold leading-[1.15] tracking-[-0.02em] text-agw-blue-ink">
+                Residential work under <em className="italic text-agw-blue">one process.</em>
               </h2>
+              <p className="max-w-[46ch] font-sans text-[16px] leading-7 text-agw-ink">
+                The site visit clarifies rooms, surfaces, protection, access, and finish level
+                before the proposal is written.
+              </p>
             </div>
 
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
-              {serviceGallery.map(({ service, image, imageAlt }) => (
-                <article
-                  key={service.title}
-                  className="overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]"
-                >
-                  <div className="relative aspect-[16/11]">
-                    <Image
-                      src={image}
-                      alt={imageAlt}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 32vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h2 className="card-title text-[clamp(1.45rem,1.8vw,1.9rem)]">
-                      {service.title}
-                    </h2>
-                    <p className="body-copy mt-4">{service.description}</p>
-                  </div>
+            <div className="divide-y divide-agw-bone rounded-md border border-agw-bone bg-agw-paper">
+              {services.map((service) => (
+                <article key={service.title} className="grid gap-4 p-6 md:grid-cols-[0.34fr_0.66fr] md:p-8">
+                  <h3 className="font-display text-[25px] font-bold leading-tight text-agw-blue-ink">
+                    {service.title}
+                  </h3>
+                  <p className="font-sans text-[15px] leading-7 text-agw-ink-soft">
+                    {service.description}
+                  </p>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="section-space border-b border-[var(--color-line)] bg-[rgba(255,255,255,0.76)]">
-          <div className="container-shell grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+        <section className="bg-agw-cream-warm">
+          <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-20 md:px-12 md:py-28 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div>
-              <span className="section-label">Walkthrough before proposal</span>
-              <h2 className="section-title mt-4">The next step is a walkthrough, not a guess.</h2>
-              <p className="body-copy mt-5 max-w-xl">
-                The office starts the process, then A.G. Williams looks at the rooms, surfaces,
-                prep, protection, and timing before the price is written.
-              </p>
-
-              <div className="mt-7 flex flex-wrap items-center gap-4">
-                <TrackedLink
-                  className="button-primary"
-                  href={QUOTE_URL}
-                  tracking={{
-                    event: "quote_cta_click",
-                    location: "residential_walkthrough_section",
-                    label: "Request a Walkthrough",
-                    context: "residential",
-                  }}
-                >
-                  Request a Walkthrough
-                </TrackedLink>
-                <Link
-                  className="text-sm font-semibold text-[var(--color-primary)] transition-opacity hover:opacity-80"
-                  href={CONTACT.mainPhoneHref}
-                >
-                  Call {CONTACT.mainPhoneLabel}
-                </Link>
-              </div>
-            </div>
-
-            <div className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
-              <article className="overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]">
-                <div className="relative aspect-[4/5]">
-                  <Image
-                    src={AGW_CURATED_PHOTOS.residentialProcess}
-                    alt="A.G. Williams reviewing finish and room details during a residential walkthrough"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 28vw"
-                    className="object-cover"
-                  />
-                </div>
-              </article>
-
-              <article className="overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]">
-                <div className="grid gap-4 p-6">
-                  <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                    During the walkthrough
-                  </p>
-                  <ul className="grid gap-4">
-                    {RESIDENTIAL_WALKTHROUGH_POINTS.map((point) => (
-                      <li key={point} className="detail-item">
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className="section-space">
-          <div className="container-shell grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
-            <div>
-              <span className="section-label">Residential FAQs</span>
-              <h2 className="section-title mt-4">
-                The questions homeowners usually want answered before they commit.
+              <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
+                <span aria-hidden className="h-px w-8 bg-agw-blue" />
+                Walkthrough proof
+              </span>
+              <h2 className="font-display text-[clamp(36px,3.8vw,52px)] font-bold leading-[1.15] tracking-[-0.02em] text-agw-blue-ink">
+                The estimate starts in the rooms, not in a template.
               </h2>
-              <p className="body-copy mt-5 max-w-xl">
-                Warranty, service area, timing, and next-step questions usually get handled before
-                the walkthrough is booked.
-              </p>
-              <p className="mt-6 text-sm leading-7 text-[var(--color-text-soft)]">
-                {SERVICE_AREAS.join(" • ")}
-              </p>
             </div>
-
-            <FaqList items={RESIDENTIAL_FAQS} />
+            <div className="divide-y divide-agw-bone rounded-md border border-agw-bone bg-agw-paper">
+              {[
+                "Floors, furnishings, circulation paths, and active living spaces are protected before work starts.",
+                "Trim, cabinets, doors, stairwells, siding, and exterior surfaces get prep details matched to the home.",
+                "The finished residential paint work carries the A.G. Williams five-year warranty.",
+              ].map((item) => (
+                <p key={item} className="p-6 font-sans text-[15px] leading-7 text-agw-ink">
+                  {item}
+                </p>
+              ))}
+            </div>
           </div>
         </section>
 
-        <ServiceCtaBand
-          trackingContext="residential"
-          eyebrow="Residential next step"
-          title="Book the walkthrough with the office before the house gets priced like a generic repaint."
-          body="The first call should route you into the residential lane, define the scope in person, and keep the estimate tied to the rooms, prep, and finish level you actually need."
-          primaryCta={{ label: "Schedule a Residential Walkthrough", href: QUOTE_URL }}
-          secondaryCta={{ label: `Call ${CONTACT.mainPhoneLabel}`, href: CONTACT.mainPhoneHref }}
-          detailItems={["Interior and exterior painting", "Cabinet and fine-finish work", "5-year residential warranty"]}
-        />
+        <section className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-12 md:py-28">
+          <div className="rounded-md bg-agw-blue-ink p-8 text-agw-ivory md:p-12">
+            <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-agw-celeste">
+              Residential next step
+            </p>
+            <div className="mt-5 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+              <h2 className="max-w-[16ch] font-display text-[clamp(36px,4vw,56px)] font-bold leading-[1.12] tracking-[-0.02em]">
+                Start with a walkthrough.
+              </h2>
+              <Button href={QUOTE_URL} variant="inverse">
+                Get your free estimate
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
     </SiteShell>
   );

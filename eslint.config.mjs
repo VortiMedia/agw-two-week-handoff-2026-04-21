@@ -21,6 +21,7 @@ const eslintConfig = defineConfig([
     "brand-kit/**",
     "phase-0/**",
     "skills/**",
+    ".claude/**",
   ]),
 ]);
 

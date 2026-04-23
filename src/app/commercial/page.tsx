@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { ServiceCtaBand } from "@/components/service-cta-band";
-import { ServicePageHero } from "@/components/service-page-hero";
-import { SiteShell } from "@/components/site-shell";
+import Image from "next/image";
+import { Button } from "@/components/agw/button";
+import { SiteShell } from "@/components/agw/site-shell";
 import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
 import { buildPageMetadata } from "@/lib/seo";
 import {
   COMMERCIAL_EXPECTATIONS,
   COMMERCIAL_SERVICES,
-  CONTACT,
   QUOTE_URL,
-  SERVICE_AREAS,
 } from "@/lib/site-data";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -34,170 +32,110 @@ export default function CommercialPage() {
   return (
     <SiteShell currentPath="/commercial">
       <main>
-        <ServicePageHero
-          trackingContext="commercial"
-          eyebrow="Commercial services"
-          title="Commercial painting, fireproofing, and floor coatings for occupied properties."
-          description="A.G. Williams works with owners, facility teams, property managers, and general contractors who need the scope understood early, the schedule protected, and the site kept organized."
-          primaryCta={{ label: "Request a Commercial Consultation", href: QUOTE_URL }}
-          secondaryCta={{ label: `Call ${CONTACT.mainPhoneLabel}`, href: CONTACT.mainPhoneHref }}
-          highlights={[
-            {
-              label: "Scope clarity",
-              body: "Painting, fireproofing, and floor coatings routed through one office.",
-            },
-            {
-              label: "Compliance",
-              body: "Licensed and insured commercial work with documentation ready early.",
-            },
-            {
-              label: "Coordination",
-              body: "Planned around access, occupants, and schedule pressure.",
-            },
-          ]}
-          media={{
-            src: AGW_CURATED_PHOTOS.commercialFloor,
-            alt: "Commercial floor coating project completed by A.G. Williams",
-          }}
-          mediaCallout={{
-            eyebrow: "Commercial trust",
-            title: "Licensed, insured, and built for buyers who need the basics handled cleanly.",
-            body: "Occupied-property scheduling, documentation visibility, and coordination that holds up during the job.",
-          }}
-          supportCallout={{
-            eyebrow: "Commercial routing",
-            title: "One office sorts painting, fireproofing, and floor-coating scopes before crews mobilize.",
-            body: "That keeps buyers out of a vague intake loop and gets access, scheduling, and documentation questions answered while decisions are still cheap.",
-          }}
-          proofListTitle="What gets handled early"
-          proofList={[
-            "Occupied-property sequencing so access and disruption are planned before the first day on site.",
-            "Insurance, certification, and documentation visibility for buyers who need the basics ready early.",
-            "Commercial painting, fireproofing, and floor-coating routing through the same Pelham office.",
-          ]}
-        />
+        <section className="mx-auto grid w-full max-w-[1440px] gap-12 px-6 py-16 md:px-12 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
+              <span aria-hidden className="h-px w-8 bg-agw-blue" />
+              Commercial services
+            </span>
+            <h1 className="max-w-[13ch] font-display text-[clamp(38px,4.8vw,70px)] font-bold leading-[1.12] tracking-[-0.02em] text-agw-blue-ink">
+              Painting, coatings, and fireproofing for <em className="italic text-agw-blue">active properties.</em>
+            </h1>
+            <p className="mt-6 max-w-[48ch] font-sans text-[18px] leading-[1.65] text-agw-ink">
+              A.G. Williams works with owners, facility teams, property managers, and general
+              contractors who need scope, access, and documentation handled early.
+            </p>
+          </div>
 
-        <section className="section-space border-b border-[var(--color-line)] bg-white">
-          <div className="container-shell">
-            <div className="max-w-3xl">
-              <span className="section-label">Service lines</span>
-              <h2 className="section-title mt-4">Commercial scopes A.G. Williams handles regularly.</h2>
-            </div>
-
-            <div className="mt-10 overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]">
-              {COMMERCIAL_SERVICES.map((service, index) => {
-                const isHighlighted = index === 1;
-                const isMuted = index === 2;
-
-                return (
-                  <article
-                    key={service.id}
-                    id={service.id}
-                    className={[
-                      "grid gap-6 p-6 sm:p-8 lg:grid-cols-[0.28fr_0.72fr] lg:items-start",
-                      index === 0 ? "" : "border-t border-[var(--color-line)]",
-                      isHighlighted ? "bg-[var(--color-primary)] text-white" : "",
-                      isMuted ? "bg-[rgba(249,248,242,0.82)]" : "",
-                    ].join(" ")}
-                  >
-                    <div>
-                      <p
-                        className={[
-                          "ui-heading text-[0.68rem] uppercase tracking-[0.18em]",
-                          isHighlighted ? "text-white/72" : "text-[var(--color-text-soft)]",
-                        ].join(" ")}
-                      >
-                        0{index + 1}
-                      </p>
-                      <h3
-                        className={[
-                          "mt-4 display-font text-[clamp(1.7rem,2vw,2.15rem)] leading-[0.98] tracking-[-0.045em]",
-                          isHighlighted ? "text-white" : "text-[var(--color-primary)]",
-                        ].join(" ")}
-                      >
-                        {service.title}
-                      </h3>
-                    </div>
-
-                    <div>
-                      <p
-                        className={[
-                          "max-w-3xl text-[0.98rem] leading-8",
-                          isHighlighted ? "text-white/86" : "text-[var(--color-text-soft)]",
-                        ].join(" ")}
-                      >
-                        {service.description}
-                      </p>
-                      <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                        {service.bullets.map((bullet) => (
-                          <li
-                            key={bullet}
-                            className={[
-                              "flex gap-3 text-[0.98rem] leading-7",
-                              isHighlighted ? "text-white/90" : "text-[var(--color-text)]",
-                            ].join(" ")}
-                          >
-                            <span
-                              className={[
-                                "mt-[0.72rem] h-2.5 w-2.5 flex-none rounded-full",
-                                isHighlighted ? "bg-[var(--color-secondary)]" : "bg-[var(--color-primary)]",
-                              ].join(" ")}
-                            />
-                            <span>{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
+          <div className="relative h-[280px] overflow-hidden rounded-md shadow-lg sm:h-[360px] lg:h-[560px]">
+            <Image
+              src={AGW_CURATED_PHOTOS.commercialFloor}
+              alt="Commercial floor coating project completed by A.G. Williams"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 48vw"
+              className="object-cover"
+            />
           </div>
         </section>
 
-        <section className="section-space border-b border-[var(--color-line)] bg-[rgba(255,255,255,0.76)]">
-          <div className="container-shell grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
-            <div>
-              <span className="section-label">On-site expectations</span>
-              <h2 className="section-title mt-4">
-                Finish quality matters, but buyers also need the job run cleanly.
+        <section className="border-y border-agw-bone bg-white">
+          <div className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-12 md:py-28">
+            <div className="mb-12 grid gap-8 md:grid-cols-2 md:items-end">
+              <h2 className="font-display text-[clamp(38px,4vw,56px)] font-bold leading-[1.15] tracking-[-0.02em] text-agw-blue-ink">
+                Commercial scopes A.G. Williams handles <em className="italic text-agw-blue">regularly.</em>
               </h2>
-              <p className="body-copy mt-5 max-w-xl">
-                Commercial confidence is built by how the project mobilizes, communicates during
-                the work, and closes out once the scope is complete.
+              <p className="max-w-[46ch] font-sans text-[16px] leading-7 text-agw-ink">
+                Painting, floor systems, and fireproofing are reviewed around site conditions
+                before crews mobilize.
               </p>
             </div>
 
-            <article className="overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]">
-              <div className="divide-y divide-[var(--color-line)]">
-                {COMMERCIAL_EXPECTATIONS.map((item, index) => (
-                  <article
-                    key={item.title}
-                    className="grid gap-4 px-6 py-6 sm:grid-cols-[auto_1fr] sm:items-start sm:px-8"
-                  >
-                    <span className="step-marker">{index + 1}</span>
-                    <div>
-                      <h3 className="card-title text-[clamp(1.38rem,1.8vw,1.8rem)]">
-                        {item.title}
-                      </h3>
-                      <p className="body-copy mt-4">{item.body}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </article>
+            <div className="divide-y divide-agw-bone rounded-md border border-agw-bone bg-agw-paper">
+              {COMMERCIAL_SERVICES.map((service) => (
+                <article key={service.id} className="grid gap-5 p-6 md:grid-cols-[0.32fr_0.68fr] md:p-8">
+                  <h3 className="font-display text-[28px] font-bold leading-tight text-agw-blue-ink">
+                    {service.title}
+                  </h3>
+                  <div>
+                    <p className="font-sans text-[15px] leading-7 text-agw-ink-soft">
+                      {service.description}
+                    </p>
+                    <ul className="mt-5 grid gap-2">
+                      {service.bullets.slice(0, 3).map((bullet) => (
+                        <li key={bullet} className="font-sans text-[13px] leading-6 text-agw-ink before:mr-2 before:text-agw-blue before:content-['/']">
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
-        <ServiceCtaBand
-          trackingContext="commercial"
-          eyebrow="Commercial reach"
-          title={`Commercial work across ${SERVICE_AREAS.join(", ")}.`}
-          body="Start with the office, confirm the property needs, and move into a consultation built around access, schedule, and actual site conditions."
-          primaryCta={{ label: "Request a Commercial Consultation", href: QUOTE_URL }}
-          secondaryCta={{ label: `Call ${CONTACT.mainPhoneLabel}`, href: CONTACT.mainPhoneHref }}
-          detailItems={["Commercial painting", "Fireproofing", "Floor coatings"]}
-        />
+        <section className="bg-agw-cream-warm">
+          <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-20 md:px-12 md:py-28 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
+                <span aria-hidden className="h-px w-8 bg-agw-blue" />
+                On-site expectations
+              </span>
+              <h2 className="font-display text-[clamp(36px,3.8vw,52px)] font-bold leading-[1.15] tracking-[-0.02em] text-agw-blue-ink">
+                Finish quality matters. So does how the job runs.
+              </h2>
+            </div>
+            <div className="divide-y divide-agw-bone rounded-md border border-agw-bone bg-agw-paper">
+              {COMMERCIAL_EXPECTATIONS.map((item) => (
+                <article key={item.title} className="p-6">
+                  <h3 className="font-display text-[23px] font-bold text-agw-blue-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 font-sans text-[14px] leading-7 text-agw-ink-soft">
+                    {item.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-12 md:py-28">
+          <div className="rounded-md bg-agw-blue-ink p-8 text-agw-ivory md:p-12">
+            <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-agw-celeste">
+              Commercial next step
+            </p>
+            <div className="mt-5 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+              <h2 className="max-w-[16ch] font-display text-[clamp(36px,4vw,56px)] font-bold leading-[1.12] tracking-[-0.02em]">
+                Send the scope for review.
+              </h2>
+              <Button href={QUOTE_URL} variant="inverse">
+                Request a quote
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
     </SiteShell>
   );

@@ -4,6 +4,9 @@ export type SitePath =
   | "/residential"
   | "/heritage"
   | "/get-a-quote"
+  | "/lp/residential-repainting"
+  | "/lp/commercial-painting"
+  | "/lp/cabinet-specialty-repainting"
   | "/contact"
   | "/about"
   | "/privacy-policy"
@@ -14,11 +17,6 @@ export const SITE_NAME = "A.G. Williams Painting Company";
 export const SITE_URL = "https://agwilliamspainting.com";
 export const QUOTE_URL = "/get-a-quote";
 export const GTM_CONTAINER_ID = "GTM-W559QJ7C";
-export const GHL_BASE_URL = "https://link.agwilliamspainting.com";
-export const GHL_FORM_ID = "QJKUxOOQI1YWHYNSsN5F";
-export const GHL_BOOKING_ID = "INZqRCM9fdZwZ6avSiny";
-export const GHL_BOOKING_URL = `${GHL_BASE_URL}/widget/booking/${GHL_BOOKING_ID}`;
-export const GHL_BOOKING_SCRIPT_URL = `${GHL_BASE_URL}/js/form_embed.js`;
 export const LEADCONNECTOR_CHAT_WIDGET_ID = "699ca6733303b66fe5e9d99c";
 export const LEADCONNECTOR_CHAT_LOADER_URL =
   "https://widgets.leadconnectorhq.com/loader.js";
@@ -41,10 +39,11 @@ export const SERVICE_AREAS = [
 ];
 
 export const PRIMARY_NAV = [
-  { label: "Commercial", href: "/commercial" },
   { label: "Residential", href: "/residential" },
-  { label: "Heritage", href: "/heritage" },
-  { label: "Service Area", href: "/#service-area" },
+  { label: "Commercial", href: "/commercial" },
+  { label: "Portfolio", href: "/#work" },
+  { label: "About", href: "/about" },
+  { label: "Reviews", href: "/#reviews" },
 ] as const;
 
 export const FOOTER_LINKS = [
@@ -90,34 +89,49 @@ export const TOP_STRIP_CONTENT: Record<
       "A.G. Williams has served homes and properties from Pelham for more than a century.",
   },
   "/get-a-quote": {
-    eyebrow: "Internal quote route",
+    eyebrow: "Quote request",
     message:
-      "Start inside the AGW site, then continue into the live booking flow without changing the current office or customer-care handoff.",
+      "Share the project details once. The Pelham office reviews the request and follows up with the right next step.",
+  },
+  "/lp/residential-repainting": {
+    eyebrow: "Residential estimates",
+    message:
+      "Interior and exterior repainting requests route through the same Pelham office and residential walkthrough process.",
+  },
+  "/lp/commercial-painting": {
+    eyebrow: "Commercial estimates",
+    message:
+      "Commercial painting requests are reviewed for access, schedule, documentation, and occupied-property constraints.",
+  },
+  "/lp/cabinet-specialty-repainting": {
+    eyebrow: "Cabinet estimates",
+    message:
+      "Cabinet, millwork, and specialty repainting requests are routed for surface-specific review before pricing.",
   },
   "/contact": {
     eyebrow: "Pelham office",
     message:
-      "Use the office, the internal quote route, or the live chat fallback while final contact-flow copy and intake details are still being finalized.",
+      "Call the office or use the quote form when the property, schedule, or scope needs a clear next step.",
   },
   "/about": {
     eyebrow: "Since 1906",
     message:
-      "This launch placeholder covers the basics of the company story until the full about and history content is approved for production.",
+      "A.G. Williams is a Pelham-based painting company serving local homes and properties since 1906.",
   },
   "/privacy-policy": {
-    eyebrow: "Launch placeholder",
+    eyebrow: "Privacy",
     message:
-      "This draft privacy page explains the current intent for data handling while AGW's final legal and vendor-specific language is still being assembled.",
+      "A plain-English summary of how website inquiries, quote requests, analytics, and support data may be handled.",
   },
   "/terms": {
-    eyebrow: "Draft terms",
+    eyebrow: "Website terms",
     message:
-      "These placeholder website terms set expectations for launch while final legal review and business-specific language are still pending.",
+      "These terms explain use of the website and clarify that project commitments require direct AGW documentation.",
   },
   "/accessibility": {
     eyebrow: "Accessibility support",
     message:
-      "This page provides a launch-ready accessibility contact path now, with a fuller audit-backed statement to follow in a later hardening pass.",
+      "Accessibility support is available through the Pelham office if any part of the site is difficult to use.",
   },
 };
 
@@ -180,15 +194,48 @@ export const SHELL_ACTIONS: Record<
     footerCtaHref: QUOTE_URL,
   },
   "/get-a-quote": {
-    topLinkLabel: "Continue to Booking",
-    topLinkHref: GHL_BOOKING_URL,
-    headerPrimaryLabel: "Continue to Booking",
-    headerPrimaryHref: GHL_BOOKING_URL,
-    mobilePrimaryLabel: "Continue",
+    topLinkLabel: "Start a Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Start a Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Start a Quote",
     headerSecondaryLabel: "Call Pelham Office",
     headerSecondaryHref: CONTACT.localPhoneHref,
-    footerCtaLabel: "Continue to Booking",
-    footerCtaHref: GHL_BOOKING_URL,
+    footerCtaLabel: "Start a Quote",
+    footerCtaHref: QUOTE_URL,
+  },
+  "/lp/residential-repainting": {
+    topLinkLabel: "Start a Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Start a Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Start a Quote",
+    headerSecondaryLabel: "Call Main Office",
+    headerSecondaryHref: CONTACT.mainPhoneHref,
+    footerCtaLabel: "Start a Quote",
+    footerCtaHref: QUOTE_URL,
+  },
+  "/lp/commercial-painting": {
+    topLinkLabel: "Commercial Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Commercial Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Quote",
+    headerSecondaryLabel: "Call Main Office",
+    headerSecondaryHref: CONTACT.mainPhoneHref,
+    footerCtaLabel: "Request a Commercial Quote",
+    footerCtaHref: QUOTE_URL,
+  },
+  "/lp/cabinet-specialty-repainting": {
+    topLinkLabel: "Cabinet Quote",
+    topLinkHref: QUOTE_URL,
+    headerPrimaryLabel: "Cabinet Quote",
+    headerPrimaryHref: QUOTE_URL,
+    mobilePrimaryLabel: "Quote",
+    headerSecondaryLabel: "Call Main Office",
+    headerSecondaryHref: CONTACT.mainPhoneHref,
+    footerCtaLabel: "Request a Cabinet Quote",
+    footerCtaHref: QUOTE_URL,
   },
   "/contact": {
     topLinkLabel: "Start a Quote",
@@ -306,7 +353,7 @@ export const HOME_PATHS = [
 
 export const PROCESS_STEPS = [
   {
-    title: "Start with the office",
+    title: "Share the project basics",
     body:
       "A quick call tells AGW whether the job is commercial, residential, or a specialty scope so the next step is right the first time.",
   },
@@ -414,7 +461,7 @@ export const COMMERCIAL_EXPECTATIONS = [
   {
     title: "Closeout without loose ends",
     body:
-      "A commercial project finishes with the punch work handled, the site left clean, and the handoff feeling complete.",
+      "A commercial project finishes with the punch work handled, the site left clean, and the owner clear on what was completed.",
   },
 ] as const;
 

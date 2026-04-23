@@ -49,6 +49,21 @@ export const LIVE_ROUTES: SitemapRoute[] = [
     priority: 0.7,
   },
   {
+    path: "/lp/residential-repainting",
+    changeFrequency: "weekly",
+    priority: 0.7,
+  },
+  {
+    path: "/lp/commercial-painting",
+    changeFrequency: "weekly",
+    priority: 0.7,
+  },
+  {
+    path: "/lp/cabinet-specialty-repainting",
+    changeFrequency: "weekly",
+    priority: 0.7,
+  },
+  {
     path: "/about",
     changeFrequency: "monthly",
     priority: 0.6,

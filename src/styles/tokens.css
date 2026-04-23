@@ -32,8 +32,8 @@
 
   /* Ink scale */
   --agw-ink:           #595953;  /* Body copy */
-  --agw-ink-soft:      #7A7A74;  /* Secondary text */
-  --agw-ink-mute:      #9A9A93;  /* Captions, metadata */
+  --agw-ink-soft:      #686861;  /* Secondary text */
+  --agw-ink-mute:      #66665F;  /* Captions, metadata */
 
   /* Heritage / print-only (do NOT use for website UI) */
   --agw-green:         #0D8E49;
@@ -93,9 +93,9 @@
   /* ---------- RADII ---------- */
   --radius-xs:   2px;
   --radius-sm:   4px;
-  --radius-md:   8px;
+  --radius-md:   6px;
   --radius-lg:   12px;
-  --radius-pill: 999px;
+  --radius-pill: 4px;
 
   /* ---------- BORDERS ---------- */
   --border-hair:  1px solid var(--agw-bone);

@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ServiceCtaBand } from "@/components/service-cta-band";
-import { ServicePageHero } from "@/components/service-page-hero";
-import { SiteShell } from "@/components/site-shell";
+import { Button } from "@/components/agw/button";
+import { SiteShell } from "@/components/agw/site-shell";
 import { AGW_CURATED_PHOTOS, AGW_LIVE_ASSETS } from "@/lib/brand-assets";
 import { buildPageMetadata } from "@/lib/seo";
-import {
-  CONTACT,
-  HERITAGE_POINTS,
-  HERITAGE_THEMES,
-  QUOTE_URL,
-  SERVICE_AREAS,
-} from "@/lib/site-data";
+import { HERITAGE_POINTS, HERITAGE_THEMES, QUOTE_URL } from "@/lib/site-data";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Heritage, Craftsmanship, and Local Reputation | A.G. Williams",
@@ -35,139 +28,112 @@ export default function HeritagePage() {
   return (
     <SiteShell currentPath="/heritage">
       <main>
-        <ServicePageHero
-          trackingContext="heritage"
-          eyebrow="Since 1906"
-          title="A.G. Williams still works like a local company with a name to protect."
-          description="The company has served this region since 1906, and the current operation is still visible the same way a local contractor should be: Pelham office, branded vehicles, full-time crews, and work that has to hold up close to home."
-          primaryCta={{ label: "Get a Quote", href: QUOTE_URL }}
-          secondaryCta={{
-            label: `Call Pelham office: ${CONTACT.localPhoneLabel}`,
-            href: CONTACT.localPhoneHref,
-          }}
-          highlights={[
-            {
-              label: "Pelham office",
-              body: "Local office still routing residential and commercial work.",
-            },
-            {
-              label: "Regional work",
-              body: SERVICE_AREAS.join(", "),
-            },
-            {
-              label: "Accountability",
-              body: "A local name still has to hold up on the next referral.",
-            },
-          ]}
-          media={{
-            src: AGW_CURATED_PHOTOS.heritageVan,
-            alt: "A.G. Williams service vehicle in the workshop with company branding",
-          }}
-          mediaCallout={{
-            eyebrow: "Local proof",
-            title: "The company name is still on the vehicles and the work is still close to home.",
-            body: "The same regional reputation still matters because present-day work, vehicles, and office operations are all visible in the counties the company serves.",
-          }}
-          supportCallout={{
-            eyebrow: "Pelham office",
-            title: "The office, the vehicles, and the crews all still sit under one local name.",
-            body: "That is what makes the history useful. The trust story is still backed by a real local operation instead of a borrowed heritage line.",
-          }}
-          proofListTitle="Why the history still matters now"
-          proofList={[
-            "Since 1906 is still tied to the present-day crews and office, not just archived stationery.",
-            "Residential and commercial work still route through Pelham before moving into the field.",
-            "The regional name still has to hold up town by town, referral by referral.",
-          ]}
-        />
+        <section className="mx-auto grid w-full max-w-[1440px] gap-12 px-6 py-16 md:px-12 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
+              <span aria-hidden className="h-px w-8 bg-agw-blue" />
+              Since 1906
+            </span>
+            <h1 className="max-w-[13ch] font-display text-[clamp(38px,4.8vw,70px)] font-bold leading-[1.12] tracking-[-0.02em] text-agw-blue-ink">
+              A local company with a name to <em className="italic text-agw-blue">protect.</em>
+            </h1>
+            <p className="mt-6 max-w-[48ch] font-sans text-[18px] leading-[1.65] text-agw-ink">
+              The history only matters because the present-day work is still visible: Pelham
+              office, branded vehicles, full-time crews, and projects close to home.
+            </p>
+          </div>
 
-        <section className="section-space border-b border-[var(--color-line)] bg-white">
-          <div className="container-shell">
-            <div className="max-w-3xl">
-              <span className="section-label">Who still carries the name</span>
-              <h2 className="section-title mt-4">
-                The crews, vehicles, and local office are still part of the present-day operation.
+          <div className="relative h-[280px] overflow-hidden rounded-md shadow-lg sm:h-[360px] lg:h-[560px]">
+            <Image
+              src={AGW_CURATED_PHOTOS.heritageVan}
+              alt="A.G. Williams service vehicle in the workshop with company branding"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 48vw"
+              className="object-cover"
+            />
+          </div>
+        </section>
+
+        <section className="border-y border-agw-bone bg-white">
+          <div className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-12 md:py-28">
+            <div className="mb-12 grid gap-8 md:grid-cols-2 md:items-end">
+              <h2 className="font-display text-[clamp(38px,4vw,56px)] font-bold leading-[1.15] tracking-[-0.02em] text-agw-blue-ink">
+                The current operation still carries <em className="italic text-agw-blue">the name.</em>
               </h2>
+              <p className="max-w-[46ch] font-sans text-[16px] leading-7 text-agw-ink">
+                Heritage is useful when it connects to what clients can see now: people, vehicles,
+                office accountability, and finished work.
+              </p>
             </div>
 
-            <article className="mt-10 overflow-hidden border border-[var(--color-border)] bg-white shadow-[var(--shadow-soft)]">
-              <div className="relative aspect-[21/7]">
+            <article className="overflow-hidden rounded-md border border-agw-bone bg-agw-paper">
+              <div className="relative h-[220px] sm:h-[320px] lg:h-[420px]">
                 <Image
                   src={AGW_LIVE_ASSETS.teamPhoto}
                   alt="A.G. Williams team photo with company vehicles"
                   fill
                   sizes="100vw"
-                  className="object-cover object-center"
+                  className="object-cover"
                 />
               </div>
-              <div className="grid gap-6 border-t border-[var(--color-line)] p-6 lg:grid-cols-[1.05fr_0.95fr] lg:p-8">
-                <div>
-                  <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                    Present-day proof
-                  </p>
-                  <p className="mt-3 body-copy">
-                    Heritage only matters if the current company still behaves like a local
-                    contractor. That means visible crews, visible vehicles, and a real office that
-                    still routes work in the same region.
-                  </p>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {HERITAGE_POINTS.map((point) => (
-                    <article
-                      key={point.title}
-                      className="border-l-2 border-[var(--color-primary)] bg-[rgba(249,248,242,0.82)] px-4 py-4"
-                    >
-                      <h2 className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                        {point.title}
-                      </h2>
-                      <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                        {point.body}
-                      </p>
-                    </article>
-                  ))}
-                </div>
+              <div className="divide-y divide-agw-bone border-t border-agw-bone md:grid md:grid-cols-3 md:divide-x md:divide-y-0">
+                {HERITAGE_POINTS.map((point) => (
+                  <article key={point.title} className="p-6">
+                    <h3 className="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-agw-blue">
+                      {point.title}
+                    </h3>
+                    <p className="mt-3 font-sans text-[14px] leading-7 text-agw-ink-soft">
+                      {point.body}
+                    </p>
+                  </article>
+                ))}
               </div>
             </article>
           </div>
         </section>
 
-        <section className="section-space bg-[rgba(255,255,255,0.76)]">
-          <div className="container-shell">
-            <div className="max-w-3xl">
-              <span className="section-label">What clients still expect</span>
-              <h2 className="section-title mt-4">
-                Long history only matters if the work still holds up.
+        <section className="bg-agw-cream-warm">
+          <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-20 md:px-12 md:py-28 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
+                <span aria-hidden className="h-px w-8 bg-agw-blue" />
+                What still matters
+              </span>
+              <h2 className="font-display text-[clamp(36px,3.8vw,52px)] font-bold leading-[1.15] tracking-[-0.02em] text-agw-blue-ink">
+                Long history only works when the standards still hold.
               </h2>
             </div>
-
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            <div className="divide-y divide-agw-bone rounded-md border border-agw-bone bg-agw-paper">
               {HERITAGE_THEMES.map((theme) => (
-                <article
-                  key={theme.title}
-                  className="border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-soft)]"
-                >
-                  <h3 className="card-title text-[clamp(1.4rem,1.8vw,1.75rem)]">
+                <article key={theme.title} className="grid gap-4 p-6 md:grid-cols-[0.34fr_0.66fr]">
+                  <h3 className="font-display text-[24px] font-bold text-agw-blue-ink">
                     {theme.title}
                   </h3>
-                  <p className="body-copy mt-4">{theme.body}</p>
+                  <p className="font-sans text-[14px] leading-7 text-agw-ink-soft">
+                    {theme.body}
+                  </p>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <ServiceCtaBand
-          trackingContext="heritage"
-          eyebrow="Start with the office"
-          title="Use the local office as the starting point for residential walkthroughs, commercial consultations, and the right next step."
-          body="The value of the heritage page is not nostalgia by itself. It is the proof that the same regional operation still answers the phone, routes the work, and stands behind what gets quoted."
-          primaryCta={{ label: "Get a Quote", href: QUOTE_URL }}
-          secondaryCta={{
-            label: `Call Pelham office: ${CONTACT.localPhoneLabel}`,
-            href: CONTACT.localPhoneHref,
-          }}
-          detailItems={["Since 1906", "Pelham office", "Residential and commercial routing"]}
-        />
+        <section className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-12 md:py-28">
+          <div className="rounded-md bg-agw-blue-ink p-8 text-agw-ivory md:p-12">
+            <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-agw-celeste">
+              Start local
+            </p>
+            <div className="mt-5 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+              <h2 className="max-w-[16ch] font-display text-[clamp(36px,4vw,56px)] font-bold leading-[1.12] tracking-[-0.02em]">
+                Let the office route the project.
+              </h2>
+              <Button href={QUOTE_URL} variant="inverse">
+                Get a quote
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
     </SiteShell>
   );

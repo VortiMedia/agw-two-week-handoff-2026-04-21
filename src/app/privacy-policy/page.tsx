@@ -1,34 +1,33 @@
 import type { Metadata } from "next";
-import { UtilityPageShell } from "@/components/utility-page-shell";
+import { UtilityPageShell } from "@/components/agw/utility-page-shell";
 import { CONTACT, QUOTE_URL } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | A.G. Williams",
   description:
-    "Launch placeholder privacy policy for A.G. Williams while final legal language, vendor disclosures, and retention details are still being prepared.",
+    "Privacy policy for A.G. Williams Painting website inquiries, quote requests, analytics, and support interactions.",
   alternates: {
     canonical: "/privacy-policy",
   },
 };
 
 const highlights = [
-  "Draft privacy language",
-  "Covers site, chat, and booking intent",
-  "Final legal review pending",
+  "Website inquiries",
+  "Quote request data",
 ] as const;
 
 const cards = [
   {
-    eyebrow: "Current purpose",
-    title: "This page exists so launch does not ship without a privacy route.",
+    eyebrow: "Purpose",
+    title: "Submitted information is used to respond and estimate.",
     body:
-      "It is intentionally cautious placeholder copy that describes the likely categories of information involved in inquiries, bookings, and site operations without overstating finalized legal positions.",
+      "Visitors may share contact details, project information, property location, timing needs, and support requests through the website.",
   },
   {
-    eyebrow: "Needs completion",
-    title: "Vendor-specific disclosure and retention language still need to be finalized.",
+    eyebrow: "Website tools",
+    title: "Analytics, chat, and form tools may support the site.",
     body:
-      "The final production version should be reviewed against AGW's actual tooling, including booking, chat, analytics, and any CRM or notification stack used at cutover.",
+      "These tools can help measure page performance, preserve attribution, prevent spam, and make sure quote requests reach the office.",
   },
 ] as const;
 
@@ -36,7 +35,7 @@ const sections = [
   {
     title: "Information AGW may receive",
     body:
-      "Visitors may provide basic contact and project information when using the website, the quote route, chat, phone support, or the linked booking flow.",
+      "Visitors may provide basic contact and project information when using the website, the quote route, chat, or phone support.",
     items: [
       "Name, phone number, email address, and property location details",
       "Project notes, timing needs, scope descriptions, and submitted photos",
@@ -46,7 +45,7 @@ const sections = [
   {
     title: "How that information may be used",
     body:
-      "The practical intent is straightforward: respond to inquiries, route estimates correctly, support scheduling, and operate the website responsibly during launch.",
+      "The practical intent is straightforward: respond to inquiries, route estimates correctly, support follow-up, and operate the website responsibly.",
     items: [
       "Respond to estimate and contact requests",
       "Coordinate residential walkthroughs or commercial consultations",
@@ -54,13 +53,13 @@ const sections = [
     ],
   },
   {
-    title: "What is still missing",
+    title: "Third-party services",
     body:
-      "This placeholder should be replaced by final legal copy once AGW confirms the exact vendor list, retention expectations, and any jurisdiction-specific disclosures it needs to make.",
+      "A.G. Williams may rely on website hosting, analytics, chat, form, advertising, and customer-support providers that process information for business purposes.",
     items: [
-      "Named third-party services and processors",
-      "Retention windows and deletion workflow details",
-      "Final instructions for privacy-specific questions or requests",
+      "Website hosting and security providers",
+      "Analytics and advertising measurement tools",
+      "Customer support, chat, and lead-management systems",
     ],
   },
 ] as const;
@@ -69,15 +68,15 @@ export default function PrivacyPolicyPage() {
   return (
     <UtilityPageShell
       currentPath="/privacy-policy"
-      eyebrow="Launch placeholder"
-      title="Privacy practices placeholder for the A.G. Williams website."
-      intro="This page is a temporary privacy-policy route for launch blocking coverage. It gives visitors a clear explanation of the site's current intent around inquiry, booking, and support data while the final legal copy is still being prepared."
+      eyebrow="Privacy"
+      title="How website and quote request information is handled."
+      intro="A.G. Williams uses information submitted through the website to answer questions, route estimates, follow up on project requests, and keep the site working correctly."
       highlights={highlights}
       primaryCta={{ label: "Get a Quote", href: QUOTE_URL }}
       secondaryCta={{ label: "Call Main Office", href: CONTACT.mainPhoneHref }}
       cards={cards}
       sections={sections}
-      placeholderNote="Launch placeholder only. This is not final legal advice or final AGW policy language, and it should be replaced after legal and vendor review."
+      supportNote="For privacy questions, contact the office using the phone numbers listed on this site."
     />
   );
 }

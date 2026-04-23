@@ -1,21 +1,15 @@
 "use client";
 
-import Script from "next/script";
-import {
-  startTransition,
-  useEffect,
-  useEffectEvent,
-  useId,
-  useState,
-} from "react";
+import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
+import { Button } from "@/components/agw/button";
 import { TrackedLink } from "@/components/tracked-link";
+import { pushQuoteEvent, pushQuoteLeadSubmittedEvent } from "@/lib/quote-analytics";
 import {
   EMPTY_QUOTE_ATTRIBUTION,
   EMPTY_QUOTE_FORM_VALUES,
   PROJECT_TYPE_OPTIONS,
   PROPERTY_TYPE_OPTIONS,
   QUOTE_ATTRIBUTION_SESSION_STORAGE_KEY,
-  QUOTE_FLOW_VERSION,
   QUOTE_FORM_SESSION_STORAGE_KEY,
   QUOTE_LEAD_SOURCE,
   QUOTE_NOTES_MAX_LENGTH,
@@ -26,25 +20,26 @@ import {
   type QuoteFieldName,
   type QuoteFormValues,
   type QuoteValidationErrorType,
+  buildQuoteSubmissionPayload,
   captureQuoteAttribution,
-  getOptionLabel,
   getQuoteEventContext,
   validateQuoteFormValues,
-  validateQuoteStep,
 } from "@/lib/quote-flow";
-import { CONTACT, GHL_BOOKING_ID, GHL_BOOKING_URL } from "@/lib/site-data";
+import { CONTACT } from "@/lib/site-data";
+
+type QuoteIntakeFlowProps = {
+  id?: string;
+  sourceContext?: string;
+  initialProjectType?: QuoteFormValues["project_type"];
+  compact?: boolean;
+};
 
 type QuoteIntakeSuccess = {
   ok: true;
   submission_id: string;
   values: QuoteFormValues;
   attribution: QuoteAttribution;
-  handoff: {
-    provider: string;
-    booking_id: string;
-    booking_url: string;
-    script_url: string;
-  };
+  enhanced_conversion_data: Record<string, string>;
 };
 
 type QuoteIntakeFailure = {
@@ -55,6 +50,12 @@ type QuoteIntakeFailure = {
   invalid_fields?: QuoteFieldName[];
   values?: QuoteFormValues;
 };
+
+const FIELD_STEP_LOOKUP = new Map<QuoteFieldName, string>(
+  QUOTE_STEP_DEFINITIONS.flatMap((step) =>
+    step.fields.map((field) => [field, step.id] as const),
+  ),
+);
 
 function FieldError({
   fieldId,
@@ -70,109 +71,263 @@ function FieldError({
   return (
     <p
       id={`${fieldId}-error`}
-      className="mt-2 text-sm font-medium leading-6 text-[#9c2f2f]"
+      className="mt-2 font-sans text-[12px] font-medium leading-5 text-agw-danger"
     >
       {message}
     </p>
   );
 }
 
+function FieldShell({
+  children,
+  full = false,
+}: {
+  children: React.ReactNode;
+  full?: boolean;
+}) {
+  return (
+    <div className={full ? "md:col-span-2" : undefined}>
+      {children}
+    </div>
+  );
+}
+
 function InputLabel({
   htmlFor,
   label,
-  hint,
 }: {
   htmlFor: string;
   label: string;
-  hint?: string;
 }) {
   return (
-    <label className="block" htmlFor={htmlFor}>
-      <span className="text-sm font-semibold text-[var(--color-ink)]">{label}</span>
-      {hint ? (
-        <span className="mt-1 block text-xs leading-6 text-[var(--color-text-soft)]">
-          {hint}
-        </span>
-      ) : null}
+    <label
+      className="mb-2 block font-sans text-[12px] font-medium uppercase tracking-[0.1em] text-agw-ink-soft"
+      htmlFor={htmlFor}
+    >
+      {label}
     </label>
   );
 }
 
-function mergeErrors(
-  currentErrors: QuoteFieldErrors,
-  nextErrors: QuoteFieldErrors,
-  fieldsToClear: readonly QuoteFieldName[],
-) {
-  const merged = { ...currentErrors };
+const fieldClassName =
+  "min-h-11 w-full rounded-sm border border-agw-bone bg-agw-paper px-3.5 py-2.5 " +
+  "font-sans text-[14px] text-agw-ink outline-none transition-[border-color,box-shadow] " +
+  "hover:border-agw-ink-soft focus:border-agw-blue focus:shadow-[0_0_0_3px_rgba(0,99,176,0.15)]";
 
-  for (const field of fieldsToClear) {
-    delete merged[field];
-  }
-
-  for (const [field, message] of Object.entries(nextErrors) as [
-    QuoteFieldName,
-    string | undefined,
-  ][]) {
-    if (message) {
-      merged[field] = message;
-    }
-  }
-
-  return merged;
+function TextInput({
+  field,
+  id,
+  label,
+  value,
+  error,
+  onChange,
+  autoComplete,
+  inputMode,
+}: {
+  field: QuoteFieldName;
+  id: string;
+  label: string;
+  value: string;
+  error?: string;
+  onChange: (field: QuoteFieldName, value: string) => void;
+  autoComplete?: string;
+  inputMode?: "email" | "tel";
+}) {
+  return (
+    <>
+      <InputLabel htmlFor={id} label={label} />
+      <input
+        id={id}
+        className={fieldClassName}
+        name={field}
+        autoComplete={autoComplete}
+        inputMode={inputMode}
+        value={value}
+        onChange={(event) => onChange(field, event.target.value)}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${id}-error` : undefined}
+      />
+      <FieldError fieldId={id} message={error} />
+    </>
+  );
 }
 
-function pushQuoteEvent(eventName: string, detail: Record<string, unknown>) {
-  if (typeof window === "undefined") {
-    return;
-  }
+function SelectField({
+  field,
+  id,
+  label,
+  value,
+  error,
+  options,
+  emptyLabel,
+  onChange,
+}: {
+  field: QuoteFieldName;
+  id: string;
+  label: string;
+  value: string;
+  error?: string;
+  options: readonly { value: string; label: string }[];
+  emptyLabel: string;
+  onChange: (field: QuoteFieldName, value: string) => void;
+}) {
+  return (
+    <>
+      <InputLabel htmlFor={id} label={label} />
+      <select
+        id={id}
+        className={`${fieldClassName} cursor-pointer appearance-none bg-[right_1rem_center] bg-no-repeat pr-11`}
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23004B85' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>\")",
+        }}
+        name={field}
+        value={value}
+        onChange={(event) => onChange(field, event.target.value)}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${id}-error` : undefined}
+      >
+        <option value="">{emptyLabel}</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <FieldError fieldId={id} message={error} />
+    </>
+  );
+}
 
-  const scopedWindow = window as Window & {
-    agwPushEvent?: (name: string, payload?: Record<string, unknown>) => void;
-    dataLayer?: Array<Record<string, unknown>>;
-  };
-  const payload = {
-    quote_flow_version: QUOTE_FLOW_VERSION,
-    ...detail,
-  };
+function ProjectTypeChips({
+  value,
+  error,
+  onChange,
+}: {
+  value: string;
+  error?: string;
+  onChange: (field: QuoteFieldName, value: string) => void;
+}) {
+  return (
+    <fieldset className="md:col-span-2">
+      <legend className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-agw-blue">
+        Project type
+      </legend>
+      <div className="flex flex-wrap gap-2">
+        {PROJECT_TYPE_OPTIONS.map((option) => {
+          const isSelected = value === option.value;
 
-  if (typeof scopedWindow.agwPushEvent === "function") {
-    scopedWindow.agwPushEvent(eventName, payload);
-    return;
-  }
+          return (
+            <label
+              key={option.value}
+              className={[
+                "cursor-pointer rounded-sm border px-3 py-1.5",
+                "font-sans text-[12px] font-medium tracking-[0.005em]",
+                "transition-[background-color,border-color,color,box-shadow]",
+                isSelected
+                  ? "border-agw-blue bg-agw-blue text-agw-ivory"
+                  : "border-agw-bone bg-agw-paper text-agw-ink hover:border-agw-blue hover:text-agw-blue",
+              ].join(" ")}
+            >
+              <input
+                className="sr-only"
+                type="radio"
+                name="project_type"
+                value={option.value}
+                checked={isSelected}
+                onChange={(event) => onChange("project_type", event.target.value)}
+              />
+              {option.label}
+            </label>
+          );
+        })}
+      </div>
+      <FieldError fieldId="quote-project-type" message={error} />
+    </fieldset>
+  );
+}
 
-  scopedWindow.dataLayer = scopedWindow.dataLayer || [];
-  scopedWindow.dataLayer.push({
-    event: eventName,
-    page_path: window.location.pathname,
-    page_title: document.title,
-    ...payload,
+function GroupLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="md:col-span-2">
+      <p className="pt-1 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-agw-blue">
+        {children}
+      </p>
+    </div>
+  );
+}
+
+function ConfirmationState({
+  submissionId,
+  sourceContext,
+}: {
+  submissionId: string;
+  sourceContext: string;
+}) {
+  return (
+    <section
+      className="rounded-md border border-agw-bone bg-agw-paper p-6 shadow-sm"
+      aria-live="polite"
+    >
+      <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-agw-blue">
+        Request sent
+      </p>
+      <h2 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold leading-[1.16] tracking-[-0.02em] text-agw-blue-ink">
+        The estimate request is saved.
+      </h2>
+      <p className="mt-4 max-w-[54ch] font-sans text-[14px] leading-7 text-agw-ink-soft">
+        The office will review the details and follow up. If timing is urgent, call the Pelham
+        office and reference request{" "}
+        <span className="font-semibold text-agw-blue-ink">{submissionId}</span>.
+      </p>
+      <div className="mt-5 flex flex-wrap gap-3">
+        <TrackedLink
+          className="button-primary"
+          href={CONTACT.localPhoneHref}
+          tracking={{
+            event: "quote_phone_click",
+            location: "quote_success",
+            label: CONTACT.localPhoneLabel,
+            context: sourceContext,
+          }}
+        >
+          Call Pelham office
+        </TrackedLink>
+        <TrackedLink
+          className="button-secondary"
+          href="/"
+          tracking={{
+            event: "quote_success_home_click",
+            location: "quote_success",
+            label: "Return home",
+            context: sourceContext,
+          }}
+        >
+          Return home
+        </TrackedLink>
+      </div>
+    </section>
+  );
+}
+
+export function QuoteIntakeFlow({
+  id = "quote-intake-flow",
+  sourceContext = QUOTE_LEAD_SOURCE,
+  initialProjectType = "",
+  compact = false,
+}: QuoteIntakeFlowProps) {
+  const [formValues, setFormValues] = useState<QuoteFormValues>({
+    ...EMPTY_QUOTE_FORM_VALUES,
+    project_type: initialProjectType,
   });
-}
-
-export function QuoteIntakeFlow() {
-  const [formValues, setFormValues] = useState<QuoteFormValues>(EMPTY_QUOTE_FORM_VALUES);
   const [attribution, setAttribution] = useState<QuoteAttribution>(EMPTY_QUOTE_ATTRIBUTION);
   const [isAttributionReady, setIsAttributionReady] = useState(false);
   const [errors, setErrors] = useState<QuoteFieldErrors>({});
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [submissionError, setSubmissionError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [submissionId, setSubmissionId] = useState("");
-  const [calendarScriptUrl, setCalendarScriptUrl] = useState("");
-  const [calendarLoaded, setCalendarLoaded] = useState(false);
-  const iframeId = `${GHL_BOOKING_ID}_${useId().replace(/[:]/g, "")}`;
-  const currentStep = QUOTE_STEP_DEFINITIONS[activeStepIndex];
-  const finalStepIndex = QUOTE_STEP_DEFINITIONS.length - 1;
-  const summaryValues = validateQuoteFormValues(formValues).values;
-  const projectTypeLabel = getOptionLabel(
-    PROJECT_TYPE_OPTIONS,
-    summaryValues.project_type,
-  );
-  const propertyTypeLabel = getOptionLabel(
-    PROPERTY_TYPE_OPTIONS,
-    summaryValues.property_type,
-  );
-  const timelineLabel = getOptionLabel(TIMELINE_OPTIONS, summaryValues.timeline);
+  const submissionInFlightRef = useRef(false);
+  const formId = useId();
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -188,9 +343,11 @@ export function QuoteIntakeFlow() {
 
     if (savedFormValues) {
       try {
+        const parsedValues = JSON.parse(savedFormValues) as Partial<QuoteFormValues>;
         setFormValues({
           ...EMPTY_QUOTE_FORM_VALUES,
-          ...(JSON.parse(savedFormValues) as Partial<QuoteFormValues>),
+          ...parsedValues,
+          project_type: parsedValues.project_type || initialProjectType,
         });
       } catch {
         window.sessionStorage.removeItem(QUOTE_FORM_SESSION_STORAGE_KEY);
@@ -216,10 +373,10 @@ export function QuoteIntakeFlow() {
     );
     setAttribution(capturedAttribution);
     setIsAttributionReady(true);
-  }, []);
+  }, [initialProjectType]);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === "undefined" || submissionId) {
       return;
     }
 
@@ -227,7 +384,7 @@ export function QuoteIntakeFlow() {
       QUOTE_FORM_SESSION_STORAGE_KEY,
       JSON.stringify(formValues),
     );
-  }, [formValues]);
+  }, [formValues, submissionId]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !isAttributionReady) {
@@ -240,21 +397,22 @@ export function QuoteIntakeFlow() {
     );
   }, [attribution, isAttributionReady]);
 
-  const trackStepView = useEffectEvent((stepName: string, stepIndex: number) => {
+  const trackFormView = useEffectEvent(() => {
     pushQuoteEvent("quote_step_view", {
-      step_name: stepName,
-      step_index: stepIndex,
+      step_name: "project_details",
+      step_index: 1,
+      source_context: sourceContext,
       ...getQuoteEventContext(formValues, attribution),
     });
   });
 
   useEffect(() => {
-    if (!isAttributionReady) {
+    if (!isAttributionReady || submissionId) {
       return;
     }
 
-    trackStepView(currentStep.id, activeStepIndex + 1);
-  }, [activeStepIndex, currentStep.id, isAttributionReady]);
+    trackFormView();
+  }, [isAttributionReady, submissionId]);
 
   function updateField(field: QuoteFieldName, value: string) {
     setFormValues((currentValues) => ({
@@ -280,73 +438,41 @@ export function QuoteIntakeFlow() {
   ) {
     for (const field of invalidFields) {
       pushQuoteEvent("quote_validation_error", {
-        step_name: currentStep.id,
+        step_name: FIELD_STEP_LOOKUP.get(field) ?? "quote_form",
         field_name: field,
         error_type: errorTypes[field] ?? "format",
         field_value_present: normalizedValues[field].length > 0,
+        source_context: sourceContext,
         ...getQuoteEventContext(normalizedValues, attribution),
       });
     }
   }
 
-  function moveToNextStep() {
-    startTransition(() => {
-      setActiveStepIndex((currentValue) =>
-        Math.min(currentValue + 1, finalStepIndex),
-      );
+  async function submitLead(values: QuoteFormValues) {
+    const submissionAttribution = {
+      ...attribution,
+      submission_time: new Date().toISOString(),
+    };
+    setAttribution(submissionAttribution);
+    const payload = buildQuoteSubmissionPayload(values, submissionAttribution);
+    const response = await fetch("/api/quote-intake", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
+
+    return (await response.json()) as QuoteIntakeSuccess | QuoteIntakeFailure;
   }
 
-  function moveToPreviousStep() {
-    setSubmissionError("");
-    startTransition(() => {
-      setActiveStepIndex((currentValue) => Math.max(currentValue - 1, 0));
-    });
-  }
-
-  async function handleContinue() {
-    if (currentStep.id === "book_consultation") {
-      return;
-    }
-
-    const stepResult = validateQuoteStep(formValues, currentStep.fields);
-    setFormValues(stepResult.values);
-
-    if (!stepResult.isValid) {
-      setErrors((currentErrors) =>
-        mergeErrors(currentErrors, stepResult.errors, currentStep.fields),
-      );
-      setSubmissionError("Fix the highlighted fields before moving to the next step.");
-      pushValidationErrors(
-        stepResult.invalidFields,
-        stepResult.errorTypes,
-        stepResult.values,
-      );
-      return;
-    }
-
-    setErrors((currentErrors) => mergeErrors(currentErrors, {}, currentStep.fields));
-    setSubmissionError("");
-
-    if (currentStep.id !== "project_notes") {
-      pushQuoteEvent("quote_step_complete", {
-        step_name: currentStep.id,
-        step_index: activeStepIndex + 1,
-        completed_fields: [...currentStep.fields],
-        ...getQuoteEventContext(stepResult.values, attribution),
-      });
-      moveToNextStep();
-      return;
-    }
-
-    const fullValidation = validateQuoteFormValues(stepResult.values);
+  async function handleSubmit() {
+    const fullValidation = validateQuoteFormValues(formValues);
+    setFormValues(fullValidation.values);
 
     if (!fullValidation.isValid) {
-      setFormValues(fullValidation.values);
       setErrors(fullValidation.errors);
-      setSubmissionError(
-        "The intake still has invalid values. Review the highlighted fields before booking.",
-      );
+      setSubmissionError("Review the highlighted fields before sending the request.");
       pushValidationErrors(
         fullValidation.invalidFields,
         fullValidation.errorTypes,
@@ -355,22 +481,18 @@ export function QuoteIntakeFlow() {
       return;
     }
 
+    if (submissionInFlightRef.current) {
+      return;
+    }
+
+    submissionInFlightRef.current = true;
     setIsSaving(true);
+    setSubmissionError("");
 
     try {
-      const response = await fetch("/api/quote-intake", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...fullValidation.values,
-          ...attribution,
-        }),
-      });
-      const payload = (await response.json()) as QuoteIntakeSuccess | QuoteIntakeFailure;
+      const payload = await submitLead(fullValidation.values);
 
-      if (!response.ok || !payload.ok) {
+      if (!payload.ok) {
         const failure = payload as QuoteIntakeFailure;
 
         if (failure.values) {
@@ -391,7 +513,7 @@ export function QuoteIntakeFlow() {
 
         setSubmissionError(
           failure.message ??
-            "The validated intake could not be saved yet. Review the fields and try again.",
+            "The estimate request could not be saved yet. Review the fields and try again.",
         );
         return;
       }
@@ -399,167 +521,67 @@ export function QuoteIntakeFlow() {
       setFormValues(payload.values);
       setAttribution(payload.attribution);
       setSubmissionId(payload.submission_id);
-      setCalendarScriptUrl(payload.handoff.script_url);
-      setCalendarLoaded(false);
+      setErrors({});
 
-      pushQuoteEvent("quote_step_complete", {
-        step_name: currentStep.id,
-        step_index: activeStepIndex + 1,
-        completed_fields: [...currentStep.fields],
-        ...getQuoteEventContext(payload.values, payload.attribution),
-      });
-      pushQuoteEvent("quote_intake_saved", {
-        step_name: currentStep.id,
-        submission_id: payload.submission_id,
-        ...getQuoteEventContext(payload.values, payload.attribution),
-      });
-      pushQuoteEvent("quote_handoff_to_calendar", {
-        step_name: "book_consultation",
-        booking_target: "ghl_embed_v1",
-        submission_id: payload.submission_id,
-        ...getQuoteEventContext(payload.values, payload.attribution),
+      if (typeof window !== "undefined") {
+        window.sessionStorage.removeItem(QUOTE_FORM_SESSION_STORAGE_KEY);
+      }
+
+      QUOTE_STEP_DEFINITIONS.forEach((step, index) => {
+        pushQuoteEvent("quote_step_complete", {
+          step_name: step.id,
+          step_index: index + 1,
+          completed_fields: [...step.fields],
+          source_context: sourceContext,
+          ...getQuoteEventContext(payload.values, payload.attribution),
+        });
       });
 
-      moveToNextStep();
+      pushQuoteLeadSubmittedEvent({
+        submissionId: payload.submission_id,
+        values: payload.values,
+        attribution: payload.attribution,
+        sourceContext,
+      });
     } catch {
       setSubmissionError(
-        "The validated intake could not reach the save endpoint. Try again before opening the booking calendar.",
+        "The estimate request could not reach the office endpoint. Try again or call the Pelham office.",
       );
     } finally {
+      submissionInFlightRef.current = false;
       setIsSaving(false);
     }
   }
 
-  async function handleCalendarLoad() {
-    if (calendarLoaded) {
-      return;
-    }
-
-    setCalendarLoaded(true);
-
-    if (submissionId) {
-      void fetch("/api/quote-intake", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          submission_id: submissionId,
-          calendar_handoff_status: "loaded",
-        }),
-      }).catch(() => undefined);
-    }
-
-    pushQuoteEvent("quote_calendar_loaded", {
-      step_name: "book_consultation",
-      booking_target: "ghl_embed_v1",
-      calendar_id: GHL_BOOKING_ID,
-      submission_id: submissionId || "unknown",
-      ...getQuoteEventContext(formValues, attribution),
-    });
+  if (submissionId) {
+    return (
+      <ConfirmationState
+        submissionId={submissionId}
+        sourceContext={sourceContext}
+      />
+    );
   }
 
   return (
     <section
-      id="quote-booking-flow"
-      className="rounded-[2rem] border border-[rgba(16,36,58,0.1)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(246,244,237,0.96))] p-4 shadow-[0_28px_90px_rgba(16,36,58,0.14)] sm:p-6 lg:p-7"
+      id={id}
+      className={[
+        "w-full min-w-0 overflow-hidden rounded-md border border-agw-bone bg-agw-paper shadow-sm",
+        compact ? "p-5" : "p-5 md:p-7",
+      ].join(" ")}
     >
-      <div className="rounded-[1.6rem] border border-[var(--color-line)] bg-[rgba(255,255,255,0.84)] p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="ui-heading text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-              Quote intake
-            </p>
-            <h2 className="mt-2 text-[clamp(1.45rem,2.4vw,2rem)] font-semibold leading-tight text-[var(--color-ink)]">
-              {currentStep.title}
-            </h2>
-          </div>
-          <span className="rounded-full border border-[var(--color-border)] bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
-            Step {activeStepIndex + 1} of {QUOTE_STEP_DEFINITIONS.length}
-          </span>
-        </div>
-
-        <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-soft)]">
-          {currentStep.description}
-        </p>
-
-        <div className="mt-5 grid gap-3 md:grid-cols-4">
-          {QUOTE_STEP_DEFINITIONS.map((step, index) => {
-            const status =
-              index < activeStepIndex
-                ? "complete"
-                : index === activeStepIndex
-                  ? "current"
-                  : "upcoming";
-
-            return (
-              <article
-                key={step.id}
-                className={`rounded-[1.25rem] border px-4 py-3 transition-colors ${
-                  status === "current"
-                    ? "border-[rgba(0,99,176,0.22)] bg-[rgba(0,99,176,0.08)]"
-                    : status === "complete"
-                      ? "border-[rgba(16,36,58,0.08)] bg-[rgba(16,36,58,0.06)]"
-                      : "border-[var(--color-line)] bg-white"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span
-                    className={`flex size-8 items-center justify-center rounded-full text-xs font-semibold ${
-                      status === "current"
-                        ? "bg-[var(--color-primary)] text-white"
-                        : status === "complete"
-                          ? "bg-[var(--color-ink)] text-white"
-                          : "border border-[var(--color-line)] bg-[rgba(249,248,242,0.88)] text-[var(--color-text-soft)]"
-                    }`}
-                  >
-                    {index + 1}
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-[var(--color-ink)]">
-                      {step.label}
-                    </p>
-                    <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-                      {status === "current"
-                        ? "In progress"
-                        : status === "complete"
-                          ? "Complete"
-                          : "Coming up"}
-                    </p>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[1.45rem] border border-[var(--color-line)] bg-white px-4 py-4">
-        <div>
-          <p className="ui-heading text-[0.64rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-            Need a real person first?
-          </p>
-          <p className="mt-1 text-sm leading-6 text-[var(--color-text-soft)]">
-            The Pelham office stays visible if the scope needs to be clarified before a slot is booked.
-          </p>
-        </div>
-        <TrackedLink
-          className="button-secondary"
-          href={CONTACT.localPhoneHref}
-          tracking={{
-            event: "quote_phone_click",
-            location: "quote_flow_support_bar",
-            label: CONTACT.localPhoneLabel,
-            context: QUOTE_LEAD_SOURCE,
-          }}
-        >
-          Call {CONTACT.localPhoneLabel}
-        </TrackedLink>
+      <div className="mb-5 flex min-w-0 flex-wrap items-baseline justify-between gap-3 border-b border-agw-bone pb-4">
+        <h2 className="font-display text-[24px] font-bold tracking-[-0.01em] text-agw-blue-ink">
+          Request an <em className="italic text-agw-blue">estimate</em>
+        </h2>
+        <span className="font-sans text-[12px] font-medium text-agw-ink-soft">
+          Office-reviewed follow-up
+        </span>
       </div>
 
       {submissionError ? (
         <div
-          className="mt-5 rounded-[1.35rem] border border-[rgba(156,47,47,0.22)] bg-[rgba(255,240,240,0.84)] px-4 py-3 text-sm leading-6 text-[#7e2323]"
+          className="mb-5 rounded-sm border border-[rgba(163,58,42,0.26)] bg-[rgba(163,58,42,0.08)] px-4 py-3 font-sans text-[13px] leading-6 text-agw-danger"
           role="alert"
           aria-live="polite"
         >
@@ -567,352 +589,164 @@ export function QuoteIntakeFlow() {
         </div>
       ) : null}
 
-      <div className="mt-5 grid gap-4">
-        {currentStep.id === "project_details" ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4 md:col-span-2">
-              <fieldset>
-                <legend className="text-sm font-semibold text-[var(--color-ink)]">
-                  Project type
-                </legend>
-                <p className="mt-1 text-xs leading-6 text-[var(--color-text-soft)]">
-                  Required. This is the main routing field before booking.
-                </p>
-                <div className="mt-3 grid gap-3">
-                  {PROJECT_TYPE_OPTIONS.map((option) => {
-                    const isSelected = formValues.project_type === option.value;
+      <form
+        className="grid min-w-0 gap-4 md:grid-cols-2"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void handleSubmit();
+        }}
+        noValidate
+      >
+        <ProjectTypeChips
+          value={formValues.project_type}
+          error={errors.project_type}
+          onChange={updateField}
+        />
 
-                    return (
-                      <label
-                        key={option.value}
-                        className={`block cursor-pointer rounded-[1rem] border px-4 py-3 transition-colors ${
-                          isSelected
-                            ? "border-[rgba(0,99,176,0.34)] bg-[rgba(0,99,176,0.08)]"
-                            : "border-[var(--color-border)] bg-[rgba(249,248,242,0.58)]"
-                        }`}
-                      >
-                        <input
-                          className="sr-only"
-                          type="radio"
-                          name="project_type"
-                          value={option.value}
-                          checked={isSelected}
-                          onChange={(event) =>
-                            updateField("project_type", event.target.value)
-                          }
-                        />
-                        <span className="text-sm font-semibold text-[var(--color-ink)]">
-                          {option.label}
-                        </span>
-                        {option.hint ? (
-                          <span className="mt-1 block text-xs leading-6 text-[var(--color-text-soft)]">
-                            {option.hint}
-                          </span>
-                        ) : null}
-                      </label>
-                    );
-                  })}
-                </div>
-                <FieldError
-                  fieldId="quote-project-type"
-                  message={errors.project_type}
-                />
-              </fieldset>
-            </div>
+        <GroupLabel>{QUOTE_STEP_DEFINITIONS[0].label}</GroupLabel>
 
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4">
-              <InputLabel
-                htmlFor="quote-town"
-                label="Town"
-                hint="Required. Use the town where the property is located."
-              />
-              <input
-                id="quote-town"
-                className="mt-3 min-h-12 w-full rounded-[1rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.72)] px-4 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-primary)]"
-                name="town"
-                autoComplete="address-level2"
-                value={formValues.town}
-                onChange={(event) => updateField("town", event.target.value)}
-                aria-invalid={Boolean(errors.town)}
-                aria-describedby={errors.town ? "quote-town-error" : undefined}
-              />
-              <FieldError fieldId="quote-town" message={errors.town} />
-            </div>
+        <FieldShell>
+          <TextInput
+            field="town"
+            id="quote-town"
+            label="Town"
+            autoComplete="address-level2"
+            value={formValues.town}
+            error={errors.town}
+            onChange={updateField}
+          />
+        </FieldShell>
 
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4">
-              <InputLabel
-                htmlFor="quote-property-type"
-                label="Property type"
-                hint="Optional, but useful for routing."
-              />
-              <select
-                id="quote-property-type"
-                className="mt-3 min-h-12 w-full rounded-[1rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.72)] px-4 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-primary)]"
-                name="property_type"
-                value={formValues.property_type}
-                onChange={(event) => updateField("property_type", event.target.value)}
-                aria-invalid={Boolean(errors.property_type)}
-                aria-describedby={
-                  errors.property_type ? "quote-property-type-error" : undefined
-                }
-              >
-                <option value="">Select a property type</option>
-                {PROPERTY_TYPE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <FieldError
-                fieldId="quote-property-type"
-                message={errors.property_type}
-              />
-            </div>
+        <FieldShell>
+          <SelectField
+            field="property_type"
+            id="quote-property-type"
+            label="Property type"
+            value={formValues.property_type}
+            error={errors.property_type}
+            options={PROPERTY_TYPE_OPTIONS}
+            emptyLabel="Select a property type"
+            onChange={updateField}
+          />
+        </FieldShell>
 
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4 md:col-span-2">
-              <InputLabel
-                htmlFor="quote-timeline"
-                label="Timeline"
-                hint="Optional for V1, but useful for the office before booking."
-              />
-              <select
-                id="quote-timeline"
-                className="mt-3 min-h-12 w-full rounded-[1rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.72)] px-4 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-primary)]"
-                name="timeline"
-                value={formValues.timeline}
-                onChange={(event) => updateField("timeline", event.target.value)}
-                aria-invalid={Boolean(errors.timeline)}
-                aria-describedby={errors.timeline ? "quote-timeline-error" : undefined}
-              >
-                <option value="">Select a timeline</option>
-                {TIMELINE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <FieldError fieldId="quote-timeline" message={errors.timeline} />
-            </div>
+        <FieldShell full>
+          <SelectField
+            field="timeline"
+            id="quote-timeline"
+            label="Timeline"
+            value={formValues.timeline}
+            error={errors.timeline}
+            options={TIMELINE_OPTIONS}
+            emptyLabel="Select a timeline"
+            onChange={updateField}
+          />
+        </FieldShell>
+
+        <GroupLabel>{QUOTE_STEP_DEFINITIONS[1].label}</GroupLabel>
+
+        <FieldShell full>
+          <TextInput
+            field="full_name"
+            id="quote-full-name"
+            label="Full name"
+            autoComplete="name"
+            value={formValues.full_name}
+            error={errors.full_name}
+            onChange={updateField}
+          />
+        </FieldShell>
+
+        <FieldShell>
+          <TextInput
+            field="email"
+            id="quote-email"
+            label="Email"
+            autoComplete="email"
+            inputMode="email"
+            value={formValues.email}
+            error={errors.email}
+            onChange={updateField}
+          />
+        </FieldShell>
+
+        <FieldShell>
+          <TextInput
+            field="phone"
+            id="quote-phone"
+            label="Phone"
+            autoComplete="tel"
+            inputMode="tel"
+            value={formValues.phone}
+            error={errors.phone}
+            onChange={updateField}
+          />
+        </FieldShell>
+
+        <GroupLabel>{QUOTE_STEP_DEFINITIONS[2].label}</GroupLabel>
+
+        <FieldShell full>
+          <InputLabel htmlFor="quote-notes" label="Project notes" />
+          <textarea
+            id="quote-notes"
+            className={`${fieldClassName} min-h-[84px] resize-y`}
+            name="notes"
+            value={formValues.notes}
+            onChange={(event) => updateField("notes", event.target.value)}
+            aria-invalid={Boolean(errors.notes)}
+            aria-describedby={errors.notes ? "quote-notes-error" : `${formId}-notes-help`}
+          />
+          <div
+            id={`${formId}-notes-help`}
+            className="mt-2 flex items-center justify-between gap-3 font-sans text-[11px] leading-5 text-agw-ink-mute"
+          >
+            <span>Surfaces, access, timing, or finish details are enough.</span>
+            <span>
+              {formValues.notes.length}/{QUOTE_NOTES_MAX_LENGTH}
+            </span>
           </div>
-        ) : null}
+          <FieldError fieldId="quote-notes" message={errors.notes} />
+        </FieldShell>
 
-        {currentStep.id === "contact_details" ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4 md:col-span-2">
-              <InputLabel
-                htmlFor="quote-full-name"
-                label="Full name"
-                hint="Required. Use the name the office should reference if they need to follow up."
-              />
-              <input
-                id="quote-full-name"
-                className="mt-3 min-h-12 w-full rounded-[1rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.72)] px-4 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-primary)]"
-                name="full_name"
-                autoComplete="name"
-                value={formValues.full_name}
-                onChange={(event) => updateField("full_name", event.target.value)}
-                aria-invalid={Boolean(errors.full_name)}
-                aria-describedby={
-                  errors.full_name ? "quote-full-name-error" : undefined
-                }
-              />
-              <FieldError fieldId="quote-full-name" message={errors.full_name} />
-            </div>
-
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4">
-              <InputLabel htmlFor="quote-email" label="Email" hint="Required." />
-              <input
-                id="quote-email"
-                className="mt-3 min-h-12 w-full rounded-[1rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.72)] px-4 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-primary)]"
-                name="email"
-                autoComplete="email"
-                inputMode="email"
-                value={formValues.email}
-                onChange={(event) => updateField("email", event.target.value)}
-                aria-invalid={Boolean(errors.email)}
-                aria-describedby={errors.email ? "quote-email-error" : undefined}
-              />
-              <FieldError fieldId="quote-email" message={errors.email} />
-            </div>
-
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4">
-              <InputLabel
-                htmlFor="quote-phone"
-                label="Phone"
-                hint="Required. US numbers are normalized before booking."
-              />
-              <input
-                id="quote-phone"
-                className="mt-3 min-h-12 w-full rounded-[1rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.72)] px-4 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-primary)]"
-                name="phone"
-                autoComplete="tel"
-                inputMode="tel"
-                value={formValues.phone}
-                onChange={(event) => updateField("phone", event.target.value)}
-                aria-invalid={Boolean(errors.phone)}
-                aria-describedby={errors.phone ? "quote-phone-error" : undefined}
-              />
-              <FieldError fieldId="quote-phone" message={errors.phone} />
-            </div>
-          </div>
-        ) : null}
-
-        {currentStep.id === "project_notes" ? (
-          <div className="grid gap-4">
-            <div className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-4">
-              <InputLabel
-                htmlFor="quote-notes"
-                label="Project notes"
-                hint="Optional. Add anything the office should know before the calendar opens."
-              />
-              <textarea
-                id="quote-notes"
-                className="mt-3 min-h-40 w-full rounded-[1rem] border border-[var(--color-border)] bg-[rgba(249,248,242,0.72)] px-4 py-3 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-primary)]"
-                name="notes"
-                value={formValues.notes}
-                onChange={(event) => updateField("notes", event.target.value)}
-                aria-invalid={Boolean(errors.notes)}
-                aria-describedby={errors.notes ? "quote-notes-error" : undefined}
-              />
-              <div className="mt-2 flex items-center justify-between gap-3 text-xs leading-6 text-[var(--color-text-soft)]">
-                <span>Optional notes are mirrored before the booking step opens.</span>
-                <span>
-                  {formValues.notes.length}/{QUOTE_NOTES_MAX_LENGTH}
-                </span>
-              </div>
-              <FieldError fieldId="quote-notes" message={errors.notes} />
-            </div>
-
-            <article className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-5">
-              <p className="ui-heading text-[0.64rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                Intake summary
-              </p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[1rem] bg-[rgba(249,248,242,0.88)] px-4 py-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-                    Project type
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-[var(--color-ink)]">
-                    {projectTypeLabel}
-                  </p>
-                </div>
-                <div className="rounded-[1rem] bg-[rgba(249,248,242,0.88)] px-4 py-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-                    Town
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-[var(--color-ink)]">
-                    {summaryValues.town || "Not provided"}
-                  </p>
-                </div>
-                <div className="rounded-[1rem] bg-[rgba(249,248,242,0.88)] px-4 py-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-                    Contact
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-[var(--color-ink)]">
-                    {summaryValues.full_name || "Not provided"}
-                  </p>
-                  <p className="text-sm leading-6 text-[var(--color-text-soft)]">
-                    {summaryValues.email || "No email"} ·{" "}
-                    {summaryValues.phone || "No phone"}
-                  </p>
-                </div>
-                <div className="rounded-[1rem] bg-[rgba(249,248,242,0.88)] px-4 py-3">
-                  <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-                    Property and timing
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-[var(--color-ink)]">
-                    {propertyTypeLabel}
-                  </p>
-                  <p className="text-sm leading-6 text-[var(--color-text-soft)]">
-                    {timelineLabel}
-                  </p>
-                </div>
-              </div>
-            </article>
-          </div>
-        ) : null}
-
-        {currentStep.id === "book_consultation" ? (
-          <div className="grid gap-4">
-            <article className="rounded-[1.45rem] border border-[var(--color-line)] bg-white p-5">
-              <p className="ui-heading text-[0.64rem] uppercase tracking-[0.18em] text-[var(--color-primary)]">
-                Intake saved
-              </p>
-              <h3 className="mt-3 text-[1.32rem] font-semibold leading-tight text-[var(--color-ink)]">
-                The validated intake is saved. Finish with the live GHL calendar below.
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-[var(--color-text-soft)]">
-                Booking still happens in the existing GHL system of record. This page only owns the
-                intake, validation, attribution capture, and handoff.
-              </p>
-            </article>
-
-            <div className="overflow-hidden rounded-[1.6rem] border border-[var(--color-line)] bg-white p-2 shadow-[var(--shadow-soft)]">
-              <iframe
-                id={iframeId}
-                title="A.G. Williams booking calendar"
-                src={GHL_BOOKING_URL}
-                className="min-h-[760px] w-full rounded-[1.1rem] border-0"
-                scrolling="no"
-                onLoad={handleCalendarLoad}
-              />
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.35rem] border border-[var(--color-line)] bg-[rgba(249,248,242,0.84)] px-4 py-4">
-              <p className="text-sm leading-6 text-[var(--color-text-soft)]">
-                If the inline calendar does not render in this browser, use the direct booking link.
-              </p>
-              <TrackedLink className="button-secondary" href={GHL_BOOKING_URL}>
-                Open direct booking link
-              </TrackedLink>
-            </div>
-          </div>
-        ) : null}
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="text-sm leading-6 text-[var(--color-text-soft)]">
-          {currentStep.id === "project_notes"
-            ? "Saving the intake is the last host-controlled step before the live calendar opens."
-            : "Each step validates before the flow moves forward."}
-        </div>
-
-        <div className="flex flex-wrap gap-3">
-          {activeStepIndex > 0 ? (
-            <button className="button-secondary" type="button" onClick={moveToPreviousStep}>
-              Back
-            </button>
-          ) : null}
-
-          {currentStep.id !== "book_consultation" ? (
-            <button
-              className="button-primary"
-              type="button"
-              onClick={handleContinue}
-              disabled={isSaving}
+        <div className="md:col-span-2 mt-1 flex flex-col items-center gap-3 border-t border-agw-bone pt-5 text-center">
+          <Button
+            className="w-full text-[16px]"
+            type="submit"
+            disabled={isSaving}
+            aria-describedby={`${formId}-submit-note`}
+          >
+            {isSaving ? "Sending request..." : "Send estimate request"}
+          </Button>
+          <p
+            id={`${formId}-submit-note`}
+            className="max-w-[52ch] font-sans text-[11px] leading-5 text-agw-ink-mute"
+          >
+            Submitting saves the request and sends one conversion event. Prefer a call?{" "}
+            <TrackedLink
+              className="font-semibold text-agw-blue hover:text-agw-blue-deep"
+              href={CONTACT.localPhoneHref}
+              tracking={{
+                event: "quote_phone_click",
+                location: "quote_form_note",
+                label: CONTACT.localPhoneLabel,
+                context: sourceContext,
+              }}
             >
-              {isSaving
-                ? "Saving intake..."
-                : currentStep.id === "project_notes"
-                  ? "Save Intake and Continue"
-                  : "Continue"}
-            </button>
-          ) : null}
+              Call {CONTACT.localPhoneLabel}
+            </TrackedLink>
+            .
+          </p>
         </div>
-      </div>
 
-      {activeStepIndex === finalStepIndex && calendarScriptUrl ? (
-        <Script src={calendarScriptUrl} strategy="afterInteractive" />
-      ) : null}
-
-      <input type="hidden" name="lead_source" value={attribution.lead_source || QUOTE_LEAD_SOURCE} />
-      <input type="hidden" name="utm_source" value={attribution.utm_source} />
-      <input type="hidden" name="utm_medium" value={attribution.utm_medium} />
-      <input type="hidden" name="utm_campaign" value={attribution.utm_campaign} />
-      <input type="hidden" name="utm_content" value={attribution.utm_content} />
-      <input type="hidden" name="utm_term" value={attribution.utm_term} />
-      <input type="hidden" name="page_url" value={attribution.page_url} />
-      <input type="hidden" name="submission_time" value={attribution.submission_time} />
+        <input type="hidden" name="lead_source" value={attribution.lead_source || QUOTE_LEAD_SOURCE} />
+        <input type="hidden" name="utm_source" value={attribution.utm_source} />
+        <input type="hidden" name="utm_medium" value={attribution.utm_medium} />
+        <input type="hidden" name="utm_campaign" value={attribution.utm_campaign} />
+        <input type="hidden" name="utm_content" value={attribution.utm_content} />
+        <input type="hidden" name="utm_term" value={attribution.utm_term} />
+        <input type="hidden" name="page_url" value={attribution.page_url} />
+        <input type="hidden" name="submission_time" value={attribution.submission_time} />
+      </form>
     </section>
   );
 }

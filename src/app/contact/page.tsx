@@ -1,34 +1,33 @@
 import type { Metadata } from "next";
-import { UtilityPageShell } from "@/components/utility-page-shell";
+import { UtilityPageShell } from "@/components/agw/utility-page-shell";
 import { CONTACT, QUOTE_URL } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Contact | A.G. Williams",
   description:
-    "Reach the Pelham office, use the internal quote route, or review the current launch placeholder for AGW contact details.",
+    "Contact A.G. Williams Painting for residential walkthroughs, commercial consultations, and project questions.",
   alternates: {
     canonical: "/contact",
   },
 };
 
 const highlights = [
-  "Pelham office routing",
-  "Residential and commercial intake",
-  "Quote route available on-site",
+  "Pelham office",
+  "Quote intake",
 ] as const;
 
 const cards = [
   {
     eyebrow: "Main office",
-    title: "Call the office first if the project needs context before booking.",
+    title: "Call first if the project needs context.",
     body:
       "That keeps homeowners, commercial buyers, and specialty scopes from starting in the wrong lane before AGW has the basic job details.",
   },
   {
-    eyebrow: "Launch cutover",
-    title: "This route is intentionally simple while the final contact stack is still being finalized.",
+    eyebrow: "Quote path",
+    title: "Use the form when details should be saved in writing.",
     body:
-      "Hours, department copy, and any future web form language should be updated once AGW approves the final operating details for launch.",
+      "The form collects the property, contact, timing, and scope information the office needs before follow-up.",
   },
 ] as const;
 
@@ -36,32 +35,32 @@ const sections = [
   {
     title: "Current contact paths",
     body:
-      "These are the contact options that can safely ship now without changing the current operational handoff.",
+      "These are the primary ways to reach the team and start the right estimate path.",
     items: [
       `Main office: ${CONTACT.mainPhoneLabel}`,
       `Pelham office: ${CONTACT.localPhoneLabel}`,
       `Office address: ${CONTACT.officeAddress}`,
-      "Use the internal quote route for estimate intake that needs to stay inside the site first.",
+      "Use the quote form for estimate intake that should be reviewed by the office.",
     ],
   },
   {
     title: "What to expect",
     body:
-      "A.G. Williams uses the office to sort residential walkthroughs, commercial consultations, and specialty scopes before the estimate process starts moving.",
+      "A.G. Williams uses the office to sort residential walkthroughs, commercial consultations, and specialty scopes before the estimate process starts.",
     items: [
       "Residential requests should lead toward the walkthrough lane.",
       "Commercial scopes should be clarified early if access, coatings, or documentation are involved.",
-      "Live chat remains a fallback path when a visitor needs help before booking.",
+      "Live chat remains a fallback path when a visitor needs help before submitting details.",
     ],
   },
   {
-    title: "Copy still pending",
+    title: "What helps the office respond",
     body:
-      "This placeholder should be replaced once final business-hour language, any department-level routing, and the approved launch contact copy are available.",
+      "A short description is enough to start. The office can clarify surfaces, timing, access, and finish expectations after the request is received.",
     items: [
-      "Office hours and response-time commitments",
-      "Any dedicated email addresses intended for launch",
-      "Final wording for quote-routing and support expectations",
+      "Property town and project type",
+      "Residential or commercial context",
+      "Timing needs and any access concerns",
     ],
   },
 ] as const;
@@ -71,14 +70,14 @@ export default function ContactPage() {
     <UtilityPageShell
       currentPath="/contact"
       eyebrow="Pelham office"
-      title="Start with the office, and the project gets routed correctly."
-      intro="This launch-ready contact page gives visitors a credible path into A.G. Williams now without overbuilding the final contact architecture. The office remains the safest first stop when the property, schedule, or scope still needs context."
+      title="Call the office or send the project details."
+      intro="Call A.G. Williams or send the project details through the quote form. The office reviews the request and routes residential, commercial, and specialty scopes to the right next step."
       highlights={highlights}
       primaryCta={{ label: "Start a Quote", href: QUOTE_URL }}
       secondaryCta={{ label: "Call Pelham Office", href: CONTACT.localPhoneHref }}
       cards={cards}
       sections={sections}
-      placeholderNote="Launch placeholder only. Final contact form behavior, office hours, and any departmental routing copy are still pending approval."
+      supportNote="For urgent or complex work, call the office directly so access, timing, and scope can be clarified first."
     />
   );
 }

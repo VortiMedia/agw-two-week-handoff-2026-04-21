@@ -1,4 +1,4 @@
-export const QUOTE_FLOW_VERSION = "custom_quote_flow_v1";
+export const QUOTE_FLOW_VERSION = "agw_quote_lead_capture_v2";
 export const QUOTE_FORM_SESSION_STORAGE_KEY = "agw_quote_intake_form_v1";
 export const QUOTE_ATTRIBUTION_SESSION_STORAGE_KEY = "agw_quote_attribution_v1";
 export const QUOTE_LEAD_SOURCE = "agw_quote_flow_v1";
@@ -94,13 +94,10 @@ export type QuoteAttribution = {
 
 export type QuoteSubmissionPayload = QuoteFormValues & QuoteAttribution;
 
-export type QuoteCalendarHandoffStatus = "pending" | "loaded" | "completed";
-
 export type QuoteStepId =
   | "project_details"
   | "contact_details"
-  | "project_notes"
-  | "book_consultation";
+  | "review_submit";
 
 export type QuoteStepDefinition = {
   id: QuoteStepId;
@@ -114,34 +111,26 @@ export const QUOTE_STEP_DEFINITIONS = [
   {
     id: "project_details",
     label: "Project details",
-    title: "Route the property before the calendar opens.",
+    title: "Tell us what needs to be painted.",
     description:
-      "Project type and town are required before the office should see a live booking handoff.",
+      "Start with the project type and property town so the office can route the request correctly.",
     fields: ["project_type", "property_type", "timeline", "town"] as const,
   },
   {
     id: "contact_details",
     label: "Contact details",
-    title: "Add the contact details the office needs first.",
+    title: "Add the contact details for follow-up.",
     description:
-      "This keeps weak contact data from reaching the booking handoff step.",
+      "Use the name, email, and phone number the office should use when reviewing the request.",
     fields: ["full_name", "email", "phone"] as const,
   },
   {
-    id: "project_notes",
-    label: "Project notes",
-    title: "Review the scope and save the intake before booking.",
+    id: "review_submit",
+    label: "Review and send",
+    title: "Add notes and send the quote request.",
     description:
-      "The site saves a validated mirror record first, then opens the live GHL calendar.",
+      "Optional notes help the office understand access, surfaces, timing, or finish concerns before follow-up.",
     fields: ["notes"] as const,
-  },
-  {
-    id: "book_consultation",
-    label: "Book consultation",
-    title: "Choose the live appointment slot that works.",
-    description:
-      "The appointment is still booked through the current GHL calendar and automation chain.",
-    fields: [] as const,
   },
 ] as const satisfies readonly QuoteStepDefinition[];
 
@@ -455,4 +444,28 @@ export function getQuoteEventContext(
 
 export function getOptionLabel(options: readonly QuoteOption[], value: string) {
   return options.find((option) => option.value === value)?.label ?? "Not provided";
+}
+
+export function splitFullName(value: string) {
+  const parts = normalizeTextInput(value).split(" ").filter(Boolean);
+  const firstName = parts[0] ?? "";
+  const lastName = parts.length > 1 ? parts.slice(1).join(" ") : "";
+
+  return {
+    first_name: firstName,
+    last_name: lastName,
+  };
+}
+
+export function getQuoteEnhancedConversionData(values: QuoteFormValues) {
+  const normalizedValues = normalizeQuoteFormValues(values);
+  const { first_name, last_name } = splitFullName(normalizedValues.full_name);
+
+  return {
+    email: normalizedValues.email,
+    phone_number: getPhoneDigits(normalizedValues.phone),
+    first_name,
+    last_name,
+    home_city: normalizedValues.town,
+  };
 }

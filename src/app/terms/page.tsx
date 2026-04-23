@@ -1,34 +1,33 @@
 import type { Metadata } from "next";
-import { UtilityPageShell } from "@/components/utility-page-shell";
+import { UtilityPageShell } from "@/components/agw/utility-page-shell";
 import { CONTACT, QUOTE_URL } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Terms | A.G. Williams",
   description:
-    "Launch placeholder terms page for the A.G. Williams website while final legal review and business-specific website terms are still pending.",
+    "Website terms for using the A.G. Williams Painting site, quote forms, and general service information.",
   alternates: {
     canonical: "/terms",
   },
 };
 
 const highlights = [
-  "Draft website terms",
-  "Launch-safe placeholder",
-  "Final review pending",
+  "Website use",
+  "Quote requests",
 ] as const;
 
 const cards = [
   {
     eyebrow: "Scope",
-    title: "These draft terms are limited to use of the website, not the full project contract.",
+    title: "These terms cover website use.",
     body:
-      "Estimate approvals, job scopes, and project execution should continue to be governed by AGW's actual proposals and signed agreements rather than placeholder website copy.",
+      "Estimate approvals, job scopes, and project execution should continue to be governed by AGW's actual proposals and signed agreements rather than general website copy.",
   },
   {
     eyebrow: "Practical purpose",
-    title: "The route exists now so launch does not leave terms coverage undefined.",
+    title: "The website helps visitors request follow-up.",
     body:
-      "It sets a cautious expectation around site content, linked tools, and the non-binding nature of general website information until the final legal version is ready.",
+      "General website information is not a final estimate, proposal, warranty document, or signed scope of work.",
   },
 ] as const;
 
@@ -36,17 +35,17 @@ const sections = [
   {
     title: "Use of the site",
     body:
-      "Visitors may browse the site, request contact, and use the quote path for lawful business purposes. Website content is presented as general company and service information and may change as launch materials are refined.",
+      "Visitors may browse the site, request contact, and use the quote path for lawful business purposes. Website content is presented as general company and service information and may change as services or operations change.",
     items: [
-      "Do not misuse forms, chat, or booking tools",
+      "Do not misuse forms, chat, or quote tools",
       "Do not rely on public website copy as a final project agreement",
-      "Expect pages, wording, and site features to evolve as the rebuild matures",
+      "Expect pages, wording, and site features to change as services and operations change",
     ],
   },
   {
-    title: "Estimates and third-party tools",
+    title: "Estimates and support tools",
     body:
-      "The internal quote route and any linked booking or chat tools help start the intake process, but they do not replace a formal estimate, proposal, or signed scope of work.",
+      "The quote route and any chat or support tools help start the intake process, but they do not replace a formal estimate, proposal, or signed scope of work.",
     items: [
       "Website inquiries do not guarantee scheduling or availability",
       "External tools may be subject to their own terms and privacy practices",
@@ -54,13 +53,13 @@ const sections = [
     ],
   },
   {
-    title: "What still needs legal completion",
+    title: "Project obligations",
     body:
-      "The final terms page should be updated with AGW-approved legal language, limitation-of-liability wording, and any additional business rules required for production.",
+      "Project-specific obligations should be confirmed directly with A.G. Williams through the applicable proposal, estimate, agreement, warranty language, or written communication.",
     items: [
-      "Final governing-law and limitation language",
-      "Approved intellectual-property and content-use language",
-      "A complete update-and-effective-date section",
+      "Website inquiries do not guarantee scheduling or availability",
+      "Photos and descriptions may be representative rather than exhaustive",
+      "Formal project documents control if website copy differs",
     ],
   },
 ] as const;
@@ -69,15 +68,15 @@ export default function TermsPage() {
   return (
     <UtilityPageShell
       currentPath="/terms"
-      eyebrow="Draft terms"
-      title="Working website terms for launch, pending final legal review."
-      intro="This placeholder terms page gives the launch build a credible baseline without pretending the final legal document is complete. It should be treated as temporary website-usage language only, not as a substitute for AGW's estimate, proposal, or contract documents."
+      eyebrow="Website terms"
+      title="Website terms for browsing, quote requests, and general service information."
+      intro="This page explains how visitors may use the A.G. Williams website. Project commitments, pricing, scheduling, and warranty details require direct confirmation through AGW documents or office communication."
       highlights={highlights}
       primaryCta={{ label: "Get a Quote", href: QUOTE_URL }}
       secondaryCta={{ label: "Call Main Office", href: CONTACT.mainPhoneHref }}
       cards={cards}
       sections={sections}
-      placeholderNote="Launch placeholder only. Final website terms, limitation language, and effective-date details still require legal review."
+      supportNote="Contact the office if a website statement needs to be reconciled with an estimate, proposal, or project document."
     />
   );
 }
