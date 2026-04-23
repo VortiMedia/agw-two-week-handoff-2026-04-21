@@ -7,6 +7,7 @@ import { buildPageMetadata } from "@/lib/seo";
 import {
   COMMERCIAL_EXPECTATIONS,
   COMMERCIAL_SERVICES,
+  CONTACT,
   QUOTE_URL,
 } from "@/lib/site-data";
 
@@ -32,22 +33,42 @@ export default function CommercialPage() {
   return (
     <SiteShell currentPath="/commercial">
       <main>
-        <section className="mx-auto grid w-full max-w-[1440px] gap-12 px-6 py-16 md:px-12 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <section className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-14 md:px-12 md:py-[72px] lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
             <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
               <span aria-hidden className="h-px w-8 bg-agw-blue" />
               Commercial services
             </span>
-            <h1 className="max-w-[13ch] font-display text-[clamp(38px,4.8vw,70px)] font-bold leading-[1.12] tracking-[-0.02em] text-agw-blue-ink">
+            <h1 className="max-w-[14ch] font-display text-[clamp(38px,4.6vw,64px)] font-bold leading-[1.04] tracking-[-0.024em] text-agw-blue-ink">
               Painting, coatings, and fireproofing for <em className="italic text-agw-blue">active properties.</em>
             </h1>
             <p className="mt-6 max-w-[48ch] font-sans text-[18px] leading-[1.65] text-agw-ink">
               A.G. Williams works with owners, facility teams, property managers, and general
               contractors who need scope, access, and documentation handled early.
             </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Button
+                href={QUOTE_URL}
+                data-cta-event="quote_cta_click"
+                data-cta-location="commercial_hero"
+                data-cta-label="Request a commercial consultation"
+                data-cta-destination={QUOTE_URL}
+              >
+                Request a consultation
+              </Button>
+              <a
+                href={CONTACT.mainPhoneHref}
+                data-cta-event="phone_click"
+                data-cta-location="commercial_hero"
+                data-cta-label={CONTACT.mainPhoneLabel}
+                className="font-sans text-[14px] font-semibold text-agw-blue transition hover:text-agw-blue-deep"
+              >
+                Call {CONTACT.mainPhoneLabel}
+              </a>
+            </div>
           </div>
 
-          <div className="relative h-[280px] overflow-hidden rounded-md shadow-lg sm:h-[360px] lg:h-[560px]">
+          <div className="relative h-[280px] overflow-hidden rounded-md border border-agw-bone shadow-lg sm:h-[360px] lg:h-[480px]">
             <Image
               src={AGW_CURATED_PHOTOS.commercialFloor}
               alt="Commercial floor coating project completed by A.G. Williams"

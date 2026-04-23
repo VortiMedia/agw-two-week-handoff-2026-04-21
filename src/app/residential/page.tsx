@@ -4,7 +4,7 @@ import { Button } from "@/components/agw/button";
 import { SiteShell } from "@/components/agw/site-shell";
 import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
 import { buildPageMetadata } from "@/lib/seo";
-import { QUOTE_URL, RESIDENTIAL_SERVICES } from "@/lib/site-data";
+import { CONTACT, QUOTE_URL, RESIDENTIAL_SERVICES } from "@/lib/site-data";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Residential Painting and Fine Finish Work | A.G. Williams",
@@ -30,22 +30,42 @@ export default function ResidentialPage() {
   return (
     <SiteShell currentPath="/residential">
       <main>
-        <section className="mx-auto grid w-full max-w-[1440px] gap-12 px-6 py-16 md:px-12 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <section className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-14 md:px-12 md:py-[72px] lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
             <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
               <span aria-hidden className="h-px w-8 bg-agw-blue" />
               Residential painting
             </span>
-            <h1 className="max-w-[13ch] font-display text-[clamp(38px,4.8vw,70px)] font-bold leading-[1.12] tracking-[-0.02em] text-agw-blue-ink">
+            <h1 className="max-w-[14ch] font-display text-[clamp(38px,4.6vw,64px)] font-bold leading-[1.04] tracking-[-0.024em] text-agw-blue-ink">
               Homes built to hold color for <em className="italic text-agw-blue">years, not seasons.</em>
             </h1>
             <p className="mt-6 max-w-[48ch] font-sans text-[18px] leading-[1.65] text-agw-ink">
               Interior, exterior, cabinetry, and finish-sensitive rooms start with a walkthrough
               so the estimate reflects the actual house.
             </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Button
+                href={QUOTE_URL}
+                data-cta-event="quote_cta_click"
+                data-cta-location="residential_hero"
+                data-cta-label="Schedule a residential walkthrough"
+                data-cta-destination={QUOTE_URL}
+              >
+                Schedule a walkthrough
+              </Button>
+              <a
+                href={CONTACT.mainPhoneHref}
+                data-cta-event="phone_click"
+                data-cta-location="residential_hero"
+                data-cta-label={CONTACT.mainPhoneLabel}
+                className="font-sans text-[14px] font-semibold text-agw-blue transition hover:text-agw-blue-deep"
+              >
+                Call {CONTACT.mainPhoneLabel}
+              </a>
+            </div>
           </div>
 
-          <div className="relative h-[280px] overflow-hidden rounded-md shadow-lg sm:h-[360px] lg:h-[560px]">
+          <div className="relative h-[280px] overflow-hidden rounded-md border border-agw-bone shadow-lg sm:h-[360px] lg:h-[480px]">
             <Image
               src={AGW_CURATED_PHOTOS.whiteKitchen}
               alt="White kitchen cabinetry and millwork finished by A.G. Williams"

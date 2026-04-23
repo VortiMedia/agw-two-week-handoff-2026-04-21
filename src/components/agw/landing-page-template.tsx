@@ -1,27 +1,27 @@
 import Image from "next/image";
-import { QuoteIntakeFlow } from "@/components/quote-intake-flow";
 import { Button } from "@/components/agw/button";
 import { SiteShell } from "@/components/agw/site-shell";
 import type { GoogleAdsLandingPage } from "@/lib/landing-pages";
+import { QUOTE_URL } from "@/lib/site-data";
 
 export function LandingPageTemplate({ page }: { page: GoogleAdsLandingPage }) {
   return (
     <SiteShell currentPath={page.path}>
       <main>
-        <section className="mx-auto grid w-full max-w-[1440px] gap-12 px-6 py-16 md:px-12 md:py-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <section className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-14 md:px-12 md:py-[72px] lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
             <span className="mb-5 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] text-agw-blue">
               <span aria-hidden className="h-px w-8 bg-agw-blue" />
               {page.eyebrow}
             </span>
-            <h1 className="max-w-[14ch] font-display text-[clamp(36px,4.8vw,68px)] font-bold leading-[1.12] tracking-[-0.02em] text-agw-blue-ink">
+            <h1 className="max-w-[14ch] font-display text-[clamp(36px,4.6vw,62px)] font-bold leading-[1.04] tracking-[-0.024em] text-agw-blue-ink">
               {page.headline}
             </h1>
             <p className="mt-6 max-w-[50ch] font-sans text-[18px] leading-[1.65] text-agw-ink">
               {page.lead}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Button href="#quote-intake-flow">{page.primaryCta}</Button>
+              <Button href={QUOTE_URL}>{page.primaryCta}</Button>
             </div>
             <div className="mt-8 flex flex-wrap gap-2 border-t border-agw-bone pt-5">
               {page.proof.map((item) => (
@@ -35,7 +35,7 @@ export function LandingPageTemplate({ page }: { page: GoogleAdsLandingPage }) {
             </div>
           </div>
 
-          <div className="relative h-[280px] overflow-hidden rounded-md shadow-lg sm:h-[360px] lg:h-[560px]">
+          <div className="relative h-[280px] overflow-hidden rounded-md border border-agw-bone shadow-lg sm:h-[360px] lg:h-[480px]">
             <Image
               src={page.heroImage.src}
               alt={page.heroImage.alt}
@@ -106,11 +106,21 @@ export function LandingPageTemplate({ page }: { page: GoogleAdsLandingPage }) {
               </p>
             </div>
 
-            <QuoteIntakeFlow
-              sourceContext={page.slug}
-              initialProjectType={page.initialProjectType}
-              compact
-            />
+            <div className="rounded-md border border-agw-bone bg-agw-paper p-6 shadow-sm md:p-8">
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-agw-blue">
+                Current estimate path
+              </p>
+              <h3 className="mt-3 font-display text-[clamp(28px,3vw,38px)] font-bold leading-tight text-agw-blue-ink">
+                Continue to A.G. Williams’ quote request.
+              </h3>
+              <p className="mt-4 font-sans text-[15px] leading-7 text-agw-ink">
+                The office reviews project details through the existing GoHighLevel workflow so
+                follow-up, tracking, and operations remain unchanged during Phase 0.
+              </p>
+              <div className="mt-7">
+                <Button href={QUOTE_URL}>{page.primaryCta}</Button>
+              </div>
+            </div>
           </div>
         </section>
       </main>

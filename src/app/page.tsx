@@ -1,4 +1,3 @@
-import { QuoteIntakeFlow } from "@/components/quote-intake-flow";
 import { Features } from "@/components/agw/features";
 import { Gallery } from "@/components/agw/gallery";
 import { Hero } from "@/components/agw/hero";
@@ -310,7 +309,31 @@ export default function Home() {
               </div>
             </div>
 
-            <QuoteIntakeFlow sourceContext="homepage_estimate" />
+            <div className="rounded-md border border-agw-bone bg-agw-paper p-6 shadow-sm md:p-8">
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-agw-blue">
+                Existing AGW quote path
+              </p>
+              <h3 className="mt-3 font-display text-[clamp(28px,3vw,38px)] font-bold leading-tight text-agw-blue-ink">
+                Use the current estimate system.
+              </h3>
+              <p className="mt-4 font-sans text-[15px] leading-7 text-agw-ink">
+                For Phase 0, quote requests continue through A.G. Williams’ existing
+                GoHighLevel workflow. That keeps tracking, office follow-up, and operations intact
+                while the site direction is reviewed.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a
+                  href={QUOTE_URL}
+                  data-cta-event="quote_cta_click"
+                  data-cta-location="homepage_estimate"
+                  data-cta-label="Open quote request"
+                  data-cta-destination={QUOTE_URL}
+                  className="inline-flex min-h-[52px] items-center justify-center rounded-md bg-agw-blue px-7 py-4 font-sans text-[15px] font-bold text-agw-ivory shadow-[0_10px_24px_-10px_rgba(0,99,176,0.55)] transition hover:bg-agw-blue-deep"
+                >
+                  Open quote request
+                </a>
+              </div>
+            </div>
             </div>
         </section>
       </main>

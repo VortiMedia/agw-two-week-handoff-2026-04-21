@@ -1,13 +1,17 @@
 import type { ComponentProps } from "react";
 import type Image from "next/image";
 import { AGW_CURATED_PHOTOS } from "@/lib/brand-assets";
-import type { QuoteFormValues } from "@/lib/quote-flow";
 import type { SitePath } from "@/lib/site-data";
 
 type LandingPageImage = {
   src: ComponentProps<typeof Image>["src"];
   alt: string;
 };
+
+type LandingPageProjectType =
+  | "interior-painting"
+  | "commercial-repaint"
+  | "cabinetry-millwork";
 
 export type GoogleAdsLandingPage = {
   slug: string;
@@ -27,7 +31,7 @@ export type GoogleAdsLandingPage = {
   lead: string;
   primaryCta: string;
   secondaryCta: string;
-  initialProjectType: QuoteFormValues["project_type"];
+  initialProjectType: LandingPageProjectType;
   heroImage: LandingPageImage;
   proof: readonly string[];
   serviceFit: {

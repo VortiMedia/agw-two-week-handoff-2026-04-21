@@ -15,7 +15,7 @@ export type SitePath =
 
 export const SITE_NAME = "A.G. Williams Painting Company";
 export const SITE_URL = "https://agwilliamspainting.com";
-export const QUOTE_URL = "/get-a-quote";
+export const QUOTE_URL = "https://agwilliamspainting.com/get-a-quote/";
 export const GTM_CONTAINER_ID = "GTM-W559QJ7C";
 export const LEADCONNECTOR_CHAT_WIDGET_ID = "699ca6733303b66fe5e9d99c";
 export const LEADCONNECTOR_CHAT_LOADER_URL =

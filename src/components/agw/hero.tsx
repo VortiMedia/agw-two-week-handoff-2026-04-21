@@ -86,22 +86,21 @@ export function Hero({
   return (
     <section
       className={[
-        "mx-auto w-full max-w-[1440px] px-6 pt-16 sm:px-10 lg:px-12",
+        "relative overflow-hidden border-b border-agw-bone bg-[linear-gradient(135deg,var(--agw-ivory)_0%,#fff_52%,var(--agw-celeste-soft)_160%)]",
         className,
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-[72px] [&>*]:min-w-0">
-        {/* Copy column */}
+      <div className="mx-auto grid w-full max-w-[1440px] items-center gap-12 px-6 py-14 sm:px-10 md:py-20 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16 lg:px-12 lg:py-24 [&>*]:min-w-0">
         <div>
           <span
             className={[
-              "mb-6 inline-flex items-center gap-[14px]",
-              "max-w-full flex-wrap rounded-pill bg-agw-celeste-soft px-4 py-2",
+              "mb-6 inline-flex max-w-full flex-wrap items-center gap-3",
+              "rounded-sm border border-agw-bone bg-agw-paper px-4 py-2 shadow-sm",
             ].join(" ")}
           >
-            <span className="border-r border-[rgba(0,75,133,0.3)] pr-[14px] font-sans text-[12px] font-bold tracking-[0.08em] text-agw-blue-ink">
+            <span className="border-r border-agw-bone pr-3 font-sans text-[12px] font-bold tracking-[0.08em] text-agw-blue-ink">
               Est. 1906
             </span>
             <Eyebrow className="min-w-0 !leading-[1.4] !tracking-[0.08em] !normal-case">
@@ -111,15 +110,16 @@ export function Hero({
 
           <h1
             className={[
-              "mb-7 max-w-[14ch] font-display font-bold text-agw-blue-ink",
-              "text-[clamp(38px,4.8vw,72px)] leading-[1.12] tracking-[-0.018em]",
+              "mb-6 max-w-[13.5ch] font-display font-bold text-agw-blue-ink",
+              "text-[clamp(42px,5.4vw,78px)] leading-[1.02] tracking-[-0.024em]",
               "[text-wrap:pretty]",
+              "[&_em]:text-agw-blue [&_em]:font-bold",
             ].join(" ")}
           >
             {title}
           </h1>
 
-          <p className="mb-9 max-w-[48ch] font-sans text-[19px] leading-[1.6] text-agw-ink">
+          <p className="mb-8 max-w-[50ch] font-sans text-[18px] leading-[1.7] text-agw-ink md:text-[19px]">
             {subtitle}
           </p>
 
@@ -138,7 +138,7 @@ export function Hero({
             ) : null}
           </div>
 
-          <div className="flex flex-wrap items-stretch gap-2 border-t border-agw-bone pt-7">
+          <div className="grid max-w-[42rem] grid-cols-2 gap-2 border-t border-agw-bone pt-6 sm:grid-cols-4">
             {trustChips.map((chip, i) => (
               <TrustChip
                 key={`${chip.headline ?? ""}-${chip.label}-${i}`}
@@ -150,15 +150,12 @@ export function Hero({
           </div>
         </div>
 
-        {/* Visual column */}
-        <div className="relative aspect-[4/5] w-full min-w-0 overflow-hidden lg:overflow-visible">
-          {/* After frame — primary hero image */}
+        <div className="relative min-h-[420px] w-full min-w-0 lg:min-h-[620px]">
           <div
             className={[
-              "absolute inset-y-0 left-0 right-8 bottom-12",
-              "overflow-hidden rounded-md shadow-lg",
+              "absolute inset-x-0 top-0 h-[78%] overflow-hidden rounded-md",
+              "border border-agw-bone bg-agw-paper shadow-lg lg:left-8",
             ].join(" ")}
-            style={{ inset: "0 32px 48px 0" }}
           >
             <Image
               src={imageAfter.src}
@@ -168,23 +165,25 @@ export function Hero({
               sizes="(min-width: 1024px) 40vw, 90vw"
               className="object-cover"
             />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,42,77,0)_48%,rgba(0,42,77,0.62)_100%)]" />
             <span
               className={[
-                "absolute left-6 top-6 z-[2]",
-                "rounded-sm bg-agw-ivory px-[14px] py-2",
+                "absolute left-5 top-5 z-[2]",
+                "rounded-sm bg-agw-ivory/95 px-[14px] py-2 shadow-sm",
                 "font-sans text-[12px] font-semibold tracking-[0.02em] text-agw-blue-ink",
               ].join(" ")}
             >
               {imageAfterTag}
             </span>
+            <p className="absolute bottom-5 left-5 z-[2] max-w-[34ch] font-sans text-[14px] font-semibold leading-6 text-agw-ivory">
+              Local residential and commercial painting, planned from the walkthrough through the final punch list.
+            </p>
           </div>
 
-          {/* Before frame — inset lower-right */}
           <div
             className={[
-              "absolute bottom-0 right-0 w-[46%] aspect-[4/5]",
-              "overflow-hidden rounded-md shadow-lg",
-              "border-[6px] border-agw-ivory",
+              "absolute bottom-0 right-0 h-[34%] w-[44%] overflow-hidden rounded-md",
+              "border-[6px] border-agw-ivory bg-agw-paper shadow-lg",
             ].join(" ")}
           >
             <Image
@@ -205,14 +204,13 @@ export function Hero({
             </span>
           </div>
 
-          {/* Financing badge */}
           {financingBadge ? (
             <div
               className={[
-                "absolute -top-5 -right-2 z-[3] lg:-right-5",
-                "flex h-36 w-36 flex-col items-center justify-center",
+                "absolute -right-1 top-8 z-[3] lg:-right-4",
+                "flex h-28 w-28 flex-col items-center justify-center sm:h-32 sm:w-32",
                 "rounded-full bg-agw-blue text-agw-ivory text-center",
-                "font-display shadow-lg -rotate-[8deg]",
+                "font-display shadow-lg -rotate-[6deg]",
               ].join(" ")}
               aria-label={`${financingBadge.primary} ${financingBadge.sub.replace(/\n/g, " ")}`}
             >
@@ -221,7 +219,7 @@ export function Hero({
                   {financingBadge.lead}
                 </span>
               ) : null}
-              <span className="text-[48px] font-bold leading-none tracking-[-0.02em]">
+              <span className="text-[40px] font-bold leading-none tracking-[-0.02em] sm:text-[46px]">
                 {financingBadge.primary}
               </span>
               <span className="mt-1.5 whitespace-pre-line font-sans text-[11px] font-semibold leading-[1.3] tracking-[0.02em]">

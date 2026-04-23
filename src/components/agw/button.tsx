@@ -91,13 +91,14 @@ export function Button(props: ButtonProps) {
     const { className, children, href, external, variant: _v, size: _s, ...rest } = props;
     const combined = classes(variant, size, className);
     const isExternalHref = /^(https?:)?\/\//.test(href);
-    if (external || isExternalHref) {
+    if (isExternalHref) {
+      const shouldOpenNewTab = external === true;
       return (
         <a
           href={href}
           className={combined}
-          rel={external || isExternalHref ? "noopener noreferrer" : rest.rel}
-          target={external || isExternalHref ? "_blank" : rest.target}
+          rel={shouldOpenNewTab ? "noopener noreferrer" : rest.rel}
+          target={shouldOpenNewTab ? "_blank" : rest.target}
           {...rest}
         >
           {children}
