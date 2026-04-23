@@ -1,0 +1,3 @@
+name = "agw-website-v2-preview"
+compatibility_date = "2026-04-23"
+pages_build_output_dir = "./out"

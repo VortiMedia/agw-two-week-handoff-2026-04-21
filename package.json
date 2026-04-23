@@ -9,7 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cf:preview": "wrangler pages deploy out --project-name agw-website-v2-preview",
+    "cf:branch-preview": "wrangler pages deploy out --project-name agw-website-v2-preview --branch preview"
   },
   "dependencies": {
     "next": "16.2.3",
@@ -24,6 +26,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.84.1"
   }
 }

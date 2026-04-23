@@ -1,0 +1,19 @@
+{
+  "provider": "cloudflare_pages",
+  "project_name": "agw-website-v2-preview",
+  "stable_url": "https://agw-website-v2-preview.pages.dev/",
+  "deployment_url": "https://094d5cf7.agw-website-v2-preview.pages.dev/",
+  "deployed_at": "2026-04-23T16:24:00Z",
+  "routes_verified": [
+    "/",
+    "/commercial",
+    "/residential",
+    "/robots.txt",
+    "/sitemap.xml"
+  ],
+  "build_mode": "next_static_export",
+  "notes": [
+    "the repo root is the active AGW site base",
+    "legacy AGW app copies remain archive/reference only"
+  ]
+}
